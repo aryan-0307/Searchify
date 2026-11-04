@@ -1,12 +1,12 @@
-# AlgoViz — Interactive Sorting & Searching Playground
+# Searchify — Interactive Sorting & Searching Playground
 
-AlgoViz is a modern, playful, and premium educational platform designed to help students and developers master fundamental sorting and searching algorithms through tactile step-by-step animations, synchronized code editor pseudocode, live operation indicators, and interactive complexity analysis.
+Searchify is a modern, playful, and premium educational platform designed to help students and developers master fundamental sorting and searching algorithms through tactile step-by-step animations, live operation indicators, and interactive complexity analysis.
 
 ---
 
 ## Visual Identity & Design Vision
 
-AlgoViz transforms traditional dry algorithmic learning into an engaging **interactive algorithm playground**:
+Searchify transforms traditional dry algorithmic learning into an engaging **interactive algorithm playground**:
 - **Pantone-Inspired Color Identity**:
   - **Warm Ivory (`#F5F3ED`)**: Main background for pages and toolbars.
   - **Soft Cream (`#ECEBDB`)**: Secondary surfaces, container cards, headers, sidebars, and array cells.
@@ -17,12 +17,12 @@ AlgoViz transforms traditional dry algorithmic learning into an engaging **inter
   - Dotted grid background pattern evoking an interactive visual laboratory.
   - Live floating operation badge dynamically tracking the algorithm's state (e.g. `Comparing 8 & 3`, `Swapping 8 ↔ 3`, `Pivot: 7`).
   - Satisfying completion banner with total comparisons, swaps, and a Replay button.
-- **Modern Code Editor Pseudocode**:
-  - Interactive pseudocode panel styled like a code editor with line numbers, keyword syntax highlighting, and active line auto-scrolling.
 - **Rich Explanation Learning Cards**:
   - Contextual operation badges (`COMPARING`, `SWAPPING`, `PIVOT`, `SORTED`, `TARGET FOUND`), value chips, and plain-English next-step decisions.
-- **Minimalist Reference Homepage**:
-  - Strict preservation of the original sketch: full-screen rounded container, two centered handwritten cards (**Searching** on left, **Sorting** on right) in `Kalam` and `Caveat` with subtle hover lift and pink glow.
+- **Interactive Playground Homepage**:
+  - Expressive typography in **Bricolage Grotesque** and **Inter**.
+  - Hero container with subtle radial grid texture and elevation shadow.
+  - Miniature interactive animated previews for both **Searching** (step-scan animation) and **Sorting** (smooth ascending reordering).
 
 ---
 
@@ -40,7 +40,7 @@ AlgoViz transforms traditional dry algorithmic learning into an engaging **inter
   - **Settings**: Animation speed slider (5 presets: Very Slow to Very Fast), Ascending / Descending order toggle.
   - **Playback Cluster**: Previous Step (`⏮`), Prominent Play/Pause (`▶`/`⏸`), Next Step (`⏭`), Reset, and Restart.
   - **Interactive Statistics Cards**: Live comparisons and swaps counters.
-  - **Complexity Cards**: Separate cards for Best, Average, Worst Time, Space Complexity, Stability, In-Place, and "When to Use" guidance.
+  - **Complexity Cards**: Dedicated cards for Best, Average, Worst Time, Space Complexity, Stability, In-Place, and "When to Use" guidance.
 
 ### Searching Playground
 - **Linear Search**: Sequential cell examination with current examined cell (Vibrant Pink glow), checked cells (muted beige), and match confirmation (Emerald Green).
@@ -67,8 +67,8 @@ AlgoViz transforms traditional dry algorithmic learning into an engaging **inter
 ## File Structure
 
 ```
-AlgoViz/
-├── index.html                   # Minimalist reference-matched homepage
+Searchify/
+├── index.html                   # Interactive algorithm playground homepage
 ├── sorting.html                 # Sorting Playground interface
 ├── searching.html               # Searching Playground interface
 ├── css/
