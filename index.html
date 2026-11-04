@@ -3,114 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AlgoViz — Interactive Sorting &amp; Searching Visualizer</title>
+    <meta name="theme-color" content="#F5F3ED">
+    <title>Searchify — Learn Algorithms by Seeing Them</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/home.css">
 </head>
-<body>
-    <div class="home-container">
-        <!-- Minimal Brand Header -->
-        <header class="home-brand">
-            <span class="home-brand-logo">AlgoViz</span>
-            <span class="home-brand-dot">•</span>
-            <span class="home-brand-tag">Interactive DSA Playground</span>
+<body class="searchify-home">
+    <main class="home-container">
+        <header class="home-nav">
+            <a class="home-brand" href="index.html" aria-label="Searchify home">
+                <span class="brand-mark">S</span>
+                <span class="home-brand-logo">Searchify</span>
+                <span class="home-brand-tag">DSA playground</span>
+            </a>
+            <nav class="home-nav-links" aria-label="Main navigation">
+                <a href="#playgrounds">Playgrounds</a>
+                <a href="#try-it">Try a demo</a>
+                <a class="nav-cta" href="#playgrounds">Start exploring <span>↗</span></a>
+            </nav>
         </header>
 
-        <!-- Two Navigation Playground Cards -->
-        <div class="home-cards">
-            <!-- Left Card: Searching -->
-            <a href="searching.html" class="home-card searching-card" aria-label="Open Searching Visualizer">
-                <div class="card-inner">
-                    <div class="card-header">
-                        <div class="card-icon-wrap searching-icon-wrap" aria-hidden="true">
-                            <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="11" cy="11" r="8"></circle>
-                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                            </svg>
-                        </div>
-                        <div class="card-title-group">
-                            <h2 class="card-title">Searching</h2>
-                            <span class="card-algo-tag">Linear &amp; Binary</span>
-                        </div>
-                    </div>
-
-                    <!-- Miniature Animated Searching Visualization -->
-                    <div class="mini-viz searching-mini-viz" aria-hidden="true">
-                        <div class="mini-target-pill">
-                            <span class="pill-label">Target:</span>
-                            <span class="pill-val">45</span>
-                        </div>
-                        <div class="mini-cells-row">
-                            <div class="mini-cell c0"><span class="cell-num">14</span></div>
-                            <div class="mini-cell c1"><span class="cell-num">28</span></div>
-                            <div class="mini-cell c2 match-cell">
-                                <span class="cell-num">45</span>
-                                <span class="cell-match-icon">✓</span>
-                            </div>
-                            <div class="mini-cell c3"><span class="cell-num">62</span></div>
-                            <div class="mini-cell c4"><span class="cell-num">89</span></div>
-                        </div>
-                    </div>
-
-                    <!-- Card Footer -->
-                    <div class="card-footer">
-                        <p class="card-desc">Find elements, one step at a time.</p>
-                        <div class="card-action">
-                            <span>Explore</span>
-                            <svg class="action-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="5" y1="12" x2="19" y2="12"></line>
-                                <polyline points="12 5 19 12 12 19"></polyline>
-                            </svg>
-                        </div>
-                    </div>
+        <section class="home-hero">
+            <div class="hero-copy">
+                <div class="hero-pill"><span class="hero-live-dot"></span> YOUR INTERACTIVE DSA LAB</div>
+                <h1>Algorithms make<br>more sense when<br>you <span>see them move.</span></h1>
+                <p class="hero-description">Stop memorising dry steps. Explore searching and sorting algorithms through live animations, hands-on controls, and clear explanations.</p>
+                <div class="hero-actions">
+                    <a href="#playgrounds" class="hero-primary">Explore playgrounds <span>→</span></a>
+                    <a href="#try-it" class="hero-secondary">Watch a live demo <span>↓</span></a>
                 </div>
-            </a>
-
-            <!-- Right Card: Sorting -->
-            <a href="sorting.html" class="home-card sorting-card" aria-label="Open Sorting Visualizer">
-                <div class="card-inner">
-                    <div class="card-header">
-                        <div class="card-icon-wrap sorting-icon-wrap" aria-hidden="true">
-                            <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="18" y1="20" x2="18" y2="4"></line>
-                                <line x1="12" y1="20" x2="12" y2="10"></line>
-                                <line x1="6" y1="20" x2="6" y2="15"></line>
-                            </svg>
-                        </div>
-                        <div class="card-title-group">
-                            <h2 class="card-title">Sorting</h2>
-                            <span class="card-algo-tag">5 Algorithms</span>
-                        </div>
-                    </div>
-
-                    <!-- Miniature Animated Sorting Visualization -->
-                    <div class="mini-viz sorting-mini-viz" aria-hidden="true">
-                        <div class="mini-bars-row">
-                            <div class="mini-bar b1" title="Bar 1"><span class="bar-num">70</span></div>
-                            <div class="mini-bar b2" title="Bar 2"><span class="bar-num">30</span></div>
-                            <div class="mini-bar b3" title="Bar 3"><span class="bar-num">90</span></div>
-                            <div class="mini-bar b4" title="Bar 4"><span class="bar-num">20</span></div>
-                            <div class="mini-bar b5" title="Bar 5"><span class="bar-num">50</span></div>
-                        </div>
-                    </div>
-
-                    <!-- Card Footer -->
-                    <div class="card-footer">
-                        <p class="card-desc">Watch elements find their place.</p>
-                        <div class="card-action">
-                            <span>Explore</span>
-                            <svg class="action-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="5" y1="12" x2="19" y2="12"></line>
-                                <polyline points="12 5 19 12 12 19"></polyline>
-                            </svg>
-                        </div>
-                    </div>
+                <div class="hero-proof">
+                    <div class="proof-avatars"><span>↗</span><span>⌘</span><span>◎</span></div>
+                    <p><strong>7 algorithms</strong><br><span>One visual way to understand them</span></p>
                 </div>
-            </a>
-        </div>
-    </div>
+            </div>
+            <div class="hero-art" aria-label="Decorative algorithm visualization preview">
+                <div class="hero-orbit orbit-one"></div>
+                <div class="hero-orbit orbit-two"></div>
+                <div class="floating-chip chip-top"><span class="chip-dot pink-dot"></span> COMPARE <b>08 ↔ 03</b></div>
+                <div class="hero-code-card">
+                    <div class="code-card-top"><span><i></i><i></i><i></i></span><b>bubble_sort.js</b><em>LIVE TRACE</em></div>
+                    <div class="hero-code-line"><small>01</small><code>for (let i = 0; i &lt; n; i++)</code></div>
+                    <div class="hero-code-line code-highlight"><small>02</small><code>  if (arr[j] &gt; arr[j + 1])</code></div>
+                    <div class="hero-code-line"><small>03</small><code>    swap(arr[j], arr[j + 1])</code></div>
+                    <div class="hero-code-line"><small>04</small><code>  // repeat &amp; improve</code></div>
+                    <div class="hero-mini-bars"><i style="height:35%"></i><i style="height:58%"></i><i style="height:43%"></i><i style="height:82%"></i><i style="height:66%"></i><i style="height:94%"></i><i style="height:50%"></i></div>
+                    <div class="code-card-foot"><span><b></b> Visualising operation</span><strong>STEP 08 / 24</strong></div>
+                </div>
+                <div class="floating-chip chip-bottom"><span class="chip-dot green-dot"></span> SORTED <b>✓ 100%</b></div>
+                <div class="hero-sparkle sparkle-one">✳</div><div class="hero-sparkle sparkle-two">✦</div>
+            </div>
+        </section>
+
+        <section class="home-stats" aria-label="Searchify highlights">
+            <div><strong>05</strong><span>Sorting algorithms</span></div>
+            <div><strong>02</strong><span>Searching algorithms</span></div>
+            <div><strong>∞</strong><span>Ways to experiment</span></div>
+            <div class="stats-note"><span class="stats-pulse"></span> BUILT FOR CURIOUS MINDS</div>
+        </section>
+
+        <section class="home-playgrounds" id="playgrounds">
+            <div class="section-heading">
+                <div><span class="section-kicker">PICK YOUR PLAYGROUND</span><h2>Where do you want to <span>start?</span></h2></div>
+                <p>Choose a path. Take control.<br>Learn one step at a time.</p>
+            </div>
+            <div class="home-cards">
+                <a href="searching.html" class="home-card searching-card">
+                    <div class="card-inner">
+                        <div class="card-header">
+                            <div class="card-icon-wrap searching-icon-wrap" aria-hidden="true"><svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
+                            <div class="card-title-group"><h2 class="card-title">Searching</h2><span class="card-algo-tag">LINEAR &amp; BINARY</span></div>
+                            <span class="card-number">01</span>
+                        </div>
+                        <p class="card-long-desc">Hunt down a value. Watch the search space shrink and see exactly how each decision is made.</p>
+                        <div class="mini-viz searching-mini-viz" aria-hidden="true">
+                            <div class="mini-target-pill"><span class="pill-label">TARGET:</span><span class="pill-val">45</span></div>
+                            <div class="mini-cells-row"><div class="mini-cell c0"><span class="cell-num">14</span></div><div class="mini-cell c1"><span class="cell-num">28</span></div><div class="mini-cell c2 match-cell"><span class="cell-num">45</span><span class="cell-match-icon">✓</span></div><div class="mini-cell c3"><span class="cell-num">62</span></div><div class="mini-cell c4"><span class="cell-num">89</span></div></div>
+                        </div>
+                        <div class="card-feature-row"><span>Step-by-step scan</span><span>Live pointers</span><span>Complexity insights</span></div>
+                        <div class="card-footer"><p class="card-desc">Find it. Understand it.</p><div class="card-action"><span>Explore searching</span><span class="action-arrow">↗</span></div></div>
+                    </div>
+                </a>
+                <a href="sorting.html" class="home-card sorting-card">
+                    <div class="card-inner">
+                        <div class="card-header">
+                            <div class="card-icon-wrap sorting-icon-wrap" aria-hidden="true"><svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="4"></line><line x1="12" y1="20" x2="12" y2="10"></line><line x1="6" y1="20" x2="6" y2="15"></line></svg></div>
+                            <div class="card-title-group"><h2 class="card-title">Sorting</h2><span class="card-algo-tag">5 ALGORITHMS</span></div>
+                            <span class="card-number">02</span>
+                        </div>
+                        <p class="card-long-desc">Turn chaos into order. Follow comparisons, swaps, pivots, and every element finding its place.</p>
+                        <div class="mini-viz sorting-mini-viz" aria-hidden="true"><div class="mini-bars-row"><div class="mini-bar b1"><span class="bar-num">70</span></div><div class="mini-bar b2"><span class="bar-num">30</span></div><div class="mini-bar b3"><span class="bar-num">90</span></div><div class="mini-bar b4"><span class="bar-num">20</span></div><div class="mini-bar b5"><span class="bar-num">50</span></div></div></div>
+                        <div class="card-feature-row"><span>Animated swaps</span><span>5 speed levels</span><span>Step controls</span></div>
+                        <div class="card-footer"><p class="card-desc">Sort it. Master it.</p><div class="card-action"><span>Explore sorting</span><span class="action-arrow">↗</span></div></div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <section class="home-quick-demo" id="try-it" aria-labelledby="home-demo-title">
+            <div class="home-demo-heading">
+                <div><span class="home-demo-kicker">✳ GET HANDS-ON</span><h2 id="home-demo-title">See the sort. Feel the logic.</h2><p>Run a tiny Bubble Sort and watch the comparisons happen in real time.</p></div>
+                <div class="home-demo-status" id="home-demo-status" role="status" aria-live="polite">Ready when you are</div>
+            </div>
+            <div class="home-demo-bars" id="home-demo-bars" aria-label="Eight values being sorted"></div>
+            <div class="home-demo-actions"><button type="button" id="home-demo-run">▶ Run Bubble Sort</button><button type="button" id="home-demo-shuffle">↻ Shuffle values</button></div>
+        </section>
+
+        <footer class="home-footer"><a href="#" class="footer-brand">Searchify<span>✳</span></a><p>Made to make algorithms click.</p><a href="#top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">Back to top ↑</a></footer>
+    </main>
+    <script src="js/home-demo.js"></script>
 </body>
 </html>

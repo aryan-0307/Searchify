@@ -1,5 +1,5 @@
 /* ============================================
-   AlgoViz — Sorting Visualizer Controller (Full-Width Edition)
+   Searchify — Sorting Visualizer Controller (Full-Width Edition)
    ============================================ */
 (function () {
     'use strict';
@@ -99,28 +99,28 @@
 
     function onGenerate() {
         resetExecution();
-        currentArray = AlgoVizUtils.generateRandomArray(arraySize);
+        currentArray = SearchifyUtils.generateRandomArray(arraySize);
         originalArray = currentArray.slice();
         renderBars(currentArray);
-        AlgoVizUtils.showNotification('New array generated', 'success');
+        SearchifyUtils.showNotification('New array generated', 'success');
     }
 
     function onApplyCustom() {
         var rawInput = (el.customInput.value || '').trim();
         if (!rawInput) {
-            AlgoVizUtils.showNotification('No data is given. Tap on Generate for sample input.', 'info');
+            SearchifyUtils.showNotification('No data is given. Tap on Generate for sample input.', 'info');
             return;
         }
-        var parsed = AlgoVizUtils.parseCustomArray(rawInput);
+        var parsed = SearchifyUtils.parseCustomArray(rawInput);
         if (!parsed) {
-            AlgoVizUtils.showNotification('Invalid input. Enter 2–80 comma-separated numbers (1–999).', 'error');
+            SearchifyUtils.showNotification('Invalid input. Enter 2–80 comma-separated numbers (1–999).', 'error');
             return;
         }
         resetExecution();
         currentArray = parsed;
         originalArray = parsed.slice();
         renderBars(currentArray);
-        AlgoVizUtils.showNotification('Custom array applied', 'success');
+        SearchifyUtils.showNotification('Custom array applied', 'success');
     }
 
     function onSizeChange() {
@@ -130,8 +130,8 @@
 
     function onSpeedChange() {
         var val = parseInt(el.speedSlider.value, 10);
-        speed = AlgoVizUtils.getSpeedMs(val);
-        el.speedValue.textContent = AlgoVizUtils.getSpeedLabel(val);
+        speed = SearchifyUtils.getSpeedMs(val);
+        el.speedValue.textContent = SearchifyUtils.getSpeedLabel(val);
         if (isPlaying) {
             clearInterval(playTimer);
             playTimer = setInterval(advanceStep, speed);
@@ -152,7 +152,7 @@
 
     function onPlayPause() {
         if (currentArray.length === 0) {
-            AlgoVizUtils.showNotification('Generate an array first.', 'error');
+            SearchifyUtils.showNotification('Generate an array first.', 'error');
             return;
         }
         if (isPlaying) {
@@ -184,7 +184,7 @@
         resetExecution();
         currentArray = originalArray.slice();
         renderBars(currentArray);
-        AlgoVizUtils.showNotification('Visualizer reset to initial array', 'info');
+        SearchifyUtils.showNotification('Visualizer reset to initial array', 'info');
     }
 
     function onRestart() {
@@ -219,7 +219,7 @@
             currentStep++;
             renderStep();
             if (currentStep === steps.length - 1) {
-                AlgoVizUtils.showNotification('Sorting complete!', 'success');
+                SearchifyUtils.showNotification('Sorting complete!', 'success');
             }
         } else {
             pause();
@@ -241,7 +241,7 @@
     /* ---------- algorithm execution ---------- */
     function runAlgorithm() {
         if (!window.SortingAlgorithms || !window.SortingAlgorithms[currentAlgorithm]) {
-            AlgoVizUtils.showNotification('Algorithm not loaded.', 'error');
+            SearchifyUtils.showNotification('Algorithm not loaded.', 'error');
             return;
         }
         steps = window.SortingAlgorithms[currentAlgorithm](originalArray.slice(), sortOrder);
@@ -264,6 +264,7 @@
         if (el.canvasStatusText) el.canvasStatusText.textContent = 'Ready';
         if (el.canvasStatusPill) el.canvasStatusPill.className = 'canvas-status-pill';
         if (el.completionBanner) el.completionBanner.classList.remove('show');
+        window.dispatchEvent(new CustomEvent('searchify:run-reset'));
     }
 
     /* ---------- rendering ---------- */
@@ -352,6 +353,7 @@
         updateCompletionBanner(step);
         updateCounters(step.counters.comparisons, step.counters.swaps);
         updateStepDisplay(currentStep + 1, steps.length);
+        window.dispatchEvent(new CustomEvent('searchify:step', { detail: { algorithm: currentAlgorithm, step: step, currentStep: currentStep, totalSteps: steps.length } }));
     }
 
     /* ---------- explanation card ---------- */

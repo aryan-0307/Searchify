@@ -1,0 +1,34 @@
+/* Searchify learning lab */
+.sf-learning-lab{display:grid;gap:18px;margin:28px 0 44px}
+.sf-lab-heading{padding:8px 2px}
+.sf-eyebrow{font-size:11px;font-weight:800;letter-spacing:1.5px;color:var(--vibrant-pink)}
+.sf-lab-heading h2{font-size:clamp(23px,3vw,30px);color:var(--royal-blue);margin:5px 0}
+.sf-lab-heading p,.sf-muted{color:var(--text-secondary);font-size:13px;line-height:1.55}
+.sf-lab-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.sf-lab-card{background:#fff;border:1px solid var(--border-color);border-radius:18px;padding:20px;box-shadow:0 5px 18px rgba(37,37,37,.035)}
+.sf-card-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
+.sf-card-top h3{margin:0;color:var(--royal-blue);font-size:16px}
+.sf-card-top>span{font-size:11px;color:var(--text-secondary);font-weight:700}
+.sf-progress-card>strong{font-size:28px;color:var(--vibrant-pink)}
+.sf-xp-track{height:9px;border-radius:20px;background:var(--soft-cream);overflow:hidden;margin:12px 0}
+.sf-xp-track span{display:block;height:100%;width:0;background:var(--vibrant-pink);border-radius:20px;transition:width .35s ease}
+.sf-badges{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}
+.sf-badge,.sf-challenge-tag{font-size:10px;font-weight:800;letter-spacing:.4px;padding:6px 9px;border-radius:999px;background:#FFF2F7;color:#A52A60}
+.sf-challenge-array{font:800 23px var(--font-mono);letter-spacing:3px;color:var(--royal-blue);background:var(--soft-cream);border-radius:12px;padding:12px;text-align:center;margin:12px 0}
+.sf-challenge-card button{border:0;border-radius:10px;background:var(--royal-blue);color:white;font-weight:700;padding:10px 14px;cursor:pointer}
+.sf-challenge-card button:hover{background:var(--vibrant-pink)}
+.sf-trace-card details{border-top:1px solid var(--border-color);padding-top:12px}
+.sf-trace-card summary{cursor:pointer;color:var(--royal-blue);font-size:13px;font-weight:700}
+.sf-code-lines{max-height:250px;overflow:auto;background:#F8F7F2;border-radius:12px;padding:10px;margin-top:12px}
+.sf-code-line{display:flex;gap:12px;padding:5px 8px;border-radius:6px;font:12px/1.5 ui-monospace,monospace;color:#505050}
+.sf-code-line>span{width:18px;color:#999;text-align:right;flex:none}
+.sf-code-line.active{background:#FFF0F6;color:#922653;outline:1px solid #F2B7D0}
+.sf-code-line.active code{font-weight:800}
+.sf-complexity-card #sf-complexity-plot svg{width:100%;height:auto;display:block}
+.sf-curve-legend{display:flex;flex-wrap:wrap;gap:10px 16px;margin:8px 0 16px}
+.sf-curve-legend span{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--text-secondary)}
+.sf-curve-legend i{width:9px;height:9px;border-radius:50%;display:inline-block}
+.sf-n-control{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--text-secondary)}
+.sf-n-control input{flex:1;min-width:100px;accent-color:var(--vibrant-pink)}
+@media(max-width:700px){.sf-lab-grid{grid-template-columns:1fr}.sf-lab-card{padding:16px}.sf-card-top{align-items:flex-start;flex-direction:column}}
+@media(prefers-reduced-motion:reduce){.sf-xp-track span{transition:none}}

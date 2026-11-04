@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>AlgoViz Test Suite</title>
+    <title>Searchify Test Suite</title>
     <style>
         body { font-family: monospace; background: #111; color: #eee; padding: 20px; }
         .pass { color: #2ecc71; }
@@ -11,7 +11,7 @@
     </style>
 </head>
 <body>
-    <h1>AlgoViz Algorithm Verification Test Suite</h1>
+    <h1>Searchify Algorithm Verification Test Suite</h1>
     <div id="results"></div>
     <div id="summary" class="summary"></div>
 
@@ -133,9 +133,9 @@
             assert(bsUnsortedLast.found === 2, 'Binary Search found target 30 at index 2 in sorted array');
 
             // Test Utilities
-            assert(Array.isArray(window.AlgoVizUtils.generateRandomArray(10)), 'generateRandomArray returns array');
-            assert(window.AlgoVizUtils.parseCustomArray('1, 2, 3').length === 3, 'parseCustomArray parses valid string');
-            assert(window.AlgoVizUtils.parseCustomArray('abc') === null, 'parseCustomArray rejects invalid string');
+            assert(Array.isArray(window.SearchifyUtils.generateRandomArray(10)), 'generateRandomArray returns array');
+            assert(window.SearchifyUtils.parseCustomArray('1, 2, 3').length === 3, 'parseCustomArray parses valid string');
+            assert(window.SearchifyUtils.parseCustomArray('abc') === null, 'parseCustomArray rejects invalid string');
 
             summaryEl.innerHTML = '<strong>Total: ' + (passed + failed) + ' | Passed: ' + passed + ' | Failed: ' + failed + '</strong>';
             if (failed === 0) {
