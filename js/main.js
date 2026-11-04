@@ -1,5 +1,5 @@
 /* ============================================
-   AlgoViz — Shared Utilities
+   Searchify — Shared Utilities
    ============================================ */
 (function () {
     'use strict';
@@ -115,7 +115,7 @@
         return SPEED_LABELS[sliderValue] || 'Medium';
     }
 
-    window.AlgoVizUtils = {
+    window.SearchifyUtils = {
         showNotification: showNotification,
         parseCustomArray: parseCustomArray,
         generateRandomArray: generateRandomArray,
