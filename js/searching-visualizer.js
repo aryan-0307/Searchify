@@ -1,5 +1,5 @@
 /* ============================================
-   AlgoViz — Searching Visualizer Controller (Full-Width Edition)
+   Searchify — Searching Visualizer Controller (Full-Width Edition)
    ============================================ */
 (function () {
     'use strict';
@@ -100,14 +100,14 @@
         if (currentAlgorithm === 'binarySearch' && currentArray.length > 0) {
             currentArray.sort(function (a, b) { return a - b; });
             originalArray = currentArray.slice();
-            AlgoVizUtils.showNotification('Array sorted for Binary Search.', 'info');
+            SearchifyUtils.showNotification('Array sorted for Binary Search.', 'info');
         }
         if (currentArray.length) renderInitialCells(currentArray);
     }
 
     function onGenerate() {
         resetExecution();
-        currentArray = AlgoVizUtils.generateRandomArray(arraySize, 5, 99);
+        currentArray = SearchifyUtils.generateRandomArray(arraySize, 5, 99);
         if (currentAlgorithm === 'binarySearch') {
             currentArray.sort(function (a, b) { return a - b; });
         }
@@ -121,27 +121,27 @@
         el.targetInput.value = searchTarget;
 
         renderInitialCells(currentArray);
-        AlgoVizUtils.showNotification('New array generated (target: ' + searchTarget + ')', 'success');
+        SearchifyUtils.showNotification('New array generated (target: ' + searchTarget + ')', 'success');
     }
 
     function onApplyCustom() {
         var rawInput = (el.customInput.value || '').trim();
         if (!rawInput) {
-            AlgoVizUtils.showNotification('No data is given. Tap on Generate for sample input.', 'info');
+            SearchifyUtils.showNotification('No data is given. Tap on Generate for sample input.', 'info');
             return;
         }
-        var parsed = AlgoVizUtils.parseCustomArray(rawInput);
+        var parsed = SearchifyUtils.parseCustomArray(rawInput);
         if (!parsed || parsed.length > 40) {
-            AlgoVizUtils.showNotification('Invalid input. Enter 2–40 comma-separated numbers (1–999).', 'error');
+            SearchifyUtils.showNotification('Invalid input. Enter 2–40 comma-separated numbers (1–999).', 'error');
             return;
         }
         resetExecution();
         currentArray = parsed;
         if (currentAlgorithm === 'binarySearch') {
             currentArray.sort(function (a, b) { return a - b; });
-            AlgoVizUtils.showNotification('Custom array sorted for Binary Search.', 'info');
+            SearchifyUtils.showNotification('Custom array sorted for Binary Search.', 'info');
         } else {
-            AlgoVizUtils.showNotification('Custom array applied.', 'success');
+            SearchifyUtils.showNotification('Custom array applied.', 'success');
         }
         originalArray = currentArray.slice();
 
@@ -165,7 +165,7 @@
         }
         var num = Number(val);
         if (isNaN(num)) {
-            AlgoVizUtils.showNotification('Please enter a valid numeric target.', 'error');
+            SearchifyUtils.showNotification('Please enter a valid numeric target.', 'error');
             return;
         }
         searchTarget = Math.round(num);
@@ -181,8 +181,8 @@
 
     function onSpeedChange() {
         var val = parseInt(el.speedSlider.value, 10);
-        speed = AlgoVizUtils.getSpeedMs(val);
-        el.speedValue.textContent = AlgoVizUtils.getSpeedLabel(val);
+        speed = SearchifyUtils.getSpeedMs(val);
+        el.speedValue.textContent = SearchifyUtils.getSpeedLabel(val);
         if (isPlaying) {
             clearInterval(playTimer);
             playTimer = setInterval(advanceStep, speed);
@@ -191,11 +191,11 @@
 
     function onPlayPause() {
         if (currentArray.length === 0) {
-            AlgoVizUtils.showNotification('Generate an array first.', 'error');
+            SearchifyUtils.showNotification('Generate an array first.', 'error');
             return;
         }
         if (searchTarget === null || isNaN(searchTarget)) {
-            AlgoVizUtils.showNotification('Enter a target value to search for.', 'error');
+            SearchifyUtils.showNotification('Enter a target value to search for.', 'error');
             el.targetInput.focus();
             return;
         }
@@ -209,7 +209,7 @@
     function onNext() {
         if (currentArray.length === 0) return;
         if (searchTarget === null || isNaN(searchTarget)) {
-            AlgoVizUtils.showNotification('Enter a target value to search for.', 'error');
+            SearchifyUtils.showNotification('Enter a target value to search for.', 'error');
             el.targetInput.focus();
             return;
         }
@@ -233,7 +233,7 @@
         resetExecution();
         currentArray = originalArray.slice();
         renderInitialCells(currentArray);
-        AlgoVizUtils.showNotification('Visualizer reset to initial array', 'info');
+        SearchifyUtils.showNotification('Visualizer reset to initial array', 'info');
     }
 
     function onRestart() {
@@ -270,9 +270,9 @@
             if (currentStep === steps.length - 1) {
                 var finalStep = steps[currentStep];
                 if (finalStep && finalStep.found !== undefined) {
-                    AlgoVizUtils.showNotification('Target ' + searchTarget + ' found at index ' + finalStep.found + '!', 'success');
+                    SearchifyUtils.showNotification('Target ' + searchTarget + ' found at index ' + finalStep.found + '!', 'success');
                 } else if (finalStep && finalStep.notFound) {
-                    AlgoVizUtils.showNotification('Target ' + searchTarget + ' not found in array.', 'info');
+                    SearchifyUtils.showNotification('Target ' + searchTarget + ' not found in array.', 'info');
                 }
             }
         } else {
@@ -295,7 +295,7 @@
     /* ---------- algorithm execution ---------- */
     function runAlgorithm() {
         if (!window.SearchingAlgorithms || !window.SearchingAlgorithms[currentAlgorithm]) {
-            AlgoVizUtils.showNotification('Algorithm not loaded.', 'error');
+            SearchifyUtils.showNotification('Algorithm not loaded.', 'error');
             return;
         }
         steps = window.SearchingAlgorithms[currentAlgorithm](originalArray.slice(), searchTarget);
@@ -318,6 +318,7 @@
         if (el.canvasStatusText) el.canvasStatusText.textContent = 'Ready';
         if (el.canvasStatusPill) el.canvasStatusPill.className = 'canvas-status-pill';
         if (el.completionBanner) el.completionBanner.classList.remove('show');
+        window.dispatchEvent(new CustomEvent('searchify:run-reset'));
     }
 
     /* ---------- rendering ---------- */
@@ -442,6 +443,7 @@
         updateCompletionBanner(step);
         updateCounters(step.counters.comparisons, step.counters.elementsExamined);
         updateStepDisplay(currentStep + 1, steps.length);
+        window.dispatchEvent(new CustomEvent('searchify:step', { detail: { algorithm: currentAlgorithm, step: step, currentStep: currentStep, totalSteps: steps.length } }));
     }
 
     /* ---------- explanation card ---------- */
