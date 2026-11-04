@@ -27,6 +27,8 @@
       html += '<line x1="'+left+'" y1="'+y+'" x2="'+(left+plotW)+'" y2="'+y+'" stroke="#D8D5C9" stroke-dasharray="3 5"/>';
     });
     html += '<path d="M'+left+' '+(bottom-plotH)+' V'+bottom+' H'+(left+plotW)+'" fill="none" stroke="#686868"/>';
+    var markerX = left + (Math.max(1, Math.min(20, n))-1)/19*plotW;
+    html += '<line x1="'+markerX+'" y1="'+(bottom-plotH)+'" x2="'+markerX+'" y2="'+bottom+'" stroke="#252525" stroke-dasharray="4 4" opacity=".65"/>';
     series.forEach(function(s){
       var d = '';
       for (var x=1;x<=20;x++) {
@@ -113,6 +115,7 @@
     root.querySelector('#sf-n-slider').addEventListener('input', function(){
       var n = Number(this.value);
       root.querySelector('#sf-n-value').textContent = n;
+      root.querySelector('#sf-complexity-plot').innerHTML = complexitySVG(n);
       root.querySelector('#sf-complexity-caption').textContent = 'At n = '+n+', compare the relative growth of the five complexity families. The curves are normalized for learning.';
     });
     window.addEventListener('searchify:step', renderStep);
