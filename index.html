@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlgoViz — Interactive Sorting &amp; Searching Visualizer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/home.css">
+</head>
+<body>
+    <div class="home-container">
+        <!-- Minimal Brand Header -->
+        <header class="home-brand">
+            <span class="home-brand-logo">AlgoViz</span>
+            <span class="home-brand-dot">•</span>
+            <span class="home-brand-tag">Interactive DSA Playground</span>
+        </header>
+
+        <!-- Two Navigation Playground Cards -->
+        <div class="home-cards">
+            <!-- Left Card: Searching -->
+            <a href="searching.html" class="home-card searching-card" aria-label="Open Searching Visualizer">
+                <div class="card-inner">
+                    <div class="card-header">
+                        <div class="card-icon-wrap searching-icon-wrap" aria-hidden="true">
+                            <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                        </div>
+                        <div class="card-title-group">
+                            <h2 class="card-title">Searching</h2>
+                            <span class="card-algo-tag">Linear &amp; Binary</span>
+                        </div>
+                    </div>
+
+                    <!-- Miniature Animated Searching Visualization -->
+                    <div class="mini-viz searching-mini-viz" aria-hidden="true">
+                        <div class="mini-target-pill">
+                            <span class="pill-label">Target:</span>
+                            <span class="pill-val">45</span>
+                        </div>
+                        <div class="mini-cells-row">
+                            <div class="mini-cell c0"><span class="cell-num">14</span></div>
+                            <div class="mini-cell c1"><span class="cell-num">28</span></div>
+                            <div class="mini-cell c2 match-cell">
+                                <span class="cell-num">45</span>
+                                <span class="cell-match-icon">✓</span>
+                            </div>
+                            <div class="mini-cell c3"><span class="cell-num">62</span></div>
+                            <div class="mini-cell c4"><span class="cell-num">89</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Card Footer -->
+                    <div class="card-footer">
+                        <p class="card-desc">Find elements, one step at a time.</p>
+                        <div class="card-action">
+                            <span>Explore</span>
+                            <svg class="action-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Right Card: Sorting -->
+            <a href="sorting.html" class="home-card sorting-card" aria-label="Open Sorting Visualizer">
+                <div class="card-inner">
+                    <div class="card-header">
+                        <div class="card-icon-wrap sorting-icon-wrap" aria-hidden="true">
+                            <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="18" y1="20" x2="18" y2="4"></line>
+                                <line x1="12" y1="20" x2="12" y2="10"></line>
+                                <line x1="6" y1="20" x2="6" y2="15"></line>
+                            </svg>
+                        </div>
+                        <div class="card-title-group">
+                            <h2 class="card-title">Sorting</h2>
+                            <span class="card-algo-tag">5 Algorithms</span>
+                        </div>
+                    </div>
+
+                    <!-- Miniature Animated Sorting Visualization -->
+                    <div class="mini-viz sorting-mini-viz" aria-hidden="true">
+                        <div class="mini-bars-row">
+                            <div class="mini-bar b1" title="Bar 1"><span class="bar-num">70</span></div>
+                            <div class="mini-bar b2" title="Bar 2"><span class="bar-num">30</span></div>
+                            <div class="mini-bar b3" title="Bar 3"><span class="bar-num">90</span></div>
+                            <div class="mini-bar b4" title="Bar 4"><span class="bar-num">20</span></div>
+                            <div class="mini-bar b5" title="Bar 5"><span class="bar-num">50</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Card Footer -->
+                    <div class="card-footer">
+                        <p class="card-desc">Watch elements find their place.</p>
+                        <div class="card-action">
+                            <span>Explore</span>
+                            <svg class="action-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

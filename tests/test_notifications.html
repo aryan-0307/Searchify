@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AlgoViz Center Screen Notification Tests</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/visualizer.css">
+    <style>
+        body { font-family: monospace; background: #1a1a1a; color: #f0f0f0; padding: 20px; }
+        .pass { color: #2ecc71; margin: 4px 0; }
+        .fail { color: #e74c3c; margin: 4px 0; font-weight: bold; }
+        #summary { margin-top: 20px; padding: 10px; border-top: 1px solid #444; font-size: 16px; }
+    </style>
+</head>
+<body>
+    <h1>Center Screen Notification Verification</h1>
+    <div id="results"></div>
+    <div id="summary"></div>
+
+    <!-- Notification Toast Target -->
+    <div id="notification" class="notification"></div>
+
+    <script src="../js/main.js"></script>
+    <script>
+        (function () {
+            var resultsEl = document.getElementById('results');
+            var summaryEl = document.getElementById('summary');
+            var notifEl = document.getElementById('notification');
+            var passed = 0;
+            var failed = 0;
+
+            function assert(condition, message) {
+                var p = document.createElement('div');
+                if (condition) {
+                    p.className = 'pass';
+                    p.textContent = '✔ PASS: ' + message;
+                    passed++;
+                } else {
+                    p.className = 'fail';
+                    p.textContent = '✖ FAIL: ' + message;
+                    failed++;
+                }
+                resultsEl.appendChild(p);
+            }
+
+            // Test 1: Notification structure and API
+            assert(typeof window.AlgoVizUtils.showNotification === 'function', 'showNotification function is exported on window.AlgoVizUtils');
+
+            // Test 2: Trigger success notification
+            window.AlgoVizUtils.showNotification('New array generated', 'success', 2500);
+            assert(notifEl.classList.contains('show'), 'Notification element has class .show after trigger');
+            assert(notifEl.classList.contains('success'), 'Notification element has class .success');
+            assert(notifEl.textContent.includes('New array generated'), 'Notification contains "New array generated" message');
+
+            // Test 3: Success icon verification
+            var icon = notifEl.querySelector('.notification-icon');
+            assert(icon !== null, 'Notification contains a .notification-icon element');
+            assert(icon.textContent === '✓', 'Success notification displays a checkmark "✓" icon');
+
+            // Test 4: Computed styles check
+            var computed = window.getComputedStyle(notifEl);
+            assert(computed.position === 'fixed', 'Notification position is fixed');
+            var topPx = parseFloat(computed.top);
+            var leftPx = parseFloat(computed.left);
+            var expectedLeft = window.innerWidth / 2;
+            assert(topPx <= 24, 'Notification is positioned in the navbar at top (' + topPx + 'px <= 24px)');
+            assert(Math.abs(leftPx - expectedLeft) <= 2, 'Notification is horizontally centered in the navbar (' + leftPx + 'px, expected ' + expectedLeft + 'px)');
+            assert(parseInt(computed.zIndex, 10) >= 10000, 'Notification z-index is >= 10000');
+            assert(computed.pointerEvents === 'none', 'Notification pointer-events is none (does not block user interaction)');
+            
+            // Background Soft Cream (#ECEBDB -> rgb(236, 235, 219))
+            var bg = computed.backgroundColor;
+            assert(bg === 'rgb(236, 235, 219)' || bg === '#ecebdb', 'Notification background is Soft Cream (#ECEBDB), got ' + bg);
+
+            // Text Royal Blue (#224D95 -> rgb(34, 77, 149))
+            var color = computed.color;
+            assert(color === 'rgb(34, 77, 149)' || color === '#224d95', 'Notification text color is Royal Blue (#224D95), got ' + color);
+
+            // Icon background Green (#27AE60 -> rgb(39, 174, 96))
+            var iconComputed = window.getComputedStyle(icon);
+            var iconBg = iconComputed.backgroundColor;
+            assert(iconBg === 'rgb(39, 174, 96)' || iconBg === '#27ae60', 'Success icon accent is Green (#27AE60), got ' + iconBg);
+
+            // Test 5: Repeated notifications handle cleanly without stacking
+            window.AlgoVizUtils.showNotification('Second notification', 'info', 2500);
+            var notifElements = document.querySelectorAll('#notification');
+            assert(notifElements.length === 1, 'Only a single fixed notification element exists in DOM (no stacking)');
+            assert(notifEl.textContent.includes('Second notification'), 'Text updated cleanly to second notification');
+            var infoIcon = notifEl.querySelector('.notification-icon');
+            assert(infoIcon.textContent === 'ℹ', 'Info notification displays "ℹ" icon');
+
+            // Test 6: Error notification styling
+            window.AlgoVizUtils.showNotification('Invalid input', 'error', 2500);
+            assert(notifEl.classList.contains('error'), 'Error notification has class .error');
+            var errIcon = notifEl.querySelector('.notification-icon');
+            assert(errIcon.textContent === '✕', 'Error notification displays "✕" icon');
+
+            // Test 7: Auto-dismissal timing
+            setTimeout(function () {
+                assert(!notifEl.classList.contains('show'), 'Notification automatically disappears (removes .show) after timeout');
+
+                summaryEl.innerHTML = '<strong>Total: ' + (passed + failed) + ' | Passed: ' + passed + ' | Failed: ' + failed + '</strong>';
+                if (failed === 0) {
+                    summaryEl.style.color = '#2ecc71';
+                    summaryEl.innerHTML += ' &mdash; ALL NOTIFICATION TESTS PASSED!';
+                } else {
+                    summaryEl.style.color = '#e74c3c';
+                }
+                window.__TEST_RESULTS__ = { total: passed + failed, passed: passed, failed: failed };
+            }, 600); // Test with a short 500ms timeout for automated test speed
+            
+            // Re-trigger with 400ms duration to test dismissal quickly
+            window.AlgoVizUtils.showNotification('Testing dismissal', 'success', 400);
+        })();
+    </script>
+</body>
+</html>

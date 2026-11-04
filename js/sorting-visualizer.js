@@ -1,0 +1,521 @@
+/* ============================================
+   AlgoViz — Sorting Visualizer Controller (Full-Width Edition)
+   ============================================ */
+(function () {
+    'use strict';
+
+    /* ---------- state ---------- */
+    var currentAlgorithm = 'bubbleSort';
+    var currentArray = [];
+    var originalArray = [];
+    var steps = [];
+    var currentStep = 0;
+    var isPlaying = false;
+    var playTimer = null;
+    var speed = 400;          // ms between steps
+    var sortOrder = 'asc';
+    var arraySize = 15;
+
+    /* ---------- DOM cache ---------- */
+    var el = {};
+
+    function cacheElements() {
+        el.vizArea          = document.getElementById('visualization-area');
+        el.algoSelect       = document.getElementById('algorithm-select');
+        el.generateBtn      = document.getElementById('generate-btn');
+        el.customInput      = document.getElementById('custom-array');
+        el.applyCustomBtn   = document.getElementById('apply-custom-btn');
+        el.sizeSlider       = document.getElementById('array-size');
+        el.sizeValue        = document.getElementById('size-value');
+        el.speedSlider      = document.getElementById('speed-slider');
+        el.speedValue       = document.getElementById('speed-value');
+        el.ascBtn           = document.getElementById('asc-btn');
+        el.descBtn          = document.getElementById('desc-btn');
+        el.prevBtn          = document.getElementById('prev-btn');
+        el.playBtn          = document.getElementById('play-btn');
+        el.nextBtn          = document.getElementById('next-btn');
+        el.resetBtn         = document.getElementById('reset-btn');
+        el.restartBtn       = document.getElementById('restart-btn');
+        el.stepDisplay      = document.getElementById('step-display');
+        el.stepPct          = document.getElementById('step-pct');
+        el.progressFill     = document.getElementById('progress-fill');
+        el.explanation      = document.getElementById('explanation-text');
+        el.explanationBadge = document.getElementById('op-tag-element');
+        el.explanationResult= document.getElementById('explanation-result');
+        el.comparisons      = document.getElementById('comparisons-count');
+        el.swaps            = document.getElementById('swaps-count');
+        el.complexity       = document.getElementById('complexity-display');
+        el.canvasStatusPill = document.getElementById('canvas-status-pill');
+        el.canvasStatusText = document.getElementById('canvas-status-text');
+        el.completionBanner = document.getElementById('completion-banner');
+        el.completionStats  = document.getElementById('completion-banner-stats');
+        el.completionReplay = document.getElementById('completion-replay-btn');
+    }
+
+    /* ---------- event binding ---------- */
+    function bindEvents() {
+        el.algoSelect.addEventListener('change', onAlgorithmChange);
+        el.generateBtn.addEventListener('click', onGenerate);
+        el.applyCustomBtn.addEventListener('click', onApplyCustom);
+        el.customInput.addEventListener('keyup', function (e) {
+            if (e.key === 'Enter') onApplyCustom();
+        });
+        el.sizeSlider.addEventListener('input', onSizeChange);
+        el.speedSlider.addEventListener('input', onSpeedChange);
+        el.ascBtn.addEventListener('click', function () { setOrder('asc'); });
+        el.descBtn.addEventListener('click', function () { setOrder('desc'); });
+        el.prevBtn.addEventListener('click', onPrev);
+        el.playBtn.addEventListener('click', onPlayPause);
+        el.nextBtn.addEventListener('click', onNext);
+        el.resetBtn.addEventListener('click', onReset);
+        el.restartBtn.addEventListener('click', onRestart);
+
+        if (el.completionReplay) {
+            el.completionReplay.addEventListener('click', function () {
+                onRestart();
+                play();
+            });
+        }
+
+        document.addEventListener('keydown', function (e) {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+            switch (e.key) {
+                case ' ':          e.preventDefault(); onPlayPause(); break;
+                case 'ArrowLeft':  onPrev(); break;
+                case 'ArrowRight': onNext(); break;
+                case 'r':
+                case 'R':          onReset(); break;
+            }
+        });
+    }
+
+    /* ---------- handlers ---------- */
+    function onAlgorithmChange() {
+        currentAlgorithm = el.algoSelect.value;
+        resetExecution();
+        renderComplexity();
+        if (currentArray.length) renderBars(currentArray);
+    }
+
+    function onGenerate() {
+        resetExecution();
+        currentArray = AlgoVizUtils.generateRandomArray(arraySize);
+        originalArray = currentArray.slice();
+        renderBars(currentArray);
+        AlgoVizUtils.showNotification('New array generated', 'success');
+    }
+
+    function onApplyCustom() {
+        var rawInput = (el.customInput.value || '').trim();
+        if (!rawInput) {
+            AlgoVizUtils.showNotification('No data is given. Tap on Generate for sample input.', 'info');
+            return;
+        }
+        var parsed = AlgoVizUtils.parseCustomArray(rawInput);
+        if (!parsed) {
+            AlgoVizUtils.showNotification('Invalid input. Enter 2–80 comma-separated numbers (1–999).', 'error');
+            return;
+        }
+        resetExecution();
+        currentArray = parsed;
+        originalArray = parsed.slice();
+        renderBars(currentArray);
+        AlgoVizUtils.showNotification('Custom array applied', 'success');
+    }
+
+    function onSizeChange() {
+        arraySize = parseInt(el.sizeSlider.value, 10);
+        el.sizeValue.textContent = arraySize;
+    }
+
+    function onSpeedChange() {
+        var val = parseInt(el.speedSlider.value, 10);
+        speed = AlgoVizUtils.getSpeedMs(val);
+        el.speedValue.textContent = AlgoVizUtils.getSpeedLabel(val);
+        if (isPlaying) {
+            clearInterval(playTimer);
+            playTimer = setInterval(advanceStep, speed);
+        }
+    }
+
+    function setOrder(order) {
+        sortOrder = order;
+        el.ascBtn.classList.toggle('active', order === 'asc');
+        el.descBtn.classList.toggle('active', order === 'desc');
+        el.ascBtn.setAttribute('aria-pressed', order === 'asc');
+        el.descBtn.setAttribute('aria-pressed', order === 'desc');
+        if (steps.length) {
+            resetExecution();
+            renderBars(originalArray);
+        }
+    }
+
+    function onPlayPause() {
+        if (currentArray.length === 0) {
+            AlgoVizUtils.showNotification('Generate an array first.', 'error');
+            return;
+        }
+        if (isPlaying) {
+            pause();
+        } else {
+            play();
+        }
+    }
+
+    function onNext() {
+        if (currentArray.length === 0) return;
+        if (steps.length === 0) runAlgorithm();
+        if (currentStep < steps.length - 1) {
+            currentStep++;
+            renderStep();
+        }
+    }
+
+    function onPrev() {
+        if (steps.length === 0) return;
+        if (currentStep > 0) {
+            currentStep--;
+            renderStep();
+        }
+    }
+
+    function onReset() {
+        pause();
+        resetExecution();
+        currentArray = originalArray.slice();
+        renderBars(currentArray);
+        AlgoVizUtils.showNotification('Visualizer reset to initial array', 'info');
+    }
+
+    function onRestart() {
+        pause();
+        if (steps.length > 0) {
+            currentStep = 0;
+            renderStep();
+        }
+    }
+
+    /* ---------- playback ---------- */
+    function play() {
+        if (steps.length === 0) runAlgorithm();
+        if (steps.length === 0) return;
+        if (currentStep >= steps.length - 1) {
+            currentStep = 0;
+        }
+        isPlaying = true;
+        updatePlayButton();
+        playTimer = setInterval(advanceStep, speed);
+    }
+
+    function pause() {
+        isPlaying = false;
+        clearInterval(playTimer);
+        playTimer = null;
+        updatePlayButton();
+    }
+
+    function advanceStep() {
+        if (currentStep < steps.length - 1) {
+            currentStep++;
+            renderStep();
+            if (currentStep === steps.length - 1) {
+                AlgoVizUtils.showNotification('Sorting complete!', 'success');
+            }
+        } else {
+            pause();
+        }
+    }
+
+    function updatePlayButton() {
+        if (isPlaying) {
+            el.playBtn.innerHTML = '&#10074;&#10074;';
+            el.playBtn.title = 'Pause (Space)';
+            el.playBtn.setAttribute('aria-label', 'Pause');
+        } else {
+            el.playBtn.innerHTML = '&#9654;';
+            el.playBtn.title = 'Play (Space)';
+            el.playBtn.setAttribute('aria-label', 'Play');
+        }
+    }
+
+    /* ---------- algorithm execution ---------- */
+    function runAlgorithm() {
+        if (!window.SortingAlgorithms || !window.SortingAlgorithms[currentAlgorithm]) {
+            AlgoVizUtils.showNotification('Algorithm not loaded.', 'error');
+            return;
+        }
+        steps = window.SortingAlgorithms[currentAlgorithm](originalArray.slice(), sortOrder);
+        currentStep = 0;
+        renderStep();
+    }
+
+    function resetExecution() {
+        pause();
+        steps = [];
+        currentStep = 0;
+        updateCounters(0, 0);
+        updateStepDisplay(0, 0);
+        if (el.explanation) el.explanation.textContent = 'Select an algorithm and click Generate to start.';
+        if (el.explanationBadge) {
+            el.explanationBadge.className = 'op-badge compare';
+            el.explanationBadge.textContent = 'READY';
+        }
+        if (el.explanationResult) el.explanationResult.style.display = 'none';
+        if (el.canvasStatusText) el.canvasStatusText.textContent = 'Ready';
+        if (el.canvasStatusPill) el.canvasStatusPill.className = 'canvas-status-pill';
+        if (el.completionBanner) el.completionBanner.classList.remove('show');
+    }
+
+    /* ---------- rendering ---------- */
+    function renderBars(arr) {
+        var area = el.vizArea;
+        var children = area.querySelectorAll('.bar, .viz-placeholder');
+        for (var i = 0; i < children.length; i++) {
+            children[i].remove();
+        }
+
+        if (!arr || arr.length === 0) return;
+
+        var maxVal = Math.max.apply(null, arr);
+        if (maxVal <= 0) maxVal = 1;
+        var areaHeight = Math.max(220, (area.clientHeight > 120 ? area.clientHeight : 440) - 100);
+        var availableWidth = Math.max(300, (area.clientWidth > 100 ? area.clientWidth : 960) - 64);
+        var calculatedWidth = Math.floor(availableWidth / arr.length) - 8;
+        var barWidth = Math.min(52, Math.max(6, calculatedWidth));
+        var showLabels = arr.length <= 36;
+
+        for (var i = 0; i < arr.length; i++) {
+            var bar = document.createElement('div');
+            bar.className = 'bar';
+            bar.style.height = Math.max(14, Math.round((arr[i] / maxVal) * areaHeight)) + 'px';
+            bar.style.width = barWidth + 'px';
+
+            if (showLabels) {
+                var label = document.createElement('span');
+                label.className = 'bar-label';
+                label.textContent = arr[i];
+                bar.appendChild(label);
+            }
+
+            area.appendChild(bar);
+        }
+    }
+
+    function renderStep() {
+        if (steps.length === 0) return;
+        var step = steps[currentStep];
+        var area = el.vizArea;
+
+        var old = area.querySelectorAll('.bar, .viz-placeholder');
+        for (var i = 0; i < old.length; i++) old[i].remove();
+
+        var arr = step.array;
+        var maxVal = Math.max.apply(null, arr);
+        if (maxVal <= 0) maxVal = 1;
+        var areaHeight = Math.max(220, (area.clientHeight > 120 ? area.clientHeight : 440) - 100);
+        var availableWidth = Math.max(300, (area.clientWidth > 100 ? area.clientWidth : 960) - 64);
+        var calculatedWidth = Math.floor(availableWidth / arr.length) - 8;
+        var barWidth = Math.min(52, Math.max(6, calculatedWidth));
+        var showLabels = arr.length <= 36;
+
+        for (var i = 0; i < arr.length; i++) {
+            var bar = document.createElement('div');
+            bar.className = 'bar';
+            bar.style.height = Math.max(14, Math.round((arr[i] / maxVal) * areaHeight)) + 'px';
+            bar.style.width = barWidth + 'px';
+
+            if (step.sorted && step.sorted.indexOf(i) !== -1) {
+                bar.classList.add('sorted');
+            }
+            if (step.comparing && step.comparing.indexOf(i) !== -1) {
+                bar.classList.add('comparing');
+            }
+            if (step.swapping && step.swapping.indexOf(i) !== -1) {
+                bar.classList.add('swapping');
+            }
+            if (step.pivot && step.pivot.indexOf(i) !== -1) {
+                bar.classList.add('pivot');
+            }
+
+            if (showLabels) {
+                var label = document.createElement('span');
+                label.className = 'bar-label';
+                label.textContent = arr[i];
+                bar.appendChild(label);
+            }
+
+            area.appendChild(bar);
+        }
+
+        updateExplanationCard(step);
+        updateStatusPill(step);
+        updateCompletionBanner(step);
+        updateCounters(step.counters.comparisons, step.counters.swaps);
+        updateStepDisplay(currentStep + 1, steps.length);
+    }
+
+    /* ---------- explanation card ---------- */
+    function updateExplanationCard(step) {
+        if (!el.explanation) return;
+        var rawText = step.explanation || '';
+
+        var badgeText = 'OPERATION';
+        var badgeCls = 'compare';
+        if (step.swapping && step.swapping.length > 0) {
+            badgeText = 'SWAP OPERATION';
+            badgeCls = 'swap';
+        } else if (step.comparing && step.comparing.length > 0) {
+            badgeText = 'COMPARING ELEMENTS';
+            badgeCls = 'compare';
+        } else if (step.pivot && step.pivot.length > 0) {
+            badgeText = 'PIVOT / PARTITION';
+            badgeCls = 'pivot';
+        } else if (step.sorted && step.sorted.length === step.array.length) {
+            badgeText = 'ARRAY SORTED';
+            badgeCls = 'sorted';
+        } else if (rawText.toLowerCase().indexOf('pass') !== -1) {
+            badgeText = 'PASS PROGRESS';
+            badgeCls = 'compare';
+        }
+
+        if (el.explanationBadge) {
+            el.explanationBadge.className = 'op-badge ' + badgeCls;
+            el.explanationBadge.textContent = badgeText;
+        }
+
+        var formatted = escapeHtml(rawText);
+        formatted = formatted.replace(/\b(\d+)\b/g, '<span class="val-chip">$1</span>');
+        el.explanation.innerHTML = formatted;
+
+        if (el.explanationResult) {
+            if (step.swapping && step.swapping.length > 0) {
+                el.explanationResult.style.display = 'block';
+                el.explanationResult.innerHTML = '<strong>Action:</strong> Swapping elements into relative order.';
+            } else if (step.comparing && step.comparing.length > 0) {
+                el.explanationResult.style.display = 'block';
+                el.explanationResult.innerHTML = '<strong>Action:</strong> Comparing adjacent values to check ordering condition.';
+            } else if (step.sorted && step.sorted.length === step.array.length) {
+                el.explanationResult.style.display = 'block';
+                el.explanationResult.innerHTML = '<strong>Status:</strong> All elements confirmed in final sorted positions.';
+            } else {
+                el.explanationResult.style.display = 'none';
+            }
+        }
+    }
+
+    /* ---------- floating status pill ---------- */
+    function updateStatusPill(step) {
+        if (!el.canvasStatusText || !el.canvasStatusPill) return;
+
+        if (step.sorted && step.sorted.length === step.array.length) {
+            el.canvasStatusText.textContent = 'Sorted!';
+            el.canvasStatusPill.className = 'canvas-status-pill sorted';
+        } else if (step.swapping && step.swapping.length >= 2) {
+            var i1 = step.swapping[0], i2 = step.swapping[1];
+            el.canvasStatusText.textContent = 'Swapping ' + step.array[i1] + ' ↔ ' + step.array[i2];
+            el.canvasStatusPill.className = 'canvas-status-pill swapping';
+        } else if (step.comparing && step.comparing.length >= 2) {
+            var c1 = step.comparing[0], c2 = step.comparing[1];
+            el.canvasStatusText.textContent = 'Comparing ' + step.array[c1] + ' & ' + step.array[c2];
+            el.canvasStatusPill.className = 'canvas-status-pill';
+        } else if (step.pivot && step.pivot.length > 0) {
+            el.canvasStatusText.textContent = 'Pivot: ' + step.array[step.pivot[0]];
+            el.canvasStatusPill.className = 'canvas-status-pill';
+        } else {
+            el.canvasStatusText.textContent = 'Running';
+            el.canvasStatusPill.className = 'canvas-status-pill';
+        }
+    }
+
+    /* ---------- completion banner ---------- */
+    function updateCompletionBanner(step) {
+        if (!el.completionBanner) return;
+        var isDone = (currentStep === steps.length - 1) && steps.length > 1;
+        if (isDone) {
+            if (el.completionStats) {
+                el.completionStats.textContent = 'Completed in ' + step.counters.comparisons + ' comparisons and ' + step.counters.swaps + ' swaps.';
+            }
+            el.completionBanner.classList.add('show');
+        } else {
+            el.completionBanner.classList.remove('show');
+        }
+    }
+
+    /* ---------- panel helpers ---------- */
+    function updateCounters(comps, swps) {
+        el.comparisons.textContent = comps;
+        el.swaps.textContent = swps;
+    }
+
+    function updateStepDisplay(current, total) {
+        el.stepDisplay.textContent = current + ' / ' + total;
+        var pct = total > 0 ? Math.round((current / total) * 100) : 0;
+        el.progressFill.style.width = pct + '%';
+        if (el.stepPct) el.stepPct.textContent = pct + '%';
+    }
+
+    /* ---------- dedicated complexity below canvas ---------- */
+    function renderComplexity() {
+        var SA = window.SortingAlgorithms;
+        if (!SA || !SA.complexityInfo || !SA.complexityInfo[currentAlgorithm]) {
+            el.complexity.innerHTML = '';
+            return;
+        }
+        var info = SA.complexityInfo[currentAlgorithm];
+
+        var html = '';
+        html += '<div class="complexity-section-label">Algorithm Complexity &amp; Analysis</div>';
+        html += '<h2 class="complexity-algo-name">' + escapeHtml(info.name) + '</h2>';
+        html += '<p class="complexity-algo-desc">' + escapeHtml(info.description) + '</p>';
+
+        // 4 Complexity Cards Grid
+        html += '<div class="complexity-cards-grid">';
+        html += '<div class="complexity-stat-card"><span class="stat-card-label">Best Case</span><span class="stat-card-value">' + escapeHtml(info.best) + '</span></div>';
+        html += '<div class="complexity-stat-card"><span class="stat-card-label">Average Case</span><span class="stat-card-value">' + escapeHtml(info.average) + '</span></div>';
+        html += '<div class="complexity-stat-card"><span class="stat-card-label">Worst Case</span><span class="stat-card-value">' + escapeHtml(info.worst) + '</span></div>';
+        html += '<div class="complexity-stat-card"><span class="stat-card-label">Space Complexity</span><span class="stat-card-value">' + escapeHtml(info.space) + '</span></div>';
+        html += '</div>';
+
+        // Additional Learning Information (Properties & When to Use)
+        html += '<div class="complexity-details-row">';
+
+        // Properties Card
+        html += '<div class="properties-card">';
+        html += '<div class="card-section-title">Algorithm Properties</div>';
+        html += '<div class="properties-list">';
+        html += '<div class="property-item"><span class="property-name">Stability</span><span class="complexity-tag ' + (info.stable ? 'yes' : 'no') + '">' + (info.stable ? '✔ Stable' : '✘ Not Stable') + '</span></div>';
+        html += '<div class="property-item"><span class="property-name">In-Place</span><span class="complexity-tag ' + (info.inPlace ? 'yes' : 'no') + '">' + (info.inPlace ? '✔ In-Place' : '✘ Not In-Place') + '</span></div>';
+        html += '</div>';
+        html += '</div>';
+
+        // When to Use Card
+        html += '<div class="when-to-use-card">';
+        html += '<div class="card-section-title">💡 When to Use</div>';
+        html += '<p>' + escapeHtml(info.whenToUse || 'Used for educational analysis and comparison-based sorting.') + '</p>';
+        html += '</div>';
+
+        html += '</div>'; // End complexity-details-row
+
+        el.complexity.innerHTML = html;
+    }
+
+    function escapeHtml(str) {
+        var div = document.createElement('div');
+        div.appendChild(document.createTextNode(str));
+        return div.innerHTML;
+    }
+
+    /* ---------- init ---------- */
+    function init() {
+        cacheElements();
+        bindEvents();
+        renderComplexity();
+        onGenerate();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();

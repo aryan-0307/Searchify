@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Searching Visualizer — AlgoViz</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/visualizer.css">
+</head>
+<body>
+    <div class="viz-page">
+        <!-- 1. Header with Algorithm Selector -->
+        <header class="viz-header">
+            <a href="index.html" class="btn btn-secondary back-btn" aria-label="Back to Homepage">&#8592; Home</a>
+            <div class="viz-header-title-group">
+                <h1 class="viz-title">Searching Visualizer</h1>
+                <span class="viz-subtitle">Explore search paths step by step</span>
+            </div>
+            <!-- Notification Pill in Navbar -->
+            <div id="notification" class="notification" aria-live="polite"></div>
+            <div class="viz-header-controls">
+                <select id="algorithm-select" aria-label="Select searching algorithm">
+                    <option value="linearSearch">Linear Search</option>
+                    <option value="binarySearch">Binary Search</option>
+                </select>
+            </div>
+        </header>
+
+        <!-- 2. Controls Toolbar -->
+        <div class="viz-controls">
+            <!-- Array Controls Cluster -->
+            <div class="controls-cluster">
+                <span class="cluster-label">Array</span>
+                <button id="generate-btn" class="btn btn-primary" title="Generate New Array">Generate</button>
+                <div class="control-item">
+                    <input type="text" id="custom-array" placeholder="e.g. 5, 3, 8, 1, 9" aria-label="Custom array input">
+                    <button id="apply-custom-btn" class="btn btn-secondary">Apply</button>
+                </div>
+                <div class="control-item">
+                    <label for="target-input">Target:</label>
+                    <input type="number" id="target-input" placeholder="Value" aria-label="Search target" style="width:80px">
+                </div>
+                <div class="control-item">
+                    <label for="array-size">Size: <span id="size-value">15</span></label>
+                    <input type="range" id="array-size" min="5" max="40" value="15" aria-label="Array size">
+                </div>
+            </div>
+
+            <!-- Settings Cluster -->
+            <div class="controls-cluster">
+                <span class="cluster-label">Settings</span>
+                <div class="control-item">
+                    <label for="speed-slider">Speed: <span id="speed-value">Medium</span></label>
+                    <input type="range" id="speed-slider" min="1" max="5" value="3" aria-label="Animation speed">
+                </div>
+            </div>
+
+            <!-- Playback Controls Cluster -->
+            <div class="controls-cluster playback-cluster">
+                <button id="prev-btn" class="btn btn-icon" title="Previous Step (Left Arrow)" aria-label="Previous step">&#9664;</button>
+                <button id="play-btn" class="btn btn-icon btn-play btn-play-prominent" title="Play / Pause (Space)" aria-label="Play">&#9654;</button>
+                <button id="next-btn" class="btn btn-icon" title="Next Step (Right Arrow)" aria-label="Next step">&#9654;</button>
+                <button id="reset-btn" class="btn btn-secondary" title="Reset (R)">Reset</button>
+                <button id="restart-btn" class="btn btn-secondary" title="Restart">Restart</button>
+            </div>
+        </div>
+
+        <!-- 3. Full-Width Visualization Playground Canvas -->
+        <main class="viz-content-container">
+            <div class="viz-canvas-wrapper">
+                <div class="viz-area" id="visualization-area" style="align-items:center;">
+                    <!-- Color Legend -->
+                    <div class="color-legend">
+                        <span class="legend-item"><span class="legend-dot" style="background: var(--color-default)"></span> Default</span>
+                        <span class="legend-item"><span class="legend-dot" style="background: var(--color-current)"></span> Current</span>
+                        <span class="legend-item"><span class="legend-dot" style="background: var(--color-checked)"></span> Checked</span>
+                        <span class="legend-item"><span class="legend-dot" style="background: var(--color-found)"></span> Found</span>
+                    </div>
+
+                    <!-- Floating Canvas Status Indicator -->
+                    <div id="canvas-status-pill" class="canvas-status-pill">
+                        <span class="pulse-dot"></span>
+                        <span id="canvas-status-text">Ready</span>
+                    </div>
+
+                    <!-- Satisfying Completion Banner -->
+                    <div id="completion-banner" class="completion-banner">
+                        <div>
+                            <div class="completion-banner-text" id="completion-banner-title">🎯 Search completed!</div>
+                            <div class="completion-banner-sub" id="completion-banner-stats">Finished search execution</div>
+                        </div>
+                        <button id="completion-replay-btn" class="btn-replay">Replay</button>
+                    </div>
+
+                    <div class="viz-placeholder">Click "Generate" or enter a target value to start searching.</div>
+                </div>
+            </div>
+
+            <!-- 4. Progress Indicator Row -->
+            <div class="progress-section">
+                <div class="progress-card">
+                    <div class="progress-header">
+                        <div class="progress-label-group">
+                            <span class="progress-title">Search Progress</span>
+                            <span class="step-count">Step <strong id="step-display">0 / 0</strong></span>
+                        </div>
+                        <span class="step-pct" id="step-pct">0%</span>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5 & 6. Side-by-Side Interactive Row: What's Happening & Live Statistics -->
+            <div class="interactive-row">
+                <!-- What's Happening Explanation Card -->
+                <div class="interactive-col explanation-col">
+                    <div class="interactive-panel-header">
+                        <span>What's Happening</span>
+                        <span class="op-badge search" id="op-tag-element">READY</span>
+                    </div>
+                    <div class="explanation-card" id="explanation-card">
+                        <div class="op-text" id="explanation-text">Select an algorithm, generate an array, and enter a target value to begin.</div>
+                        <div class="op-result" id="explanation-result" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <!-- Live Statistics Cards -->
+                <div class="interactive-col stats-col">
+                    <div class="interactive-panel-header">
+                        <span>Live Statistics</span>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="counter-card">
+                            <div class="counter-header">
+                                <span class="counter-label">Comparisons</span>
+                                <span class="counter-icon">⚖️</span>
+                            </div>
+                            <span class="counter-value" id="comparisons-count">0</span>
+                        </div>
+                        <div class="counter-card">
+                            <div class="counter-header">
+                                <span class="counter-label">Examined</span>
+                                <span class="counter-icon">🔍</span>
+                            </div>
+                            <span class="counter-value" id="examined-count">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7 & 8. Dedicated Full-Width Algorithm Complexity & Learning Section Below -->
+            <section class="complexity-section-full" id="complexity-section">
+                <div class="complexity-container" id="complexity-display">
+                    <!-- Injected dynamically by controller -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/searching-algorithms.js"></script>
+    <script src="js/searching-visualizer.js"></script>
+</body>
+</html>

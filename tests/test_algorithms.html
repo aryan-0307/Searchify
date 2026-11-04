@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AlgoViz Test Suite</title>
+    <style>
+        body { font-family: monospace; background: #111; color: #eee; padding: 20px; }
+        .pass { color: #2ecc71; }
+        .fail { color: #e74c3c; font-weight: bold; }
+        .summary { margin-top: 20px; font-size: 16px; border-top: 1px solid #444; padding-top: 10px; }
+    </style>
+</head>
+<body>
+    <h1>AlgoViz Algorithm Verification Test Suite</h1>
+    <div id="results"></div>
+    <div id="summary" class="summary"></div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/sorting-algorithms.js"></script>
+    <script src="../js/searching-algorithms.js"></script>
+    <script>
+        (function() {
+            var passed = 0;
+            var failed = 0;
+            var resultsEl = document.getElementById('results');
+            var summaryEl = document.getElementById('summary');
+
+            function log(msg, isPass) {
+                var p = document.createElement('div');
+                p.className = isPass ? 'pass' : 'fail';
+                p.textContent = (isPass ? '✔ PASS: ' : '✘ FAIL: ') + msg;
+                resultsEl.appendChild(p);
+                console.log((isPass ? 'PASS: ' : 'FAIL: ') + msg);
+                if (isPass) passed++; else failed++;
+            }
+
+            function assert(condition, testName) {
+                if (condition) {
+                    log(testName, true);
+                } else {
+                    log(testName, false);
+                }
+            }
+
+            function isSorted(arr, order) {
+                for (var i = 1; i < arr.length; i++) {
+                    if (order === 'desc') {
+                        if (arr[i] > arr[i-1]) return false;
+                    } else {
+                        if (arr[i] < arr[i-1]) return false;
+                    }
+                }
+                return true;
+            }
+
+            // Test 1: SortingAlgorithms defined
+            assert(typeof window.SortingAlgorithms === 'object', 'SortingAlgorithms export exists');
+            assert(typeof window.SearchingAlgorithms === 'object', 'SearchingAlgorithms export exists');
+
+            // Test Sorting Algorithms
+            var algos = ['bubbleSort', 'selectionSort', 'insertionSort', 'mergeSort', 'quickSort'];
+            var testArrays = [
+                { name: 'random', data: [34, 12, 89, 5, 23, 77, 45, 1, 90, 60] },
+                { name: 'already sorted', data: [1, 2, 3, 4, 5, 6, 7, 8] },
+                { name: 'reverse sorted', data: [9, 8, 7, 6, 5, 4, 3, 2, 1] },
+                { name: 'with duplicates', data: [5, 2, 8, 2, 5, 9, 1, 8, 2] },
+                { name: 'single element', data: [42] },
+                { name: 'empty array', data: [] }
+            ];
+
+            algos.forEach(function(algo) {
+                assert(typeof window.SortingAlgorithms[algo] === 'function', algo + ' is implemented');
+
+                // Ascending
+                testArrays.forEach(function(t) {
+                    var steps = window.SortingAlgorithms[algo](t.data, 'asc');
+                    assert(Array.isArray(steps) && steps.length > 0, algo + ' (' + t.name + ', asc) returned non-empty steps');
+                    var finalStep = steps[steps.length - 1];
+                    assert(isSorted(finalStep.array, 'asc'), algo + ' (' + t.name + ', asc) final array is sorted');
+                    assert(finalStep.array.length === t.data.length, algo + ' (' + t.name + ') preserved array length');
+
+                    // Step invariant check
+                    var invariantsHold = steps.every(function(s) {
+                        return Array.isArray(s.array) &&
+                               Array.isArray(s.comparing) &&
+                               Array.isArray(s.swapping) &&
+                               Array.isArray(s.sorted) &&
+                               typeof s.explanation === 'string' &&
+                               s.counters &&
+                               typeof s.counters.comparisons === 'number';
+                    });
+                    assert(invariantsHold, algo + ' (' + t.name + ') all step objects satisfy schema');
+                });
+
+                // Descending
+                var descSteps = window.SortingAlgorithms[algo]([15, 3, 99, 42, 8], 'desc');
+                var descFinal = descSteps[descSteps.length - 1];
+                assert(isSorted(descFinal.array, 'desc'), algo + ' sorts in descending order');
+
+                // Metadata check
+                assert(window.SortingAlgorithms.pseudocode[algo] && window.SortingAlgorithms.pseudocode[algo].length > 0, algo + ' has pseudocode');
+                assert(window.SortingAlgorithms.complexityInfo[algo] && window.SortingAlgorithms.complexityInfo[algo].name, algo + ' has complexityInfo');
+            });
+
+            // Test Linear Search
+            var lsArr = [10, 45, 23, 78, 92, 34, 56];
+            var lsStepsFound = window.SearchingAlgorithms.linearSearch(lsArr, 78);
+            var lsLastFound = lsStepsFound[lsStepsFound.length - 1];
+            assert(lsLastFound.found === 3, 'Linear Search finds target 78 at index 3');
+            assert(lsLastFound.counters.result && lsLastFound.counters.result.found === true, 'Linear Search marks result.found = true');
+
+            var lsStepsNotFound = window.SearchingAlgorithms.linearSearch(lsArr, 999);
+            var lsLastNotFound = lsStepsNotFound[lsStepsNotFound.length - 1];
+            assert(lsLastNotFound.notFound === true, 'Linear Search marks notFound = true when target absent');
+            assert(lsLastNotFound.counters.result && lsLastNotFound.counters.result.found === false, 'Linear Search result indicates target absent');
+
+            // Test Binary Search
+            var bsArr = [5, 12, 23, 34, 45, 56, 67, 78, 89, 90];
+            var bsStepsFound = window.SearchingAlgorithms.binarySearch(bsArr, 45);
+            var bsLastFound = bsStepsFound[bsStepsFound.length - 1];
+            assert(bsLastFound.found === 4, 'Binary Search finds target 45 at index 4');
+
+            var bsStepsNotFound = window.SearchingAlgorithms.binarySearch(bsArr, 100);
+            var bsLastNotFound = bsStepsNotFound[bsStepsNotFound.length - 1];
+            assert(bsLastNotFound.notFound === true, 'Binary Search marks notFound = true when target absent');
+
+            // Test Binary Search auto-sorts unsorted input
+            var unsortedArr = [50, 20, 80, 10, 30];
+            var bsStepsUnsorted = window.SearchingAlgorithms.binarySearch(unsortedArr, 30);
+            var bsFirstStep = bsStepsUnsorted[0];
+            assert(isSorted(bsFirstStep.array, 'asc'), 'Binary Search auto-sorted unsorted array');
+            var bsUnsortedLast = bsStepsUnsorted[bsStepsUnsorted.length - 1];
+            assert(bsUnsortedLast.found === 2, 'Binary Search found target 30 at index 2 in sorted array');
+
+            // Test Utilities
+            assert(Array.isArray(window.AlgoVizUtils.generateRandomArray(10)), 'generateRandomArray returns array');
+            assert(window.AlgoVizUtils.parseCustomArray('1, 2, 3').length === 3, 'parseCustomArray parses valid string');
+            assert(window.AlgoVizUtils.parseCustomArray('abc') === null, 'parseCustomArray rejects invalid string');
+
+            summaryEl.innerHTML = '<strong>Total: ' + (passed + failed) + ' | Passed: ' + passed + ' | Failed: ' + failed + '</strong>';
+            if (failed === 0) {
+                summaryEl.style.color = '#2ecc71';
+                summaryEl.innerHTML += ' &mdash; ALL TESTS PASSED!';
+            } else {
+                summaryEl.style.color = '#e74c3c';
+            }
+            window.__TEST_RESULTS__ = { total: passed + failed, passed: passed, failed: failed };
+        })();
+    </script>
+</body>
+</html>
