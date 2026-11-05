@@ -122,4 +122,5 @@
         getSpeedMs: getSpeedMs,
         getSpeedLabel: getSpeedLabel
     };
+    window.AlgoVizUtils = window.SearchifyUtils;
 })();

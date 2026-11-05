@@ -4,6 +4,18 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## [2026-11-06 — Production Deployment Guide & Hosting Evaluation]
+
+### Added
+- **`DEPLOYMENT_STEPS.md`**:
+  - Comprehensive guide covering hosting analysis, platform comparison, step-by-step setup, and verification.
+  - Evaluated Vercel ("Versailles") vs. GitHub Pages vs. Cloudflare Pages vs. Netlify for static DSA visualizer hosting.
+  - Web dashboard and CLI deployment instructions.
+  - Optional `vercel.json` recipe for clean URLs and security headers.
+  - Updated `README.md` with link to deployment guide.
+
+---
+
 ## [2026-11-04 — Friendly Guidance Notification for Empty Custom Input]
 
 ### Changed

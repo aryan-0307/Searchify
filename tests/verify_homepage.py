@@ -34,8 +34,6 @@ expected_markers = [
     "sorting-mini-viz",
     "mini-cells-row",
     "mini-bars-row",
-    "Find elements, one step at a time.",
-    "Watch elements find their place.",
     "searching.html",
     "sorting.html"
 ]
@@ -47,6 +45,19 @@ for marker in expected_markers:
     else:
         print(f"  [FAIL] Missing marker: '{marker}'")
         all_passed = False
+
+# Check card descriptions (supports both original and redesigned copies)
+if "Find it. Understand it." in dom or "Find elements, one step at a time." in dom:
+    print("  [PASS] Found searching card description marker")
+else:
+    print("  [FAIL] Missing searching card description marker")
+    all_passed = False
+
+if "Sort it. Master it." in dom or "Watch elements find their place." in dom:
+    print("  [PASS] Found sorting card description marker")
+else:
+    print("  [FAIL] Missing sorting card description marker")
+    all_passed = False
 
 if not all_passed:
     print("[FAIL] Some homepage markers were missing!")

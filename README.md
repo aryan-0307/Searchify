@@ -108,6 +108,14 @@ Start-Process index.html
 
 ---
 
+## Deployment
+
+Searchify is ready for zero-configuration static deployment on **Vercel**, **GitHub Pages**, **Cloudflare Pages**, or **Netlify**.
+
+For complete step-by-step instructions and a hosting comparison, see [**DEPLOYMENT_STEPS.md**](DEPLOYMENT_STEPS.md).
+
+---
+
 ## Verification & Testing
 - **153 / 153 Unit Tests Pass** in headless Google Chrome (`tests/test_algorithms.html`).
 - **Zero Runtime Console Errors** across all pages.
