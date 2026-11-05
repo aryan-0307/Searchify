@@ -4,6 +4,101 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## [2026-11-06 — Full-Width Navbar & Phone Variations Support]
+
+### Added
+- **Complete Width Edge-to-Edge Coverage**:
+  - Moved `.home-nav` to the root `<body>` level with `width: 100%`, `left: 0`, and `right: 0`, removing all side body insets so the liquid glass bar spans the complete viewport from bezel to bezel on any display size (from 320px phones to 1920px+ monitors).
+  - Encapsulated header elements within `.home-nav-inner` (`max-width: 1240px; margin: 0 auto; padding: 16px 34px`) to ensure perfect alignment with the hero and playground cards.
+
+### Fixed
+- **Mobile Phone Navbar Adaptations & Overflow Prevention**:
+  - Diagnosed that on phone viewports (< 400px), 3 nav links + full brand resulted in a 378px–399px width, causing horizontal overflow and CTA clipping.
+  - Implemented phone variation rules:
+    - On phones (< 540px): Hid redundant anchor links (`.nav-link-item`) to give the prominent `"Start exploring ↗"` CTA button clean breathing room without text squishing or wrapping.
+    - On compact phones (< 360px): Gracefully scaled padding and icon dimensions to maintain comfortable touch targets while keeping horizontal overflow at strictly 0px.
+    - Added `overflow: hidden` on `.hero-art` to stop decorative spinning orbits from overflowing tablet and mobile screens.
+
+### Verified
+- Created `tests/verify_mobile_nav.py` testing 9 device viewports: iPhone SE (320px), Galaxy S (360px), iPhone SE/8 (375px), iPhone 13/14/15/16 (390px), Galaxy S23/Pixel 7 (412px), iPhone Pro Max (430px), iPad (768px), Laptop (1280px), Desktop (1920px).
+- Master test runner `tests/run_all_tests.py` ran with 100% pass rate across all 10 test suites.
+
+---
+
+## [2026-11-06 — Persistent Liquid Glass Navbar Background]
+
+### Changed
+- **Unified Liquid Glass Background**:
+  - Configured `.home-nav` and `.home-nav.is-scrolled` to share the exact same liquid glass background styling across all states:
+    - Base color: `rgba(245, 243, 237, 0.72)` (matching the website's warm ivory `#F5F3ED` palette with zero base color difference).
+    - Backdrop Filter: `blur(20px) saturate(180%)` for rich optical refraction and vibrant glass diffusion.
+    - Glass Border & Shadow: `1px solid rgba(216, 213, 201, 0.55)` and `box-shadow: 0 4px 20px rgba(34, 77, 149, 0.03)`.
+  - Content, icons, badges, sorting bars, and code cards passing beneath the sticky navbar now showcase dynamic liquid glass refraction without any background color flickering or gradient shifts.
+
+### Verified
+- Updated `tests/verify_nav_animation.py` to assert identical liquid glass background across all states.
+- Master test runner `tests/run_all_tests.py` ran with 100% pass rate across all 9 suites.
+
+---
+
+## [2026-11-06 — Page Refresh Transition Flash Elimination]
+
+### Fixed
+- **Refresh & Anchor State Synchronization**:
+  - Eliminated the initial transition flash where refreshing the page midway down would briefly render the full brand text at the origin and then visibly animate it into the scrolled position.
+  - Added parse-time synchronous script in `index.html` to evaluate `window.pageYOffset` and `window.location.hash` before the initial layout paint, applying `.is-scrolled` immediately.
+  - Added `.no-transition` CSS rule in `css/home.css` that disables all transitions on the navbar during initial load and browser scroll restoration.
+  - Upgraded `js/home-nav.js` to seamlessly release `.no-transition` right after the initial layout cycle, ensuring all subsequent user scrolls transition smoothly and responsively.
+
+### Verified
+- Added `tests/test_refresh_sync.py` verifying deep-link/refresh immediate `.is-scrolled` rendering and subsequent transition enablement.
+- Master test runner `tests/run_all_tests.py` ran with 100% pass rate across all 9 suites.
+
+---
+
+## [2026-11-06 — Navbar Jitter Elimination & Zero Layout Shift]
+
+### Fixed
+- **Navbar Jitter & Animation Feedback Loop**:
+  - Eliminated the 14px vertical height jumping caused by padding differences between default and scrolled states. Locked `.home-nav` and `.home-nav.is-scrolled` to an identical `padding: 16px 0` (`10px 0` on mobile), achieving zero cumulative layout shift (0px delta).
+  - Upgraded `js/home-nav.js` with dual-threshold scroll hysteresis (`SCROLL_DOWN_THRESHOLD = 45`, `SCROLL_UP_THRESHOLD = 15`). The 30px deadband prevents state flipping, oscillation, and getting stuck in animation loops when the user scrolls near the top.
+  - Added hardware acceleration `will-change: transform;` on `.brand-mark` and `will-change: max-width, opacity, transform;` on `.home-brand-text` for smooth GPU compositing.
+
+### Verified
+- Added `tests/verify_zero_layout_shift.py` confirming 0px height difference and 0px hero displacement across states.
+- Added `tests/test_hysteresis.py` confirming stable deadband behavior and absence of flickering.
+- Master test runner `tests/run_all_tests.py` ran with 100% pass rate across all 8 suites.
+
+---
+
+## [2026-11-06 — Navbar Hero Background Merge & Snappier Logo Animation]
+
+### Changed
+- **Seamless Hero Integration**:
+  - Configured default `.home-nav` background and border-bottom to `transparent` with `backdrop-filter: none`, eliminating the hard horizontal boundary and allowing the hero section's ambient radial gradients (ellipse glows) to flow seamlessly behind the navbar.
+  - Floating scrolled state (`.home-nav.is-scrolled`) smoothly applies frosted glass (`rgba(245, 243, 237, 0.88)` with `blur(16px)` and subtle border `rgba(216, 213, 201, 0.45)`) only when the user scrolls down through page content.
+- **Faster Logo Scroll Animation**:
+  - Increased transition speed by decreasing duration from `0.45s` to `0.22s` (`cubic-bezier(0.2, 0.8, 0.2, 1)`), making the brand mark translation and text fade/expansion feel snappy and instantaneous when scrolling back towards the top.
+
+### Verified
+- Added `tests/verify_nav_animation.py` checking initial transparency, scrolled minimization, restored top state, and transition timings in headless Chrome.
+- Master test runner `tests/run_all_tests.py` ran with 100% pass rate.
+
+---
+
+## [2026-11-06 — Sticky Navbar & Logo Scroll Transition]
+
+### Added
+- **Sticky Frosted-Glass Navbar**:
+  - Pinned homepage navbar (`.home-nav`) to `top: 0` (`position: sticky`) with translucent frosted-glass blur (`backdrop-filter: blur(14px)`).
+  - Added smooth anchor scrolling with `scroll-margin-top: 88px` on `#playgrounds` and `#try-it`.
+- **CSS-Driven Logo Scroll Animation**:
+  - When scrolling, `.home-brand-text` ("Searchify | DSA playground") smoothly fades out and blurs, while `.brand-mark` (`[S]`) glides smoothly rightward into the space where the text was.
+  - When scrolling back to the top, the logo mark returns to its starting position and the full site name fades back in.
+  - Built with pure hardware-accelerated CSS transitions, driven by a minimalist 20-line scroll state controller (`js/home-nav.js`).
+
+---
+
 ## [2026-11-06 — Production Deployment Guide & Hosting Evaluation]
 
 ### Added

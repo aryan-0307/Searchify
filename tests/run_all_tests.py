@@ -75,6 +75,44 @@ if proc.returncode != 0:
     print("[FAIL] Homepage verification failed.")
     sys.exit(1)
 
+# 7. Sticky Navbar & Icon Animation Verification
+print("\n--- 7. Verifying Navbar Background Merge & Fast Icon Transition ---")
+proc = subprocess.run([sys.executable, "tests/verify_nav_animation.py"], capture_output=True, text=True, encoding="utf-8")
+print(proc.stdout)
+if proc.returncode != 0:
+    print("[FAIL] Navbar animation verification failed.")
+    sys.exit(1)
+
+# 8. Zero Layout Shift & Hysteresis Verification
+print("\n--- 8. Verifying Zero Layout Shift & Scroll Hysteresis ---")
+proc_shift = subprocess.run([sys.executable, "tests/verify_zero_layout_shift.py"], capture_output=True, text=True, encoding="utf-8")
+print(proc_shift.stdout)
+if proc_shift.returncode != 0:
+    print("[FAIL] Zero layout shift verification failed.")
+    sys.exit(1)
+
+proc_hyst = subprocess.run([sys.executable, "tests/test_hysteresis.py"], capture_output=True, text=True, encoding="utf-8")
+print(proc_hyst.stdout)
+if proc_hyst.returncode != 0:
+    print("[FAIL] Scroll hysteresis verification failed.")
+    sys.exit(1)
+
+# 9. Page Refresh & Deep-Link State Sync Verification
+print("\n--- 9. Verifying Refresh Sync & Transition Suppression ---")
+proc_refresh = subprocess.run([sys.executable, "tests/test_refresh_sync.py"], capture_output=True, text=True, encoding="utf-8")
+print(proc_refresh.stdout)
+if proc_refresh.returncode != 0:
+    print("[FAIL] Page refresh sync verification failed.")
+    sys.exit(1)
+
+# 10. Full-Width Navbar & Phone Variations Verification
+print("\n--- 10. Verifying Full-Width Navbar & Phone Variations ---")
+proc_mobile = subprocess.run([sys.executable, "tests/verify_mobile_nav.py"], capture_output=True, text=True, encoding="utf-8")
+print(proc_mobile.stdout)
+if proc_mobile.returncode != 0:
+    print("[FAIL] Full-width & phone variations verification failed.")
+    sys.exit(1)
+
 print("\n" + "=" * 60)
 print("ALL VERIFICATIONS COMPLETED SUCCESSFULLY (100% PASS RATE)")
 print("=" * 60)

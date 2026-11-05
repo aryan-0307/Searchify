@@ -12,19 +12,33 @@
     <link rel="stylesheet" href="css/home.css">
 </head>
 <body class="searchify-home">
-    <main class="home-container">
-        <header class="home-nav">
-            <a class="home-brand" href="index.html" aria-label="Searchify home">
-                <span class="brand-mark">S</span>
-                <span class="home-brand-logo">Searchify</span>
-                <span class="home-brand-tag">DSA playground</span>
+    <header class="home-nav no-transition" id="home-nav">
+        <div class="home-nav-inner">
+            <a class="home-brand" id="home-brand" href="index.html" aria-label="Searchify home">
+                <span class="brand-mark" aria-hidden="true">S</span>
+                <span class="home-brand-text">
+                    <span class="home-brand-logo">Searchify</span>
+                    <span class="home-brand-tag">DSA playground</span>
+                </span>
             </a>
             <nav class="home-nav-links" aria-label="Main navigation">
-                <a href="#playgrounds">Playgrounds</a>
-                <a href="#try-it">Try a demo</a>
+                <a href="#playgrounds" class="nav-link-item">Playgrounds</a>
+                <a href="#try-it" class="nav-link-item">Try a demo</a>
                 <a class="nav-cta" href="#playgrounds">Start exploring <span>↗</span></a>
             </nav>
-        </header>
+        </div>
+    </header>
+    <script>
+        (function () {
+            try {
+                var y = window.pageYOffset || document.documentElement.scrollTop || 0;
+                if (y > 45 || (window.location.hash && window.location.hash.length > 1)) {
+                    document.getElementById('home-nav').classList.add('is-scrolled');
+                }
+            } catch (e) {}
+        })();
+    </script>
+    <main class="home-container">
 
         <section class="home-hero">
             <div class="hero-copy">
@@ -114,6 +128,7 @@
 
         <footer class="home-footer"><a href="#" class="footer-brand">Searchify<span>✳</span></a><p>Made to make algorithms click.</p><a href="#top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">Back to top ↑</a></footer>
     </main>
+    <script src="js/home-nav.js"></script>
     <script src="js/home-demo.js"></script>
 </body>
 </html>

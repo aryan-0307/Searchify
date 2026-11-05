@@ -764,10 +764,11 @@ body {
    ========================================= */
 .searchify-home {
     display: block;
+    margin: 0;
     min-height: 100vh;
-    padding: 22px 3vw 34px;
+    padding: 0 0 34px;
     background: radial-gradient(ellipse at 8% 12%, rgba(217, 61, 129, .09), transparent 28%), radial-gradient(ellipse at 90% 18%, rgba(34, 77, 149, .10), transparent 30%), var(--warm-ivory);
-    overflow-x: hidden
+    overflow-x: hidden;
 }
 
 .searchify-home .home-container {
@@ -780,44 +781,143 @@ body {
     background: none;
     box-shadow: none;
     gap: 0;
-    overflow: visible
+    overflow: visible;
+}
+
+/* === Sticky Full-Width Navbar & Dynamic Logo Minimization === */
+html {
+    scroll-behavior: smooth;
+}
+
+#playgrounds,
+#try-it {
+    scroll-margin-top: 88px;
 }
 
 .home-nav {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
     width: 100%;
+    box-sizing: border-box;
+    padding: 0;
+    background: rgba(245, 243, 237, 0.72);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba(216, 213, 201, 0.55);
+    box-shadow: 0 4px 20px rgba(34, 77, 149, 0.03);
+}
+
+.home-nav.is-scrolled {
+    padding: 0;
+    background: rgba(245, 243, 237, 0.72);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba(216, 213, 201, 0.55);
+    box-shadow: 0 4px 20px rgba(34, 77, 149, 0.03);
+}
+
+.home-nav-inner {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 16px 34px;
+    box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 8px 0 20px;
-    border-bottom: 1px solid rgba(216, 213, 201, .8)
+    width: 100%;
+}
+
+/* Suppress transition flash during page load or refresh */
+.home-nav.no-transition,
+.home-nav.no-transition *,
+.home-nav.no-transition *::before,
+.home-nav.no-transition *::after {
+    transition: none !important;
 }
 
 .home-brand {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    padding: 0;
+    position: relative;
+    padding: 2px 0;
     background: none;
     border: 0;
     box-shadow: none;
-    text-decoration: none
+    text-decoration: none;
+    cursor: pointer;
+    flex-shrink: 0;
 }
 
 .brand-mark {
-    width: 35px;
-    height: 35px;
+    width: 36px;
+    height: 36px;
     display: grid;
     place-items: center;
     border-radius: 12px;
     background: var(--royal-blue);
     color: #fff;
     font: 800 20px 'Bricolage Grotesque', sans-serif;
-    box-shadow: 0 5px 12px rgba(34, 77, 149, .2)
+    box-shadow: 0 4px 12px rgba(34, 77, 149, .2);
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+    transform: translateX(0);
+    will-change: transform;
+    transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.home-brand:hover .brand-mark {
+    transform: scale(1.06);
+    box-shadow: 0 6px 16px rgba(34, 77, 149, .3);
+}
+
+/* When scrolling: the icon moves smoothly towards the space where the text was written */
+.home-nav.is-scrolled .brand-mark {
+    transform: translateX(18px);
+    box-shadow: 0 4px 16px rgba(34, 77, 149, 0.28);
+}
+
+.home-nav.is-scrolled .home-brand:hover .brand-mark {
+    transform: translateX(18px) scale(1.08);
+    background: var(--vibrant-pink);
+    box-shadow: 0 6px 18px rgba(217, 61, 129, .38);
+}
+
+.home-brand-text {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: 10px;
+    max-width: 280px;
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0);
+    overflow: hidden;
+    white-space: nowrap;
+    will-change: max-width, opacity, transform;
+    transition: max-width 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+        opacity 0.2s ease,
+        filter 0.2s ease,
+        transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1),
+        margin-left 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .home-brand-logo {
     font-size: 20px;
-    letter-spacing: -.8px
+    letter-spacing: -.8px;
+    color: var(--royal-blue);
+    font-weight: 800;
+    font-family: 'Bricolage Grotesque', sans-serif;
+    transition: color 0.2s ease;
+}
+
+.home-brand:hover .home-brand-logo {
+    color: var(--vibrant-pink);
 }
 
 .home-brand-tag {
@@ -825,7 +925,19 @@ body {
     text-transform: uppercase;
     letter-spacing: 1px;
     padding-left: 10px;
-    border-left: 1px solid var(--border-color)
+    border-left: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    font-weight: 700;
+}
+
+/* When scrolling: the name/alphabets fade, blur, and collapse */
+.home-nav.is-scrolled .home-brand-text {
+    max-width: 0;
+    opacity: 0;
+    filter: blur(3px);
+    transform: translateX(12px);
+    margin-left: 0;
+    pointer-events: none;
 }
 
 .home-nav-links {
@@ -1037,7 +1149,8 @@ body {
     position: relative;
     display: grid;
     place-items: center;
-    isolation: isolate
+    isolation: isolate;
+    overflow: hidden;
 }
 
 .hero-art:before {
@@ -1570,31 +1683,32 @@ body {
 
 @media(max-width:680px) {
     .searchify-home {
-        padding: 10px 3vw 22px
+        padding: 0 0 22px;
     }
 
     .searchify-home .home-container {
-        padding: 0 8px 12px
+        padding: 0 16px 12px;
     }
 
-    .home-nav {
-        padding: 7px 0 14px
+    .home-nav-inner {
+        padding: 12px 16px;
     }
 
     .home-nav-links {
-        gap: 12px
+        gap: 12px;
     }
 
     .home-nav-links>a {
-        font-size: 10px
+        font-size: 11px;
     }
 
     .home-nav-links .nav-cta {
-        padding: 9px 11px
+        padding: 8px 12px;
+        font-size: 11px;
     }
 
     .home-brand-tag {
-        display: none
+        display: none;
     }
 
     .home-hero {
@@ -1613,6 +1727,7 @@ body {
     }
 
     .hero-art {
+        overflow: hidden;
         min-height: 280px;
         margin: 0 5px
     }
@@ -1704,6 +1819,79 @@ body {
         order: 3;
         width: 100%;
         margin: 0
+    }
+}
+
+/* =========================================
+   MOBILE PHONE NAVBAR & HERO VARIATIONS
+   ========================================= */
+@media(max-width:540px) {
+    .home-nav-links {
+        gap: 8px;
+    }
+
+    /* On mobile phones, hide verbose secondary anchor links so the primary CTA has clean breathing room */
+    .home-nav-links .nav-link-item {
+        display: none;
+    }
+
+    .home-nav-links .nav-cta {
+        padding: 8px 14px;
+        font-size: 11.5px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .home-brand-logo {
+        font-size: 18px;
+    }
+
+    .brand-mark {
+        width: 34px;
+        height: 34px;
+        font-size: 18px;
+        border-radius: 10px;
+    }
+
+    .hero-copy h1 {
+        font-size: clamp(34px, 11vw, 50px);
+        letter-spacing: -2px;
+    }
+
+    .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .hero-actions>a {
+        text-align: center;
+        justify-content: center;
+    }
+}
+
+@media(max-width:360px) {
+    .home-nav-inner {
+        padding: 10px 10px;
+    }
+
+    .home-nav-links .nav-cta {
+        padding: 6px 10px;
+        font-size: 10.5px;
+    }
+
+    .home-nav-links .nav-cta span {
+        margin-left: 3px;
+    }
+
+    .home-brand-logo {
+        font-size: 16px;
+    }
+
+    .brand-mark {
+        width: 30px;
+        height: 30px;
+        font-size: 16px;
+        border-radius: 8px;
     }
 }
 
