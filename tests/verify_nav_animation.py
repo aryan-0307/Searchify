@@ -37,6 +37,7 @@ window.addEventListener('load', async () => {
         border: s1Nav.borderBottomColor,
         textOpacity: s1Text.opacity,
         textMaxWidth: s1Text.maxWidth,
+        textTransform: s1Text.transform,
         markTransform: s1Mark.transform,
         navTransition: s1Nav.transition,
         markTransition: s1Mark.transition,
@@ -60,6 +61,7 @@ window.addEventListener('load', async () => {
         border: s2Nav.borderBottomColor,
         textOpacity: s2Text.opacity,
         textMaxWidth: s2Text.maxWidth,
+        textTransform: s2Text.transform,
         markTransform: s2Mark.transform
     });
 
@@ -77,6 +79,7 @@ window.addEventListener('load', async () => {
         border: s3Nav.borderBottomColor,
         textOpacity: s3Text.opacity,
         textMaxWidth: s3Text.maxWidth,
+        textTransform: s3Text.transform,
         markTransform: s3Mark.transform
     });
 
@@ -125,13 +128,14 @@ print(f"  [PASS] Liquid glass background is identical across all states ({initia
 assert scrolled["isScrolled"] is True
 assert scrolled["textMaxWidth"] == "0px"
 assert scrolled["textOpacity"] == "0"
-assert "18" in scrolled["markTransform"]
-print("  [PASS] Scrolled navbar minimizes brand text and moves icon into text area")
+assert "-" in scrolled["textTransform"] or "matrix(0.7" in scrolled["textTransform"]
+assert "1.05" in scrolled["markTransform"] or "matrix(1.05" in scrolled["markTransform"]
+print(f"  [PASS] Text moves leftward into the logo box (textTransform: {scrolled['textTransform']}, markTransform: {scrolled['markTransform']})")
 
 assert restored["isScrolled"] is False
 assert restored["textMaxWidth"] == "280px"
 assert restored["textOpacity"] == "1"
-print("  [PASS] Restored top navbar expands brand text and positions icon back at origin")
+print("  [PASS] Restored top navbar unboxes brand text and returns icon to origin")
 
 mark_t = initial.get("markTransition", "")
 assert "0.2" in mark_t or "0.25" in mark_t, f"Mark transition must be snappy, got: {mark_t}"

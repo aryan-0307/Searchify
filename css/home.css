@@ -864,10 +864,10 @@ html {
     flex-shrink: 0;
     position: relative;
     z-index: 2;
-    transform: translateX(0);
-    will-change: transform;
+    transform: scale(1);
+    will-change: transform, box-shadow;
     transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
-        box-shadow 0.2s ease,
+        box-shadow 0.25s ease,
         background-color 0.2s ease;
 }
 
@@ -876,14 +876,14 @@ html {
     box-shadow: 0 6px 16px rgba(34, 77, 149, .3);
 }
 
-/* When scrolling: the icon moves smoothly towards the space where the text was written */
+/* When scrolling: the logo badge acts as the receiving box */
 .home-nav.is-scrolled .brand-mark {
-    transform: translateX(18px);
+    transform: scale(1.05);
     box-shadow: 0 4px 16px rgba(34, 77, 149, 0.28);
 }
 
 .home-nav.is-scrolled .home-brand:hover .brand-mark {
-    transform: translateX(18px) scale(1.08);
+    transform: scale(1.1);
     background: var(--vibrant-pink);
     box-shadow: 0 6px 18px rgba(217, 61, 129, .38);
 }
@@ -895,16 +895,19 @@ html {
     margin-left: 10px;
     max-width: 280px;
     opacity: 1;
-    transform: translateX(0);
+    transform: translateX(0) scale(1);
+    transform-origin: left center;
     filter: blur(0);
     overflow: hidden;
     white-space: nowrap;
-    will-change: max-width, opacity, transform;
-    transition: max-width 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
-        opacity 0.2s ease,
-        filter 0.2s ease,
-        transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1),
-        margin-left 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+    position: relative;
+    z-index: 1;
+    will-change: max-width, opacity, transform, filter;
+    transition: transform 0.26s cubic-bezier(0.2, 0.8, 0.2, 1),
+        opacity 0.18s ease 0.02s,
+        filter 0.18s ease 0.02s,
+        max-width 0.26s cubic-bezier(0.2, 0.8, 0.2, 1),
+        margin-left 0.26s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .home-brand-logo {
@@ -930,14 +933,19 @@ html {
     font-weight: 700;
 }
 
-/* When scrolling: the name/alphabets fade, blur, and collapse */
+/* When scrolling: text glides towards the icon first; right before touching the icon, it starts fading into the box */
 .home-nav.is-scrolled .home-brand-text {
     max-width: 0;
     opacity: 0;
-    filter: blur(3px);
-    transform: translateX(12px);
+    filter: blur(2px);
+    transform: translateX(-38px) scale(0.75);
     margin-left: 0;
     pointer-events: none;
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1) 0s,
+        opacity 0.16s cubic-bezier(0.4, 0, 0.2, 1) 0.08s,
+        filter 0.16s ease 0.08s,
+        max-width 0.24s cubic-bezier(0.4, 0, 0.2, 1) 0.05s,
+        margin-left 0.28s cubic-bezier(0.4, 0, 0.2, 1) 0s;
 }
 
 .home-nav-links {

@@ -4,6 +4,21 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## [2026-11-06 — Brand Text "Into the Box" Scroll Animation]
+
+### Changed
+- **"Items Going Inside the Box" Brand Animation**:
+  - Implemented the user's requested physics metaphor where all text of "Searchify" glides leftward into the logo mark badge like items entering a box.
+  - Set `.brand-mark` as the foreground box (`z-index: 2`) with an intake reaction (`transform: scale(1.05)`).
+  - Set `.home-brand-text` (`z-index: 1`) to translate leftward directly into the badge box (`transform: translateX(-40px) scale(0.7)`), sliding behind the `[S]` badge as it fades (`opacity: 0`) and collapses (`max-width: 0`).
+  - When scrolling back towards the top, the text unboxes smoothly, emerging from behind the `[S]` badge box back to full scale, opacity, and width.
+
+### Verified
+- Updated `tests/verify_nav_animation.py` to assert the leftward text translation into the badge box (`matrix(0.7, 0, 0, 0.7, -40, 0)`).
+- Master test runner `tests/run_all_tests.py` ran with 100% pass rate across all 10 test suites.
+
+---
+
 ## [2026-11-06 — Full-Width Navbar & Phone Variations Support]
 
 ### Added

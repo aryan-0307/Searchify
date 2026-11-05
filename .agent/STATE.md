@@ -10,17 +10,14 @@ Phase 14 — Sticky Navbar & Logo Scroll Minimization
 COMPLETE
 
 ## Current Task
-Implemented edge-to-edge full-width liquid glass navbar and multi-device phone variations: structured `.home-nav` to span 100% of the viewport width across all screens with centered inner alignment, and implemented phone adaptations (< 540px and < 360px) preventing horizontal overflow and link squishing.
+Implemented "text going inside the logo box" scroll animation: configured `.brand-mark` as the foreground box (`z-index: 2`) and animated `.home-brand-text` (`z-index: 1`) to glide leftward directly into the badge box (`transform: translateX(-40px) scale(0.7)`) as it fades out on scroll.
 
 ## Last Completed Task
-- Full-Width Navbar & Phone Variations Implementation:
-  - **Full-Width Coverage**: Placed `.home-nav` at root level under `<body>` and configured `width: 100%` with `left: 0; right: 0;` so the liquid glass bar spans the complete viewport from bezel to bezel on all screen widths (from 320px to 1920px+).
-  - **Inner Alignment**: Created `.home-nav-inner` (`max-width: 1240px; margin: 0 auto; padding: 16px 34px`) to ensure brand and navigation controls align with the hero and playground cards.
-  - **Mobile Phone Variations (< 540px & < 360px)**:
-    - On phones (< 540px): Hid redundant secondary anchor links (`.nav-link-item`) to give the primary `"Start exploring ↗"` CTA clean breathing room.
-    - On compact phones (< 360px): Scaled padding and button dimensions gracefully to prevent wrapping and eliminate horizontal scrolling.
-    - Set `overflow: hidden` on `.hero-art` to eliminate orbit circle bleed on tablet and mobile viewports.
-- Created `tests/verify_mobile_nav.py` testing 9 device viewports (320px, 360px, 375px, 390px, 412px, 430px, 768px, 1280px, 1920px) with 100% pass rate.
+- "Text Into Box" Scroll Animation:
+  - **Box Physics & Layering**: Set `.brand-mark` to `z-index: 2` (foreground box layer) with a subtle receiving scale (`scale(1.05)`) when scrolled.
+  - **Ingress Motion**: Configured `.home-brand-text` (`z-index: 1`) to glide leftward directly into the logo mark (`transform: translateX(-40px) scale(0.7); opacity: 0; filter: blur(2px); max-width: 0; margin-left: 0;`), visually sliding underneath and being swallowed into the badge box like items going into a container.
+  - **Unboxing on Return**: When scrolling back towards the top, the text smoothly unboxes, emerging from behind the `[S]` badge box back to full scale and width.
+- Updated `tests/verify_nav_animation.py` to assert the leftward text translation into the badge box (`matrix(0.7, 0, 0, 0.7, -40, 0)`).
 - Executed `python tests/run_all_tests.py` with 100% pass rate across all 10 verification suites.
 
 ## Completed Work

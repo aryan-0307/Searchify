@@ -113,6 +113,14 @@ if proc_mobile.returncode != 0:
     print("[FAIL] Full-width & phone variations verification failed.")
     sys.exit(1)
 
+# 11. Staggered 'Glide Then Fade Into Box' Motion Verification
+print("\n--- 11. Verifying Staggered 'Glide Then Fade Into Box' Brand Motion ---")
+proc_glide = subprocess.run([sys.executable, "tests/verify_glide_fade.py"], capture_output=True, text=True, encoding="utf-8")
+print(proc_glide.stdout)
+if proc_glide.returncode != 0:
+    print("[FAIL] 'Glide then fade into box' brand motion verification failed.")
+    sys.exit(1)
+
 print("\n" + "=" * 60)
 print("ALL VERIFICATIONS COMPLETED SUCCESSFULLY (100% PASS RATE)")
 print("=" * 60)
