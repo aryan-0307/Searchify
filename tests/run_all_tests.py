@@ -129,6 +129,30 @@ if proc_speed.returncode != 0:
     print("[FAIL] Numerical speed settings verification failed.")
     sys.exit(1)
 
+# 13. Mobile Visualizer Array Index Visibility Verification
+print("\n--- 13. Verifying Mobile Visualizer Array Index Visibility ---")
+proc_idx = subprocess.run([sys.executable, "tests/verify_mobile_indexes.py"], capture_output=True, text=True, encoding="utf-8")
+print(proc_idx.stdout)
+if proc_idx.returncode != 0:
+    print("[FAIL] Mobile visualizer index visibility verification failed.")
+    sys.exit(1)
+
+# 14. Dynamic Array Size Slider (Live Resizing) Verification
+print("\n--- 14. Verifying Dynamic Array Size Slider (Live Resizing) ---")
+proc_size = subprocess.run([sys.executable, "tests/verify_live_size_slider.py"], capture_output=True, text=True, encoding="utf-8")
+print(proc_size.stdout)
+if proc_size.returncode != 0:
+    print("[FAIL] Dynamic array size slider verification failed.")
+    sys.exit(1)
+
+# 15. Gravity Drop & Elastic Bounce Physics Verification
+print("\n--- 15. Verifying Gravity Drop & Elastic Bounce Physics ---")
+proc_gravity = subprocess.run([sys.executable, "tests/verify_gravity_animation.py"], capture_output=True, text=True, encoding="utf-8")
+print(proc_gravity.stdout)
+if proc_gravity.returncode != 0:
+    print("[FAIL] Gravity drop & elastic bounce verification failed.")
+    sys.exit(1)
+
 print("\n" + "=" * 60)
 print("ALL VERIFICATIONS COMPLETED SUCCESSFULLY (100% PASS RATE)")
 print("=" * 60)

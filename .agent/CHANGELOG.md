@@ -4,6 +4,72 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## [2026-11-06 — Natural Gravity Drop & Elastic Bounce Physics for Visualizer Slider Operations]
+
+### Added
+- **Natural Gravity Drop & Ground Interaction Physics Keyframes**:
+  - Implemented `@keyframes gravity-fall` in [css/visualizer.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/visualizer.css) modeling realistic free fall under Earth gravity:
+    - **Free Fall with Downward Acceleration**: Elements fall from $y = -140\text{px}$, accelerating downward under gravity ($g$).
+    - **Ground Impact Collision**: Hits the baseline floor ($y = 0$) at $t \approx 44\%$.
+    - **Elastic Ground Compression (Squash)**: At $t \approx 50\%$, converts kinetic energy into elastic strain deformation (`scaleY(0.82) scaleX(1.12)` with `transform-origin: bottom center`), keeping the baseline grounded while compressing downward and bulging outward according to volume conservation principles.
+    - **Elastic Rebound (Restitution)**: Rebounds upward to $y = -22\text{px}$ (`scaleY(1.02) scaleX(0.98)`).
+    - **Secondary Touchdown & Micro-Bounce**: Lands with subtle micro-compression (`scaleY(0.94) scaleX(1.03)`), hops up $5\text{px}$, and smoothly settles into rest at $y = 0, \text{scale} = 1$.
+  - Added `.bar.drop-in` and `.cell.drop-in` classes anchored with `transform-origin: bottom center;`.
+  - Added accessibility support with `@media (prefers-reduced-motion: reduce)` to disable animations for users requesting reduced motion.
+- **Dynamic Incremental Slider Sliding with Smooth Transitions**:
+  - **Sorting Visualizer** in [js/sorting-visualizer.js](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/js/sorting-visualizer.js):
+    - When increasing array size via slider: existing bars smoothly glide and shrink in width via CSS `transition: width 0.18s cubic-bezier(0.2, 0.8, 0.2, 1)`, while newly added bars rain down from above with staggered gravity drop and bounce.
+    - When decreasing array size: excess bars are immediately trimmed and remaining bars smoothly expand to fill the available canvas width.
+  - **Searching Visualizer** in [js/searching-visualizer.js](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/js/searching-visualizer.js):
+    - When increasing array size via slider: newly added cells drop from above with staggered gravity bounces and attached `.cell-index` labels.
+    - When decreasing array size: excess cells are cleanly removed and remaining cells smoothly re-center.
+- **Array Generation & Load Cascade**:
+  - "Generate Array" and initial page load trigger a staggered falling cascade across all bars and cells.
+
+### Verified
+- Created [tests/verify_gravity_animation.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_gravity_animation.py) verifying CSS keyframe physics (height drop, elastic compression, restitution apex, settled rest) and runtime live slider additions in Headless Chrome.
+- Integrated `verify_gravity_animation.py` as Stage 15 in [tests/run_all_tests.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/run_all_tests.py).
+- Master test runner executed and passed 100% across all 15 test suites.
+
+---
+
+## [2026-11-06 — Real-Time Live Resizing for Array Size Slider]
+
+### Added
+- **Live Dynamic Array Resizing on Slider Input**:
+  - Implemented automatic, real-time resizing in [js/sorting-visualizer.js](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/js/sorting-visualizer.js) and [js/searching-visualizer.js](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/js/searching-visualizer.js) whenever the user slides `#array-size`:
+    - **Increasing (Sliding Right)**: Seamlessly appends new random elements to the array (`(newSize - currentArray.length)` items), immediately generating and placing new bars or cells with their index numbering.
+    - **Decreasing (Sliding Left)**: Cleanly truncates elements from the end to match `newSize`, smoothly adjusting bar widths and re-centering the remaining elements.
+    - **Binary Search Sorting Invariant**: If Binary Search is active, any newly added elements are automatically sorted to maintain the algorithm's ordering requirement.
+    - **Execution Reset**: Automatically resets running states and step counters cleanly without requiring manual "Generate New Array" clicks.
+
+### Verified
+- Created [tests/verify_live_size_slider.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_live_size_slider.py) validating that moving the slider from 15 to 24 dynamically increases DOM bars/cells to 24, sliding down to 7 reduces them to 7, and playback executes correctly.
+- Integrated `verify_live_size_slider.py` as Stage 14 in [tests/run_all_tests.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/run_all_tests.py).
+- Master test runner executed and passed 100% across all 14 test suites.
+
+---
+
+## [2026-11-06 — Hero Section Streamlining & Mobile Visualizer Index Visibility]
+
+### Removed
+- **Hero Pill Badge**:
+  - Removed `<div class="hero-pill"><span class="hero-live-dot"></span> YOUR INTERACTIVE DSA LAB</div>` from [index.html](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/index.html) to keep the hero headline clean and prominent.
+
+### Fixed
+- **Mobile Visualizer Array Index Visibility**:
+  - **Sorting Visualizer**: Added `.bar-index` generation in [js/sorting-visualizer.js](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/js/sorting-visualizer.js) so index values `0, 1, 2...` are rendered directly below each vertical bar.
+  - **Index Centering & Monospace Styling**: Styled `.bar-index` with `left: 50%; transform: translateX(-50%)` and `font-family: var(--font-mono)` so multi-digit numbers align cleanly under narrow mobile bars.
+  - **Searching Multi-Row Occlusion**: Increased `.search-cells` row gap from 10px to `38px` (`40px` on mobile screens < 540px) in [css/visualizer.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/visualizer.css), completely eliminating the issue where wrapped row 2 cells rendered over row 1's `.cell-index`.
+  - **Bottom Padding Clearance**: Set `padding-bottom: 38px` on `.viz-area` and `36px` on `.search-cells-wrapper` across mobile screen media queries, ensuring indices on the bottom row have generous buffer and are never cut off.
+
+### Verified
+- Created [tests/verify_mobile_indexes.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_mobile_indexes.py) verifying index visibility, bounding boxes, and non-overlap across 6 mobile phone viewports (iPhone SE 320px/375px, Galaxy S 360px, iPhone 13-16 390px/430px, Pixel 7/Galaxy S23 412px).
+- Integrated `verify_mobile_indexes.py` as Stage 13 in [tests/run_all_tests.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/run_all_tests.py).
+- Master test runner executed and passed 100% across all 13 test suites.
+
+---
+
 ## [2026-11-06 — Extended Numerical Speed Controls (1x to 6x) for Searching & Sorting Visualizers]
 
 ### Changed
