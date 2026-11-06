@@ -1,10 +1,21 @@
-/* Searchify learning upgrades: optional code trace, Big-O explorer, XP and mini challenge. */
+/* Searchify learning upgrades: live code trace, Big-O explorer, XP and mini challenge. */
 (function () {
   'use strict';
   var STORAGE_KEY = 'searchify-learning-progress-v1';
   var progress = { xp: 0, completedRuns: 0, badges: [] };
   try { progress = Object.assign(progress, JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}')); } catch (e) {}
   var root;
+  var currentAlgorithm = '';
+  var algorithmTitles = {
+    bubbleSort: 'Bubble Sort',
+    selectionSort: 'Selection Sort',
+    insertionSort: 'Insertion Sort',
+    mergeSort: 'Merge Sort',
+    quickSort: 'Quick Sort',
+    linearSearch: 'Linear Search',
+    binarySearch: 'Binary Search'
+  };
+
   function save() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(progress)); } catch (e) {} }
   function escapeHTML(value) {
     return String(value == null ? '' : value).replace(/[&<>"]/g, function (c) {
@@ -43,6 +54,7 @@
     return html;
   }
   function updateProgress() {
+    if (!root) return;
     var level = Math.floor(progress.xp / 100) + 1;
     var xpInLevel = progress.xp % 100;
     var xp = root.querySelector('#sf-xp');
@@ -55,7 +67,7 @@
     if (badges) badges.innerHTML = (progress.badges.length ? progress.badges : ['First Run']).map(function(b){return '<span class="sf-badge">'+escapeHTML(b)+'</span>';}).join('');
   }
   function awardRun() {
-    if (root.dataset.awarded === 'yes') return;
+    if (!root || root.dataset.awarded === 'yes') return;
     root.dataset.awarded = 'yes';
     progress.xp += 25;
     progress.completedRuns += 1;
@@ -65,35 +77,154 @@
     var note = root.querySelector('#sf-xp-note');
     if (note) note.textContent = '+25 XP earned — run completed!';
   }
-  function renderCodeTrace(detail) {
-    var panel = root.querySelector('#sf-code-lines');
+
+  function getPseudocode(algo) {
+    if (!algo) return [];
+    var isSort = algo.indexOf('Sort') !== -1 || (window.SortingAlgorithms && window.SortingAlgorithms.pseudocode && window.SortingAlgorithms.pseudocode[algo]);
+    var library = isSort ? window.SortingAlgorithms : window.SearchingAlgorithms;
+    if (library && library.pseudocode && library.pseudocode[algo]) {
+      return library.pseudocode[algo];
+    }
+    return [];
+  }
+
+  function renderCodeTrace(algo) {
+    var panel = document.getElementById('viz-code-lines');
+    var titleEl = document.getElementById('viz-code-title');
+    var stepBadge = document.getElementById('viz-code-step-badge');
+    var statusEl = document.getElementById('viz-code-status');
+
     if (!panel) return;
-    var algorithm = detail.algorithm;
-    var lines = [];
-    var library = algorithm.indexOf('Sort') !== -1 ? window.SortingAlgorithms : window.SearchingAlgorithms;
-    if (library && library.pseudocode) lines = library.pseudocode[algorithm] || [];
+    currentAlgorithm = algo;
+    var lines = getPseudocode(algo);
+
+    if (titleEl) {
+      titleEl.textContent = (algorithmTitles[algo] || algo) + ' Trace';
+    }
+
     if (!lines.length) {
-      panel.innerHTML = '<p class="sf-muted">Code trace is not available for this algorithm yet.</p>';
+      panel.innerHTML = '<p class="sf-muted" style="padding:10px;margin:0;">Pseudocode is not available for this algorithm.</p>';
       return;
     }
-    var active = Number(detail.step && detail.step.pseudocodeLine);
-    panel.innerHTML = lines.map(function(line, index) {
-      return '<div class="sf-code-line '+(index===active?'active':'')+'"><span>'+(index+1)+'</span><code>'+escapeHTML(line)+'</code></div>';
+
+    panel.innerHTML = lines.map(function (line, index) {
+      return '<div class="viz-code-line" data-line="' + index + '">' +
+        '<span class="line-num">' + (index + 1) + '</span>' +
+        '<code>' + escapeHTML(line) + '</code>' +
+        '</div>';
     }).join('');
-    var current = panel.querySelector('.active');
-    if (current && current.scrollIntoView) current.scrollIntoView({block:'nearest'});
+
+    if (stepBadge) stepBadge.textContent = 'Ready';
+    if (statusEl) statusEl.textContent = 'Ready to trace';
   }
+
+  function highlightTraceStep(detail) {
+    var panel = document.getElementById('viz-code-lines');
+    var stepBadge = document.getElementById('viz-code-step-badge');
+    var statusEl = document.getElementById('viz-code-status');
+
+    if (!panel) return;
+    var algo = detail.algorithm;
+    if (algo && algo !== currentAlgorithm) {
+      renderCodeTrace(algo);
+    }
+
+    var step = detail.step || {};
+    var activeLine = step.pseudocodeLine != null ? Number(step.pseudocodeLine) : -1;
+
+    var lineEls = panel.querySelectorAll('.viz-code-line');
+    var targetEl = null;
+    for (var i = 0; i < lineEls.length; i++) {
+      var lineIdx = Number(lineEls[i].getAttribute('data-line'));
+      if (lineIdx === activeLine) {
+        lineEls[i].classList.add('active');
+        targetEl = lineEls[i];
+      } else {
+        lineEls[i].classList.remove('active');
+      }
+    }
+
+    if (targetEl && targetEl.scrollIntoView) {
+      targetEl.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
+
+    if (stepBadge) {
+      if (detail.currentStep === detail.totalSteps - 1) {
+        stepBadge.textContent = 'Done';
+      } else {
+        stepBadge.textContent = 'Step ' + (detail.currentStep + 1) + ' / ' + detail.totalSteps;
+      }
+    }
+
+    if (statusEl) {
+      if (detail.currentStep === detail.totalSteps - 1) {
+        statusEl.textContent = 'Execution complete 🎉';
+        statusEl.title = 'Execution complete';
+      } else if (activeLine >= 0 && targetEl) {
+        var codeEl = targetEl.querySelector('code');
+        var codeText = codeEl ? codeEl.textContent.trim() : '';
+        statusEl.textContent = 'L' + (activeLine + 1) + ': ' + codeText;
+        statusEl.title = step.explanation || codeText;
+      } else if (step.explanation) {
+        statusEl.textContent = step.explanation;
+        statusEl.title = step.explanation;
+      }
+    }
+  }
+
+  function resetCodeTrace() {
+    var panel = document.getElementById('viz-code-lines');
+    var stepBadge = document.getElementById('viz-code-step-badge');
+    var statusEl = document.getElementById('viz-code-status');
+
+    if (panel) {
+      var lineEls = panel.querySelectorAll('.viz-code-line.active');
+      for (var i = 0; i < lineEls.length; i++) {
+        lineEls[i].classList.remove('active');
+      }
+    }
+    if (stepBadge) stepBadge.textContent = 'Ready';
+    if (statusEl) statusEl.textContent = 'Ready to trace';
+  }
+
   function renderStep(event) {
     var detail = event.detail || {};
-    root.dataset.awarded = 'no';
-    renderCodeTrace(detail);
-    var count = root.querySelector('#sf-step-label');
-    if (count) count.textContent = 'Step ' + (detail.currentStep + 1) + ' of ' + detail.totalSteps;
+    if (root) root.dataset.awarded = 'no';
+    highlightTraceStep(detail);
     if (detail.currentStep === detail.totalSteps - 1) awardRun();
   }
+
   function init() {
     var main = document.querySelector('.viz-content-container');
     if (!main) return;
+
+    // 1. Initialize Right-Side Live Code Trace Panel (80:20 Ratio)
+    var algoSelect = document.getElementById('algorithm-select');
+    var initialAlgo = algoSelect ? algoSelect.value : (window.location.pathname.indexOf('search') !== -1 ? 'linearSearch' : 'bubbleSort');
+    renderCodeTrace(initialAlgo);
+
+    if (algoSelect) {
+      algoSelect.addEventListener('change', function () {
+        renderCodeTrace(this.value);
+      });
+    }
+
+    var toggleBtn = document.getElementById('viz-code-toggle');
+    var wrapper = document.querySelector('.viz-canvas-wrapper');
+    if (toggleBtn && wrapper) {
+      toggleBtn.addEventListener('click', function () {
+        var isCollapsed = wrapper.classList.toggle('code-collapsed');
+        toggleBtn.setAttribute('aria-expanded', String(!isCollapsed));
+        window.dispatchEvent(new Event('resize'));
+      });
+    }
+
+    ['reset-btn', 'restart-btn', 'generate-btn'].forEach(function (id) {
+      var btn = document.getElementById(id);
+      if (btn) btn.addEventListener('click', resetCodeTrace);
+    });
+
+    // 2. Initialize Learning Lab Below Canvas
     root = document.createElement('section');
     root.className = 'sf-learning-lab';
     root.innerHTML =
@@ -102,24 +233,42 @@
         '<article class="sf-lab-card sf-progress-card"><div class="sf-card-top"><h3>Your progress</h3><span id="sf-level">Level 1</span></div><strong id="sf-xp">0 XP</strong><div class="sf-xp-track"><span id="sf-xp-fill"></span></div><div id="sf-badges" class="sf-badges"></div><p id="sf-xp-note" class="sf-muted">Complete a visualization to earn 25 XP.</p></article>'+
         '<article class="sf-lab-card sf-challenge-card"><div class="sf-card-top"><h3>Mini challenge</h3><span class="sf-challenge-tag">QUICK PRACTICE</span></div><p>Sort this array in ascending order using the custom array input above:</p><div class="sf-challenge-array">8 · 3 · 6 · 1 · 5</div><button type="button" id="sf-load-challenge">Load challenge array</button><p class="sf-muted">Choose an algorithm, then step through the solution.</p></article>'+
       '</div>'+
-      '<article class="sf-lab-card sf-trace-card"><div class="sf-card-top"><h3>Live code trace</h3><span id="sf-step-label">Waiting for a step</span></div><details><summary>Show code trace (optional)</summary><div id="sf-code-lines" class="sf-code-lines"><p class="sf-muted">Start a visualization to highlight the active pseudocode line.</p></div></details></article>'+
       '<article class="sf-lab-card sf-complexity-card"><div class="sf-card-top"><h3>Big-O growth explorer</h3><span>Illustrative growth · not benchmark timings</span></div><p class="sf-muted">Compare common time-complexity families as input size increases.</p><div id="sf-complexity-plot">'+complexitySVG(20)+'</div><label class="sf-n-control" for="sf-n-slider">Input size: <strong id="sf-n-value">20</strong><input id="sf-n-slider" type="range" min="1" max="20" value="20"></label><p id="sf-complexity-caption" class="sf-muted">At n = 20, quadratic growth rises much faster than linear growth.</p></article>';
     main.appendChild(root);
     updateProgress();
-    root.querySelector('#sf-load-challenge').addEventListener('click', function(){
-      var input = document.getElementById('custom-array');
-      if (input) { input.value = '8, 3, 6, 1, 5'; input.focus(); }
-      var note = root.querySelector('#sf-xp-note');
-      if (note) note.textContent = 'Challenge loaded. Press Apply above to begin.';
-    });
-    root.querySelector('#sf-n-slider').addEventListener('input', function(){
-      var n = Number(this.value);
-      root.querySelector('#sf-n-value').textContent = n;
-      root.querySelector('#sf-complexity-plot').innerHTML = complexitySVG(n);
-      root.querySelector('#sf-complexity-caption').textContent = 'At n = '+n+', compare the relative growth of the five complexity families. The curves are normalized for learning.';
-    });
+
+    var loadChallengeBtn = root.querySelector('#sf-load-challenge');
+    if (loadChallengeBtn) {
+      loadChallengeBtn.addEventListener('click', function(){
+        var input = document.getElementById('custom-array');
+        if (input) { input.value = '8, 3, 6, 1, 5'; input.focus(); }
+        var note = root.querySelector('#sf-xp-note');
+        if (note) note.textContent = 'Challenge loaded. Press Apply above to begin.';
+      });
+    }
+
+    var nSlider = root.querySelector('#sf-n-slider');
+    if (nSlider) {
+      nSlider.addEventListener('input', function(){
+        var n = Number(this.value);
+        root.querySelector('#sf-n-value').textContent = n;
+        root.querySelector('#sf-complexity-plot').innerHTML = complexitySVG(n);
+        root.querySelector('#sf-complexity-caption').textContent = 'At n = '+n+', compare the relative growth of the five complexity families. The curves are normalized for learning.';
+      });
+    }
+
     window.addEventListener('searchify:step', renderStep);
-    window.addEventListener('searchify:run-reset', function(){ root.dataset.awarded = 'no'; });
+    window.addEventListener('searchify:run-reset', function(){
+      if (root) root.dataset.awarded = 'no';
+      resetCodeTrace();
+    });
+
+    window.CodeTrace = {
+      render: renderCodeTrace,
+      highlight: highlightTraceStep,
+      reset: resetCodeTrace
+    };
   }
+
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();

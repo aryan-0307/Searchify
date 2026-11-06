@@ -100,7 +100,7 @@
                         'The array is empty. Target ' +
                         target +
                         ' cannot be found.',
-                    pseudocodeLine: 1,
+                    pseudocodeLine: 6,
                     counters: {
                         comparisons: 0,
                         elementsExamined: 0,
@@ -274,7 +274,7 @@
                         'The array is empty. Target ' +
                         target +
                         ' cannot be found.',
-                    pseudocodeLine: 1,
+                    pseudocodeLine: 13,
                     counters: {
                         comparisons: 0,
                         elementsExamined: 0,
@@ -396,7 +396,7 @@
                             ' at index ' +
                             mid +
                             '!',
-                        pseudocodeLine: 5,
+                        pseudocodeLine: 6,
                         counters: {
                             comparisons: comparisons,
                             elementsExamined: elementsExamined,
@@ -446,7 +446,7 @@
                             ', eliminate the left half and search right. Set low = ' +
                             (mid + 1) +
                             '.',
-                        pseudocodeLine: 7,
+                        pseudocodeLine: 8,
                         counters: {
                             comparisons: comparisons,
                             elementsExamined: elementsExamined,
@@ -495,7 +495,7 @@
                             ', eliminate the right half and search left. Set high = ' +
                             (mid - 1) +
                             '.',
-                        pseudocodeLine: 9,
+                        pseudocodeLine: 10,
                         counters: {
                             comparisons: comparisons,
                             elementsExamined: elementsExamined,
@@ -531,7 +531,7 @@
                     '). The search range is empty. Target ' +
                     target +
                     ' was not found in the array.',
-                pseudocodeLine: 12,
+                pseudocodeLine: 13,
                 counters: {
                     comparisons: comparisons,
                     elementsExamined: elementsExamined,

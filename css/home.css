@@ -787,6 +787,7 @@ body {
 /* === Sticky Full-Width Navbar & Dynamic Logo Minimization === */
 html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
 }
 
 #playgrounds,
@@ -1159,6 +1160,7 @@ html {
     place-items: center;
     isolation: isolate;
     overflow: hidden;
+    margin: 0;
 }
 
 .hero-art:before {

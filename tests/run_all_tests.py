@@ -153,6 +153,30 @@ if proc_gravity.returncode != 0:
     print("[FAIL] Gravity drop & elastic bounce verification failed.")
     sys.exit(1)
 
+# 16. Semantic HTML5 Tags & SEO Optimization Verification
+print("\n--- 16. Verifying Semantic HTML5 Tags & SEO Optimization ---")
+proc_seo = subprocess.run([sys.executable, "tests/verify_semantic_seo.py"], capture_output=True, text=True, encoding="utf-8")
+print(proc_seo.stdout)
+if proc_seo.returncode != 0:
+    print("[FAIL] Semantic HTML5 tags & SEO verification failed.")
+    sys.exit(1)
+
+# 17. Live Code Trace (80:20 Ratio) Visualizer Panel Verification
+print("\n--- 17. Verifying Live Code Trace (80:20 Ratio) Visualizer Panel ---")
+proc_trace = subprocess.run([sys.executable, "tests/verify_code_trace_panel.py"], capture_output=True, text=True, encoding="utf-8")
+print(proc_trace.stdout)
+if proc_trace.returncode != 0:
+    print("[FAIL] Live code trace verification failed.")
+    sys.exit(1)
+
+# 18. Visualization-to-Pseudocode Synchronization Verification
+print("\n--- 18. Verifying Visualization-to-Pseudocode Synchronization ---")
+proc_sync = subprocess.run([sys.executable, "tests/verify_pseudocode_sync.py"], capture_output=True, text=True, encoding="utf-8")
+print(proc_sync.stdout)
+if proc_sync.returncode != 0:
+    print("[FAIL] Pseudocode synchronization verification failed.")
+    sys.exit(1)
+
 print("\n" + "=" * 60)
 print("ALL VERIFICATIONS COMPLETED SUCCESSFULLY (100% PASS RATE)")
 print("=" * 60)

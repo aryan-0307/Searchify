@@ -4,6 +4,146 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## [2026-11-07 — Perfect Visualization-to-Pseudocode Synchronization]
+
+### Added
+- **Exact Line-by-Line Pseudocode Alignment**:
+  - Audited and realigned every generated step across all 7 algorithms in [js/sorting-algorithms.js](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/js/sorting-algorithms.js) and [js/searching-algorithms.js](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/js/searching-algorithms.js) to resolve systematic 1-2 line index mismatches:
+    - **Bubble Sort**:
+      - Comparisons now highlight `Line 4: if A[j] > A[j+1] then`.
+      - Swaps highlight `Line 5: swap A[j] and A[j+1]`.
+      - In-order non-swaps highlight `Line 7: end if`.
+      - Pass completions highlight `Line 8: end for`.
+      - Early terminations highlight `Line 9: if swapped = false then return`.
+      - Algorithm finish highlights `Line 11: end procedure`.
+    - **Selection Sort**:
+      - Pass start / minimum candidate highlights `Line 2: minIdx = i`.
+      - Comparisons highlight `Line 4: if A[j] < A[minIdx] then`.
+      - New minimum found highlights `Line 5: minIdx = j`.
+      - Swaps into sorted position highlight `Line 8: swap A[i] and A[minIdx]`.
+      - Pass completion highlights `Line 9: end for`.
+      - Final completion highlights `Line 10: end procedure`.
+    - **Insertion Sort**:
+      - Key extraction highlights `Line 2: key = A[i]`.
+      - Comparisons highlight `Line 4: while j >= 0 and A[j] > key`.
+      - Shifts highlight `Line 5: A[j+1] = A[j]`.
+      - Insertion spot found highlights `Line 7: end while`.
+      - Key placement highlights `Line 8: A[j+1] = key`.
+      - Final completion highlights `Line 10: end procedure`.
+    - **Merge Sort**:
+      - Sub-array divide highlights `Line 2: mid = (left + right) / 2`.
+      - Sub-array merge start highlights `Line 7: procedure merge(A, left, mid, right)`.
+      - Sub-array comparisons highlight `Line 9: if leftArr[i] ≤ rightArr[j]`.
+      - Left placements highlight `Line 10: A[k] = leftArr[i]; i++`.
+      - Right placements highlight `Line 12: A[k] = rightArr[j]; j++`.
+      - Copying remaining elements highlights `Line 14: copy remaining elements`.
+      - Merge and full completion highlight `Line 15: end procedure`.
+    - **Quick Sort**:
+      - Partition start and pivot selection highlight `Line 6: pivot = A[high]`.
+      - Pivot comparisons highlight `Line 9: if A[j] ≤ pivot then`.
+      - Partition swaps highlight `Line 10: i++; swap A[i] and A[j]`.
+      - Stays on right side highlights `Line 11: end if`.
+      - Pivot positioning swaps highlight `Line 12: swap A[i+1] and A[high]`.
+      - Final pivot return highlights `Line 13: return i + 1`.
+      - Final completion highlights `Line 14: end procedure`.
+    - **Linear Search**:
+      - Element comparisons highlight `Line 2: if A[i] == target then`.
+      - Target match highlights `Line 3: return i`.
+      - Empty array and absent target highlight `Line 6: return -1`.
+    - **Binary Search**:
+      - Range initialization highlights `Line 1: low = 0`.
+      - Target match highlights `Line 6: return mid`.
+      - Range elimination (search right) highlights `Line 8: low = mid + 1`.
+      - Range elimination (search left) highlights `Line 10: high = mid - 1`.
+      - Empty range / not found highlights `Line 13: return -1`.
+- **UI & Active Code Enhancements**:
+  - Added CSS active line arrow indicator `▶` on `.viz-code-line.active::after`.
+  - Added live `L<num>: <code>` preview in the status footer with tooltip explanation.
+
+### Verified
+- Created [tests/verify_pseudocode_sync.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_pseudocode_sync.py) verifying 100% bounds validity and exact semantic mapping between visualizer operations and pseudocode statements.
+- Integrated as Stage 18 in [tests/run_all_tests.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/run_all_tests.py) with 100% pass across all 18 test suites.
+
+---
+
+## [2026-11-07 — Live Code Trace (80:20 Ratio) Visualizer Panel]
+
+### Added
+- **Live Code Trace Demonstration in Visualizer Canvas**:
+  - Embedded `<aside class="viz-code-panel" id="viz-code-panel" aria-label="Live code trace demonstration">` directly inside `<section class="viz-canvas-wrapper">` side-by-side with `<figure class="viz-area" id="visualization-area">` on both [sorting.html](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/sorting.html) and [searching.html](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/searching.html).
+  - Configured exact **80:20 space sharing** in [css/visualizer.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/visualizer.css) via `grid-template-columns: 80% 20%`.
+  - Added full visualizer palette styling:
+    - Pulsing `LIVE CODE` badge with glowing dot animation.
+    - Algorithm Trace title that syncs dynamically with the selected algorithm.
+    - Active step badge (`Ready`, `Step X / Y`, `Done`).
+    - Expand/collapse toggle button `#viz-code-toggle` with smooth `.code-collapsed` state transition.
+    - Monospaced code line listing with line numbers, hover effects, and distinct active line highlighting (`#FFF0F6` background with vibrant pink border accent).
+    - Status footer showing current step operation and pseudocode tag.
+    - Responsive stacked adaptation below 860px width ensuring mobile viewports retain 100% width for unclipped array index numbers.
+- **Dynamic Controller Integration in [js/learning-features.js](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/js/learning-features.js)**:
+  - Renders the complete pseudocode for the currently selected algorithm on initial page load.
+  - Automatically re-renders pseudocode lines and header title whenever the algorithm selection changes in `#algorithm-select`.
+  - Dynamically highlights executing pseudocode lines on every `searchify:step` event, smoothly auto-scrolling active lines into view.
+  - Resets active highlights and restores `Ready` badge upon `#reset-btn`, `#restart-btn`, `#generate-btn` clicks and `searchify:run-reset` events.
+  - Removed duplicate code trace card from the bottom learning lab.
+- **Visualizer Layout & Resizing in [js/sorting-visualizer.js](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/js/sorting-visualizer.js)**:
+  - Added debounced window resize handler to automatically recalculate and re-render bar widths when window or layout changes occur.
+
+### Verified
+- Created [tests/verify_code_trace_panel.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_code_trace_panel.py) verifying:
+  - 80.00% viz area to 20.00% code panel ratio on desktop viewports.
+  - Pseudocode line rendering across all algorithms.
+  - Real-time active line highlighting during step execution.
+  - Collapse and re-expansion toggle operation.
+- Added as Stage 17 in [tests/run_all_tests.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/run_all_tests.py).
+- Master test runner executed and passed 100% across all 17 test suites.
+
+---
+
+## [2026-11-06 — Semantic HTML5 Conversion & Comprehensive SEO Optimization]
+
+### Added
+- **Semantic HTML5 Tag Restructuring**:
+  - Replaced generic non-semantic `<div>` elements across all three site pages with meaningful HTML5 landmark and content-sectioning elements:
+    - **index.html**:
+      - `<header class="home-nav" role="banner">` for the top navigation bar.
+      - `<main class="home-container" id="main-content">` for the primary page document.
+      - `<header class="hero-copy">` encapsulating the hero headline, badge, and intro copy.
+      - `<nav class="hero-actions" aria-label="Hero actions">` for primary CTA links.
+      - `<aside class="hero-proof" aria-label="Social proof">` for the user metric callout.
+      - `<figure class="hero-art" aria-hidden="true">` for the decorative interactive orbit illustration.
+      - `<section class="home-playgrounds" aria-labelledby="playgrounds-heading">` for the playground modules.
+      - `<article class="card-inner">` inside `a.home-card` providing semantic article representation for both Searching and Sorting cards.
+      - `<header class="card-header">`, `<figure class="mini-viz">`, and `<footer class="card-footer">` inside playground cards.
+      - `<header class="home-demo-heading">`, `<figure class="home-demo-bars">`, and `<nav class="home-demo-actions">` inside the live interactive playground preview.
+      - `<footer class="home-footer" role="contentinfo">` with `<nav class="home-footer-links" aria-label="Footer links">` for footer branding and navigation.
+    - **sorting.html**:
+      - `<header class="viz-header" role="banner">` with `<hgroup class="viz-header-title-group">` and `<aside class="viz-header-controls">`.
+      - `<nav class="viz-controls" aria-label="Algorithm Controls">` containing `<section class="controls-cluster">` blocks.
+      - `<main class="viz-content-container" id="main-content">` holding `<figure class="viz-area" aria-label="Sorting Visualization Canvas">`.
+      - `<aside class="color-legend">` and `<aside id="completion-banner">`.
+      - `<section class="progress-section">` and `<section class="interactive-row">`.
+      - `<article class="interactive-col explanation-col">` and `<article class="interactive-col stats-col">`.
+      - `<article class="counter-card">` for metrics and operations.
+      - `<footer class="viz-footer" role="contentinfo">`.
+    - **searching.html**:
+      - Parallel semantic structure matching `sorting.html` (`<header role="banner">`, `<hgroup>`, `<aside class="viz-header-controls">`, `<nav class="viz-controls">`, `<section class="controls-cluster">`, `<main id="main-content">`, `<figure class="viz-area">`, `<aside class="color-legend">`, `<aside id="completion-banner">`, `<article class="counter-card">`, and `<footer class="viz-footer" role="contentinfo">`).
+- **Comprehensive SEO & Social Graph Metadata**:
+  - Primary SEO Meta: `<title>`, `<meta name="description">`, `<meta name="keywords">`, `<meta name="author">`, `<meta name="robots" content="index, follow">`, canonical link `<link rel="canonical">`.
+  - Open Graph Meta: `og:title`, `og:description`, `og:type`, `og:site_name`, `og:url`.
+  - Twitter Card Meta: `twitter:card`, `twitter:title`, `twitter:description`.
+- **CSS Semantic Tag Styles & Fixes**:
+  - Added `.viz-footer` in [css/visualizer.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/visualizer.css).
+  - Added `overflow-x: hidden;` to `html` in [css/home.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/home.css) to eliminate horizontal scrollbar caused by decorative sub-pixel rotated background orbits on tablet viewports.
+  - Added `margin: 0;` to `.hero-art` and `.mini-viz` resetting default browser `<figure>` margins.
+
+### Verified
+- Created [tests/verify_semantic_seo.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_semantic_seo.py) to validate semantic markup and SEO metadata across all three pages.
+- Integrated as Stage 16 in [tests/run_all_tests.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/run_all_tests.py).
+- Verified 100% pass rate across all 16 automated test suites.
+
+---
+
 ## [2026-11-06 — Reverse Gravity Launch Physics for Decreasing Array Size]
 
 ### Added

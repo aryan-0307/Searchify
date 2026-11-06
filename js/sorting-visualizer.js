@@ -87,6 +87,16 @@
                 case 'R': onReset(); break;
             }
         });
+
+        var resizeTimer;
+        window.addEventListener('resize', function () {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(function () {
+                if (currentArray && currentArray.length && !isPlaying) {
+                    renderBars(currentArray);
+                }
+            }, 60);
+        });
     }
 
     /* ---------- handlers ---------- */

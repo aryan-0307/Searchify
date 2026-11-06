@@ -32,3 +32,4 @@ if not has_error:
     sys.exit(0)
 else:
     sys.exit(1)
+

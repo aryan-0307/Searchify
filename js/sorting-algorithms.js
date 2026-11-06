@@ -91,7 +91,7 @@
                 // Comparing
                 counters.comparisons++;
                 counters.step++;
-                steps.push(makeStep(arr, [j, j + 1], [], [...sorted], [], `Compare ${arr[j]} and ${arr[j + 1]} at indices ${j} and ${j + 1}.`, 3, counters));
+                steps.push(makeStep(arr, [j, j + 1], [], [...sorted], [], `Compare ${arr[j]} and ${arr[j + 1]} at indices ${j} and ${j + 1}.`, 4, counters));
 
                 if (outOfOrder(arr[j], arr[j + 1], order)) {
                     // Swap
@@ -102,17 +102,17 @@
                     swapped = true;
 
                     counters.step++;
-                    steps.push(makeStep(arr, [], [j, j + 1], [...sorted], [], `Since ${arr[j + 1]} ${cmpSymbol(order)} ${arr[j]}, swap their positions.`, 4, counters));
+                    steps.push(makeStep(arr, [], [j, j + 1], [...sorted], [], `Since ${arr[j + 1]} ${cmpSymbol(order)} ${arr[j]}, swap their positions.`, 5, counters));
                 } else {
                     counters.step++;
-                    steps.push(makeStep(arr, [j, j + 1], [], [...sorted], [], `${arr[j]} ${inOrderSymbol(order)} ${arr[j + 1]}, no swap needed.`, 5, counters));
+                    steps.push(makeStep(arr, [j, j + 1], [], [...sorted], [], `${arr[j]} ${inOrderSymbol(order)} ${arr[j + 1]}, no swap needed.`, 7, counters));
                 }
             }
 
             // Mark last unsorted position as sorted
             sorted.push(n - 1 - i);
             counters.step++;
-            steps.push(makeStep(arr, [], [], [...sorted], [], `End of pass ${i + 1}. Element ${arr[n - 1 - i]} at index ${n - 1 - i} is now in its final position.`, 7, counters));
+            steps.push(makeStep(arr, [], [], [...sorted], [], `End of pass ${i + 1}. Element ${arr[n - 1 - i]} at index ${n - 1 - i} is now in its final position.`, 8, counters));
 
             if (!swapped) {
                 // Early termination — mark all remaining as sorted
@@ -121,7 +121,7 @@
                 }
                 sorted.sort((a, b) => a - b);
                 counters.step++;
-                steps.push(makeStep(arr, [], [], [...sorted], [], 'No swaps occurred in this pass. Array is sorted — early termination!', 8, counters));
+                steps.push(makeStep(arr, [], [], [...sorted], [], 'No swaps occurred in this pass. Array is sorted — early termination!', 9, counters));
                 return steps;
             }
         }
@@ -131,7 +131,7 @@
         sorted.sort((a, b) => a - b);
 
         counters.step++;
-        steps.push(makeStep(arr, [], [], [...sorted], [], 'Bubble Sort complete. All elements are in their final positions.', 8, counters));
+        steps.push(makeStep(arr, [], [], [...sorted], [], 'Bubble Sort complete. All elements are in their final positions.', 11, counters));
 
         return steps;
     }
@@ -161,17 +161,17 @@
 
             // Show starting search
             counters.step++;
-            steps.push(makeStep(arr, [], [], [...sorted], [i], `Pass ${i + 1}: Find the ${order === 'asc' ? 'minimum' : 'maximum'} in the unsorted portion (indices ${i} to ${n - 1}). Current ${order === 'asc' ? 'minimum' : 'maximum'}: ${arr[i]} at index ${i}.`, 1, counters));
+            steps.push(makeStep(arr, [], [], [...sorted], [i], `Pass ${i + 1}: Find the ${order === 'asc' ? 'minimum' : 'maximum'} in the unsorted portion (indices ${i} to ${n - 1}). Current ${order === 'asc' ? 'minimum' : 'maximum'}: ${arr[i]} at index ${i}.`, 2, counters));
 
             for (let j = i + 1; j < n; j++) {
                 counters.comparisons++;
                 counters.step++;
-                steps.push(makeStep(arr, [extremeIdx, j], [], [...sorted], [i], `Compare current ${order === 'asc' ? 'minimum' : 'maximum'} ${arr[extremeIdx]} (index ${extremeIdx}) with ${arr[j]} (index ${j}).`, 3, counters));
+                steps.push(makeStep(arr, [extremeIdx, j], [], [...sorted], [i], `Compare current ${order === 'asc' ? 'minimum' : 'maximum'} ${arr[extremeIdx]} (index ${extremeIdx}) with ${arr[j]} (index ${j}).`, 4, counters));
 
                 if (outOfOrder(arr[extremeIdx], arr[j], order)) {
                     extremeIdx = j;
                     counters.step++;
-                    steps.push(makeStep(arr, [extremeIdx], [], [...sorted], [i], `New ${order === 'asc' ? 'minimum' : 'maximum'} found: ${arr[extremeIdx]} at index ${extremeIdx}.`, 4, counters));
+                    steps.push(makeStep(arr, [extremeIdx], [], [...sorted], [i], `New ${order === 'asc' ? 'minimum' : 'maximum'} found: ${arr[extremeIdx]} at index ${extremeIdx}.`, 5, counters));
                 }
             }
 
@@ -182,21 +182,21 @@
                 arr[extremeIdx] = tmp;
 
                 counters.step++;
-                steps.push(makeStep(arr, [], [i, extremeIdx], [...sorted], [], `The ${order === 'asc' ? 'minimum' : 'maximum'} value in the unsorted portion is ${arr[i]} (was at index ${extremeIdx}). Swap it with position ${i}.`, 6, counters));
+                steps.push(makeStep(arr, [], [i, extremeIdx], [...sorted], [], `The ${order === 'asc' ? 'minimum' : 'maximum'} value in the unsorted portion is ${arr[i]} (was at index ${extremeIdx}). Swap it with position ${i}.`, 8, counters));
             } else {
                 counters.step++;
-                steps.push(makeStep(arr, [], [], [...sorted], [], `The ${order === 'asc' ? 'minimum' : 'maximum'} ${arr[i]} is already at position ${i}. No swap needed.`, 6, counters));
+                steps.push(makeStep(arr, [], [], [...sorted], [], `The ${order === 'asc' ? 'minimum' : 'maximum'} ${arr[i]} is already at position ${i}. No swap needed.`, 8, counters));
             }
 
             sorted.push(i);
             counters.step++;
-            steps.push(makeStep(arr, [], [], [...sorted], [], `Element ${arr[i]} is now in its final position at index ${i}.`, 7, counters));
+            steps.push(makeStep(arr, [], [], [...sorted], [], `Element ${arr[i]} is now in its final position at index ${i}.`, 9, counters));
         }
 
         // Last element is automatically sorted
         sorted.push(n - 1);
         counters.step++;
-        steps.push(makeStep(arr, [], [], [...sorted], [], 'Selection Sort complete. All elements are in their final positions.', 8, counters));
+        steps.push(makeStep(arr, [], [], [...sorted], [], 'Selection Sort complete. All elements are in their final positions.', 10, counters));
 
         return steps;
     }
@@ -255,7 +255,7 @@
                     j--;
                 } else {
                     counters.step++;
-                    steps.push(makeStep(arr, [], [], [...sorted], [], `${arr[j]} ${inOrderSymbol(order)} ${key}, found the correct insertion position.`, 6, counters));
+                    steps.push(makeStep(arr, [], [], [...sorted], [], `${arr[j]} ${inOrderSymbol(order)} ${key}, found the correct insertion position.`, 7, counters));
                     break;
                 }
             }
@@ -267,14 +267,14 @@
 
             counters.step++;
             if (shifted) {
-                steps.push(makeStep(arr, [], [j + 1], [...sorted], [], `Insert ${key} at index ${j + 1}. The sorted portion now has ${sorted.length} elements.`, 7, counters));
+                steps.push(makeStep(arr, [], [j + 1], [...sorted], [], `Insert ${key} at index ${j + 1}. The sorted portion now has ${sorted.length} elements.`, 8, counters));
             } else {
-                steps.push(makeStep(arr, [], [], [...sorted], [], `${key} is already in its correct position at index ${j + 1}. The sorted portion now has ${sorted.length} elements.`, 7, counters));
+                steps.push(makeStep(arr, [], [], [...sorted], [], `${key} is already in its correct position at index ${j + 1}. The sorted portion now has ${sorted.length} elements.`, 8, counters));
             }
         }
 
         counters.step++;
-        steps.push(makeStep(arr, [], [], [...sorted], [], 'Insertion Sort complete. All elements are in their final positions.', 8, counters));
+        steps.push(makeStep(arr, [], [], [...sorted], [], 'Insertion Sort complete. All elements are in their final positions.', 10, counters));
 
         return steps;
     }
@@ -324,7 +324,7 @@
             for (let i = left; i <= right; i++) mergeIndices.push(i);
 
             counters.step++;
-            steps.push(makeStep(arr, [], [], [...finalSorted], mergeIndices, `Merge sub-arrays [${left}..${mid}] and [${mid + 1}..${right}].`, 4, counters));
+            steps.push(makeStep(arr, [], [], [...finalSorted], mergeIndices, `Merge sub-arrays [${left}..${mid}] and [${mid + 1}..${right}].`, 7, counters));
 
             const leftArr = arr.slice(left, mid + 1);
             const rightArr = arr.slice(mid + 1, right + 1);
@@ -340,7 +340,7 @@
                 const rightIdx = mid + 1 + j;
 
                 counters.step++;
-                steps.push(makeStep(arr, [leftIdx, rightIdx], [], [...finalSorted], mergeIndices, `Compare ${leftArr[i]} (left sub-array) with ${rightArr[j]} (right sub-array).`, 6, counters));
+                steps.push(makeStep(arr, [leftIdx, rightIdx], [], [...finalSorted], mergeIndices, `Compare ${leftArr[i]} (left sub-array) with ${rightArr[j]} (right sub-array).`, 9, counters));
 
                 if (!outOfOrder(leftArr[i], rightArr[j], order)) {
                     // leftArr[i] goes first
@@ -348,7 +348,7 @@
                     counters.swaps++;
 
                     counters.step++;
-                    steps.push(makeStep(arr, [], [k], [...finalSorted], mergeIndices, `${leftArr[i]} ${inOrderSymbol(order)} ${rightArr[j]}, place ${leftArr[i]} at index ${k}.`, 7, counters));
+                    steps.push(makeStep(arr, [], [k], [...finalSorted], mergeIndices, `${leftArr[i]} ${inOrderSymbol(order)} ${rightArr[j]}, place ${leftArr[i]} at index ${k}.`, 10, counters));
                     i++;
                 } else {
                     // rightArr[j] goes first
@@ -356,7 +356,7 @@
                     counters.swaps++;
 
                     counters.step++;
-                    steps.push(makeStep(arr, [], [k], [...finalSorted], mergeIndices, `${rightArr[j]} comes before ${leftArr[i]}, place ${rightArr[j]} at index ${k}.`, 8, counters));
+                    steps.push(makeStep(arr, [], [k], [...finalSorted], mergeIndices, `${rightArr[j]} comes before ${leftArr[i]}, place ${rightArr[j]} at index ${k}.`, 12, counters));
                     j++;
                 }
                 k++;
@@ -368,7 +368,7 @@
                 counters.swaps++;
 
                 counters.step++;
-                steps.push(makeStep(arr, [], [k], [...finalSorted], mergeIndices, `Copy remaining element ${leftArr[i]} from left sub-array to index ${k}.`, 10, counters));
+                steps.push(makeStep(arr, [], [k], [...finalSorted], mergeIndices, `Copy remaining element ${leftArr[i]} from left sub-array to index ${k}.`, 14, counters));
                 i++;
                 k++;
             }
@@ -379,7 +379,7 @@
                 counters.swaps++;
 
                 counters.step++;
-                steps.push(makeStep(arr, [], [k], [...finalSorted], mergeIndices, `Copy remaining element ${rightArr[j]} from right sub-array to index ${k}.`, 11, counters));
+                steps.push(makeStep(arr, [], [k], [...finalSorted], mergeIndices, `Copy remaining element ${rightArr[j]} from right sub-array to index ${k}.`, 14, counters));
                 j++;
                 k++;
             }
@@ -393,7 +393,7 @@
             }
 
             counters.step++;
-            steps.push(makeStep(arr, [], [], [...finalSorted], mergeIndices, `Merge of [${left}..${right}] complete. Sub-array is now sorted.`, 12, counters));
+            steps.push(makeStep(arr, [], [], [...finalSorted], mergeIndices, `Merge of [${left}..${right}] complete. Sub-array is now sorted.`, 15, counters));
         }
 
         mergeSortRecursive(0, n - 1);
@@ -403,7 +403,7 @@
         for (let i = 0; i < n; i++) allIndices.push(i);
 
         counters.step++;
-        steps.push(makeStep(arr, [], [], allIndices, [], 'Merge Sort complete. All elements are in their final positions.', 13, counters));
+        steps.push(makeStep(arr, [], [], allIndices, [], 'Merge Sort complete. All elements are in their final positions.', 15, counters));
 
         return steps;
     }
@@ -442,14 +442,14 @@
             // Partition
             const pivotVal = arr[high];
             counters.step++;
-            steps.push(makeStep(arr, [], [], [...finalSorted], [high], `Partition [${low}..${high}]. Pivot is ${pivotVal} (last element, index ${high}).`, 3, counters));
+            steps.push(makeStep(arr, [], [], [...finalSorted], [high], `Partition [${low}..${high}]. Pivot is ${pivotVal} (last element, index ${high}).`, 6, counters));
 
             let i = low - 1;
 
             for (let j = low; j < high; j++) {
                 counters.comparisons++;
                 counters.step++;
-                steps.push(makeStep(arr, [j], [], [...finalSorted], [high], `Compare ${arr[j]} at index ${j} with pivot ${pivotVal}.`, 5, counters));
+                steps.push(makeStep(arr, [j], [], [...finalSorted], [high], `Compare ${arr[j]} at index ${j} with pivot ${pivotVal}.`, 9, counters));
 
                 if (!outOfOrder(arr[j], pivotVal, order)) {
                     // arr[j] should go to the left side of pivot
@@ -461,14 +461,14 @@
                         arr[j] = tmp;
 
                         counters.step++;
-                        steps.push(makeStep(arr, [], [i, j], [...finalSorted], [high], `${arr[i]} ${inOrderSymbol(order)} ${pivotVal}, swap elements at indices ${i} and ${j}.`, 7, counters));
+                        steps.push(makeStep(arr, [], [i, j], [...finalSorted], [high], `${arr[i]} ${inOrderSymbol(order)} ${pivotVal}, swap elements at indices ${i} and ${j}.`, 10, counters));
                     } else {
                         counters.step++;
-                        steps.push(makeStep(arr, [], [], [...finalSorted], [high], `${arr[i]} ${inOrderSymbol(order)} ${pivotVal}, element is already in the correct partition.`, 7, counters));
+                        steps.push(makeStep(arr, [], [], [...finalSorted], [high], `${arr[i]} ${inOrderSymbol(order)} ${pivotVal}, element is already in the correct partition.`, 10, counters));
                     }
                 } else {
                     counters.step++;
-                    steps.push(makeStep(arr, [j], [], [...finalSorted], [high], `${arr[j]} ${cmpSymbol(order)} ${pivotVal}, it stays on the ${order === 'asc' ? 'right' : 'left'} side.`, 8, counters));
+                    steps.push(makeStep(arr, [j], [], [...finalSorted], [high], `${arr[j]} ${cmpSymbol(order)} ${pivotVal}, it stays on the ${order === 'asc' ? 'right' : 'left'} side.`, 11, counters));
                 }
             }
 
@@ -481,16 +481,16 @@
                 arr[high] = tmp;
 
                 counters.step++;
-                steps.push(makeStep(arr, [], [pivotIdx, high], [...finalSorted], [pivotIdx], `Place pivot ${pivotVal} in its correct position at index ${pivotIdx}.`, 9, counters));
+                steps.push(makeStep(arr, [], [pivotIdx, high], [...finalSorted], [pivotIdx], `Place pivot ${pivotVal} in its correct position at index ${pivotIdx}.`, 12, counters));
             } else {
                 counters.step++;
-                steps.push(makeStep(arr, [], [], [...finalSorted], [pivotIdx], `Pivot ${pivotVal} is already in its correct position at index ${pivotIdx}.`, 9, counters));
+                steps.push(makeStep(arr, [], [], [...finalSorted], [pivotIdx], `Pivot ${pivotVal} is already in its correct position at index ${pivotIdx}.`, 12, counters));
             }
 
             // Mark pivot as sorted
             if (!finalSorted.includes(pivotIdx)) finalSorted.push(pivotIdx);
             counters.step++;
-            steps.push(makeStep(arr, [], [], [...finalSorted], [pivotIdx], `Pivot ${pivotVal} is now at its final position (index ${pivotIdx}). Elements to the left are ${order === 'asc' ? 'smaller' : 'larger'}, elements to the right are ${order === 'asc' ? 'larger' : 'smaller'}.`, 10, counters));
+            steps.push(makeStep(arr, [], [], [...finalSorted], [pivotIdx], `Pivot ${pivotVal} is now at its final position (index ${pivotIdx}). Elements to the left are ${order === 'asc' ? 'smaller' : 'larger'}, elements to the right are ${order === 'asc' ? 'larger' : 'smaller'}.`, 13, counters));
 
             // Recurse
             quickSortRecursive(low, pivotIdx - 1);
@@ -504,7 +504,7 @@
         for (let i = 0; i < n; i++) allIndices.push(i);
 
         counters.step++;
-        steps.push(makeStep(arr, [], [], allIndices, [], 'Quick Sort complete. All elements are in their final positions.', 11, counters));
+        steps.push(makeStep(arr, [], [], allIndices, [], 'Quick Sort complete. All elements are in their final positions.', 14, counters));
 
         return steps;
     }
