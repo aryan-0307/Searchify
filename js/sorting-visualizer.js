@@ -140,6 +140,9 @@
         }
 
         var area = el.vizArea;
+        var oldLaunching = area.querySelectorAll('.bar-launching');
+        for (var ol = 0; ol < oldLaunching.length; ol++) oldLaunching[ol].remove();
+
         var existingBars = area.querySelectorAll('.bar');
 
         if (existingBars.length === 0) {
@@ -227,9 +230,57 @@
                 area.appendChild(newBar);
             }
         } else if (newSize < prevSize) {
-            // Remove excess bars immediately from the end
-            for (var k = existingBars.length - 1; k >= newSize; k--) {
-                existingBars[k].remove();
+            // Capture positions of bars to launch upwards in reverse physics
+            var barsToLaunch = [];
+            var areaRect = area.getBoundingClientRect();
+            for (var k = newSize; k < existingBars.length; k++) {
+                var oldBar = existingBars[k];
+                var barRect = oldBar.getBoundingClientRect();
+                var leftOffset = barRect.left - areaRect.left;
+                var bottomOffset = areaRect.bottom - barRect.bottom;
+                var barW = oldBar.offsetWidth;
+                var barH = oldBar.offsetHeight;
+                var valLabel = oldBar.querySelector('.bar-label');
+                var idxLabel = oldBar.querySelector('.bar-index');
+                barsToLaunch.push({
+                    left: leftOffset,
+                    bottom: bottomOffset,
+                    width: barW,
+                    height: barH,
+                    val: valLabel ? valLabel.textContent : '',
+                    idx: idxLabel ? idxLabel.textContent : '',
+                    stagger: k - newSize
+                });
+                oldBar.remove();
+            }
+
+            // Launch removed bars into sky with reverse gravity bounce physics
+            for (var l = 0; l < barsToLaunch.length; l++) {
+                var info = barsToLaunch[l];
+                var launchBar = document.createElement('div');
+                launchBar.className = 'bar-launching';
+                launchBar.style.left = info.left + 'px';
+                launchBar.style.bottom = info.bottom + 'px';
+                launchBar.style.width = info.width + 'px';
+                launchBar.style.height = info.height + 'px';
+                launchBar.style.animationDelay = Math.min(0.2, info.stagger * 0.035) + 's';
+
+                if (info.val) {
+                    var vl = document.createElement('span');
+                    vl.className = 'bar-label';
+                    vl.textContent = info.val;
+                    launchBar.appendChild(vl);
+
+                    var il = document.createElement('span');
+                    il.className = 'bar-index-launching';
+                    il.textContent = info.idx;
+                    launchBar.appendChild(il);
+                }
+
+                launchBar.addEventListener('animationend', function () {
+                    this.remove();
+                });
+                area.appendChild(launchBar);
             }
 
             // Update remaining bars: smoothly expand width via CSS transition
@@ -399,6 +450,10 @@
         if (el.canvasStatusText) el.canvasStatusText.textContent = 'Ready';
         if (el.canvasStatusPill) el.canvasStatusPill.className = 'canvas-status-pill';
         if (el.completionBanner) el.completionBanner.classList.remove('show');
+        if (el.vizArea) {
+            var launching = el.vizArea.querySelectorAll('.bar-launching');
+            for (var li = 0; li < launching.length; li++) launching[li].remove();
+        }
         window.dispatchEvent(new CustomEvent('searchify:run-reset'));
     }
 

@@ -4,32 +4,26 @@
 Transform the AlgoViz homepage (`index.html`) from a plain static page into a modern, visually engaging, interactive algorithm playground. Upgrade typography to Bricolage Grotesque, elevate the hero container with subtle grid textures and depth, and transform the two cards (Searching & Sorting) with custom icons, miniature animated visualizations (step scanning for Searching, smooth ascending reordering for Sorting), descriptive lines, and responsive layout, without modifying visualizer pages or algorithm logic.
 
 ## Current Phase
-Phase 21 — Natural Gravity Drop & Elastic Bounce Physics for Visualizer Slider Operations
+Phase 22 — Reverse Gravity Launch Physics for Decreasing Visualizer Array Size
 
 ## Status
 COMPLETE
 
 ## Current Task
-Implemented natural gravity free fall and elastic ground impact bounce physics for adding elements when sliding the array size slider, with smooth transitions when decreasing array size.
+Implemented reverse gravity launch and catapult physics (`@keyframes gravity-launch`) when decreasing array size on the slider: removed elements crouch/compress deep against the floor to load spring energy, catapult vertically upward into the sky ($y = -140\text{px}$) with upward acceleration, and fade out cleanly.
 
 ## Last Completed Task
-- **Natural Gravity Free Fall & Elastic Bounce Physics**:
-  - Implemented `@keyframes gravity-fall` in `css/visualizer.css`:
-    - Accelerates downward under gravity from $y = -140\text{px}$.
-    - Ground impact ($t \approx 44\%$) at $y = 0$.
-    - Elastic ground compression ($t \approx 50\%$) with squash `scaleY(0.82) scaleX(1.12)` anchored at `transform-origin: bottom center`.
-    - Restitution rebound apex ($t \approx 70\%$) to $y = -22\text{px}$.
-    - Secondary touchdown and micro-bounce ($t \approx 91\%$).
-    - Full rest settle at $y = 0, \text{scale} = 1$.
-  - Updated `onSizeChange()` in `js/sorting-visualizer.js`:
-    - Existing bars smoothly resize widths via CSS `transition: width 0.18s cubic-bezier(0.2, 0.8, 0.2, 1)`.
-    - Newly added bars receive `.bar.drop-in` with staggered delays and attached `.bar-index` labels.
-    - Decreasing slider smoothly trims excess bars and remaining bars expand width seamlessly.
-  - Updated `onSizeChange()` in `js/searching-visualizer.js`:
-    - Newly added cells drop from above with staggered `.cell.drop-in` and attached `.cell-index`.
-  - Added accessibility support with `@media (prefers-reduced-motion: reduce)`.
-  - Created `tests/verify_gravity_animation.py` and integrated into `tests/run_all_tests.py` as Stage 15.
-  - 100% pass rate across all 15 test suites in master verification runner.
+- **Reverse Gravity Launch Physics**:
+  - Implemented `@keyframes gravity-launch` in `css/visualizer.css`:
+    - Starting baseline rest ($y = 0, \text{scale} = 1$).
+    - Pre-launch micro-hop to $y = -5\text{px}$.
+    - Touchdown and deep ground compression squash (`scaleY(0.82) scaleX(1.12)` anchored at `transform-origin: bottom center`).
+    - Elastic release and upward catapult ascent.
+    - Departure into sky ($y = -140\text{px}$, `scaleY(1.08) scaleX(0.94)`, `opacity: 0`).
+  - Added `.bar-launching` and `.cell-launching` absolute flight elements with `.bar-index-launching` and `.cell-index-launching`.
+  - Updated `onSizeChange()` in `js/sorting-visualizer.js` and `js/searching-visualizer.js` to convert removed elements into launching elements at their exact screen coordinates.
+  - Updated `tests/verify_gravity_animation.py` to assert both forward fall and reverse launch animations.
+  - Executed and passed 100% across all 15 test suites in `tests/run_all_tests.py`.
 
 ## Completed Work
 - Empty custom input "Apply" click UX fixed with guidance prompt across both Searching and Sorting visualizers.

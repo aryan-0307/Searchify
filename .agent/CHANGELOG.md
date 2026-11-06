@@ -4,6 +4,33 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## [2026-11-06 — Reverse Gravity Launch Physics for Decreasing Array Size]
+
+### Added
+- **Reverse Gravity Launch & Catapult Keyframes (`@keyframes gravity-launch`)**:
+  - Implemented the exact mathematical and physical time-reversal of the gravity bounce curve in [css/visualizer.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/visualizer.css):
+    - **Resting Baseline Equilibrium ($t = 0\%$)**: Elements start at rest on the ground ($y = 0, \text{scale} = 1$).
+    - **Pre-Launch Micro-Hop ($t \approx 9\%$)**: A small preparatory upward hop to $y = -5\text{px}$.
+    - **Pre-Load Descent & Deep Elastic Ground Compression ($t \approx 18\% - 50\%$)**: Rebounds back down and compresses deep into the baseline floor (`scaleY(0.82) scaleX(1.12)` anchored at `transform-origin: bottom center`) to store maximum kinetic launch energy.
+    - **Elastic Spring Decompression & Catapult Ascent ($t \approx 56\% - 84\%$)**: Rapidly decompresses and shoots vertically off the ground with accelerating upward velocity.
+    - **Sky Departure ($t = 100\%$)**: Catapults high into the sky ($y = -140\text{px}$, vertically elongated `scaleY(1.08) scaleX(0.94)`) and fades out (`opacity: 0`), cleanly vanishing.
+- **Reverse Physics Flight Engine for Slider Removal**:
+  - **Sorting Visualizer** in [js/sorting-visualizer.js](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/js/sorting-visualizer.js):
+    - When reducing array size via slider, bars being removed are converted to `.bar-launching` at their exact absolute pixel coordinates, displaying `.bar-index-launching`.
+    - Removed bars execute the reverse gravity catapult into the sky, while remaining bars smoothly expand and glide into place via CSS transition.
+  - **Searching Visualizer** in [js/searching-visualizer.js](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/js/searching-visualizer.js):
+    - When reducing array size via slider, cells being removed are converted to `.cell-launching` at their exact coordinates inside `.search-cells` (styled with `position: relative`), displaying `.cell-index-launching`.
+    - Removed cells launch up into the sky and fade out, while remaining cells smoothly re-center.
+- **Lifecycle Cleanup**:
+  - Automatically clears any in-flight `.bar-launching` or `.cell-launching` elements on rapid slider reversals or execution reset, preventing orphaned nodes.
+
+### Verified
+- Updated [tests/verify_gravity_animation.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_gravity_animation.py) validating static reverse keyframes and runtime Chrome verification of both forward falling and reverse launch physics.
+- Verified that [tests/verify_live_size_slider.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_live_size_slider.py) passes 100% with exact active bar/cell and index counts.
+- Master test runner [tests/run_all_tests.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/run_all_tests.py) executed with 100% pass rate across all 15 test suites.
+
+---
+
 ## [2026-11-06 — Natural Gravity Drop & Elastic Bounce Physics for Visualizer Slider Operations]
 
 ### Added

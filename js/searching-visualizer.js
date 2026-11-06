@@ -204,6 +204,9 @@
             return;
         }
 
+        var oldLaunching = cellsContainer.querySelectorAll('.cell-launching');
+        for (var ol = 0; ol < oldLaunching.length; ol++) oldLaunching[ol].remove();
+
         var existingCells = cellsContainer.querySelectorAll('.cell');
         if (existingCells.length === 0) {
             renderInitialCells(currentArray, true);
@@ -267,9 +270,58 @@
                 cellsContainer.appendChild(newCell);
             }
         } else if (newSize < prevSize) {
-            // Remove excess cells immediately from the end
-            for (var k = existingCells.length - 1; k >= newSize; k--) {
-                existingCells[k].remove();
+            // Capture positions of cells to launch upwards in reverse physics
+            var cellsToLaunch = [];
+            var containerRect = cellsContainer.getBoundingClientRect();
+            for (var k = newSize; k < existingCells.length; k++) {
+                var oldCell = existingCells[k];
+                var cellRect = oldCell.getBoundingClientRect();
+                var leftOffset = cellRect.left - containerRect.left;
+                var topOffset = cellRect.top - containerRect.top;
+                var cellW = oldCell.offsetWidth;
+                var cellH = oldCell.offsetHeight;
+                var idxSpan = oldCell.querySelector('.cell-index');
+                var valText = '';
+                for (var n = 0; n < oldCell.childNodes.length; n++) {
+                    if (oldCell.childNodes[n].nodeType === 3) {
+                        valText += oldCell.childNodes[n].textContent;
+                    }
+                }
+                cellsToLaunch.push({
+                    left: leftOffset,
+                    top: topOffset,
+                    width: cellW,
+                    height: cellH,
+                    val: valText.trim() || oldCell.textContent.replace(idxSpan ? idxSpan.textContent : '', '').trim(),
+                    idx: idxSpan ? idxSpan.textContent : '',
+                    stagger: k - newSize
+                });
+                oldCell.remove();
+            }
+
+            // Launch removed cells into sky with reverse gravity bounce physics
+            for (var l = 0; l < cellsToLaunch.length; l++) {
+                var cInfo = cellsToLaunch[l];
+                var launchCell = document.createElement('div');
+                launchCell.className = 'cell-launching';
+                launchCell.style.left = cInfo.left + 'px';
+                launchCell.style.top = cInfo.top + 'px';
+                launchCell.style.width = cInfo.width + 'px';
+                launchCell.style.height = cInfo.height + 'px';
+                launchCell.style.animationDelay = Math.min(0.2, cInfo.stagger * 0.035) + 's';
+                launchCell.textContent = cInfo.val;
+
+                if (cInfo.idx) {
+                    var idxEl = document.createElement('span');
+                    idxEl.className = 'cell-index-launching';
+                    idxEl.textContent = cInfo.idx;
+                    launchCell.appendChild(idxEl);
+                }
+
+                launchCell.addEventListener('animationend', function () {
+                    this.remove();
+                });
+                cellsContainer.appendChild(launchCell);
             }
 
             // Update remaining cells
@@ -427,6 +479,10 @@
         if (el.canvasStatusText) el.canvasStatusText.textContent = 'Ready';
         if (el.canvasStatusPill) el.canvasStatusPill.className = 'canvas-status-pill';
         if (el.completionBanner) el.completionBanner.classList.remove('show');
+        if (el.vizArea) {
+            var launching = el.vizArea.querySelectorAll('.cell-launching');
+            for (var li = 0; li < launching.length; li++) launching[li].remove();
+        }
         window.dispatchEvent(new CustomEvent('searchify:run-reset'));
     }
 
