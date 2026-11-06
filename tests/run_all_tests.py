@@ -121,6 +121,14 @@ if proc_glide.returncode != 0:
     print("[FAIL] 'Glide then fade into box' brand motion verification failed.")
     sys.exit(1)
 
+# 12. Numerical Speed Settings (1x - 6x) Verification
+print("\n--- 12. Verifying Numerical Speed Settings (1x - 6x) ---")
+proc_speed = subprocess.run([sys.executable, "tests/verify_numerical_speeds.py"], capture_output=True, text=True, encoding="utf-8")
+print(proc_speed.stdout)
+if proc_speed.returncode != 0:
+    print("[FAIL] Numerical speed settings verification failed.")
+    sys.exit(1)
+
 print("\n" + "=" * 60)
 print("ALL VERIFICATIONS COMPLETED SUCCESSFULLY (100% PASS RATE)")
 print("=" * 60)

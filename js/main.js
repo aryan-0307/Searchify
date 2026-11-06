@@ -89,30 +89,33 @@
     }
 
     /**
-     * Speed presets: slider value (1-5) → milliseconds delay between steps
+     * Speed presets: slider value (1-6) → milliseconds delay between steps
+     * 1x is the lowest speed (longest delay), 6x is the highest speed (shortest delay)
      */
     var SPEED_MAP = {
-        1: 1200,
-        2: 700,
-        3: 400,
-        4: 150,
-        5: 50
+        1: 850,
+        2: 500,
+        3: 300,
+        4: 160,
+        5: 80,
+        6: 35
     };
 
     var SPEED_LABELS = {
-        1: 'Very Slow',
-        2: 'Slow',
-        3: 'Medium',
-        4: 'Fast',
-        5: 'Very Fast'
+        1: '1x',
+        2: '2x',
+        3: '3x',
+        4: '4x',
+        5: '5x',
+        6: '6x'
     };
 
     function getSpeedMs(sliderValue) {
-        return SPEED_MAP[sliderValue] || 400;
+        return SPEED_MAP[sliderValue] || 850;
     }
 
     function getSpeedLabel(sliderValue) {
-        return SPEED_LABELS[sliderValue] || 'Medium';
+        return SPEED_LABELS[sliderValue] || '1x';
     }
 
     window.SearchifyUtils = {

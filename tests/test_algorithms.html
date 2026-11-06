@@ -1,15 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Searchify Test Suite</title>
     <style>
-        body { font-family: monospace; background: #111; color: #eee; padding: 20px; }
-        .pass { color: #2ecc71; }
-        .fail { color: #e74c3c; font-weight: bold; }
-        .summary { margin-top: 20px; font-size: 16px; border-top: 1px solid #444; padding-top: 10px; }
+        body {
+            font-family: monospace;
+            background: #111;
+            color: #eee;
+            padding: 20px;
+        }
+
+        .pass {
+            color: #2ecc71;
+        }
+
+        .fail {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .summary {
+            margin-top: 20px;
+            font-size: 16px;
+            border-top: 1px solid #444;
+            padding-top: 10px;
+        }
     </style>
 </head>
+
 <body>
     <h1>Searchify Algorithm Verification Test Suite</h1>
     <div id="results"></div>
@@ -19,7 +39,7 @@
     <script src="../js/sorting-algorithms.js"></script>
     <script src="../js/searching-algorithms.js"></script>
     <script>
-        (function() {
+        (function () {
             var passed = 0;
             var failed = 0;
             var resultsEl = document.getElementById('results');
@@ -45,9 +65,9 @@
             function isSorted(arr, order) {
                 for (var i = 1; i < arr.length; i++) {
                     if (order === 'desc') {
-                        if (arr[i] > arr[i-1]) return false;
+                        if (arr[i] > arr[i - 1]) return false;
                     } else {
-                        if (arr[i] < arr[i-1]) return false;
+                        if (arr[i] < arr[i - 1]) return false;
                     }
                 }
                 return true;
@@ -68,11 +88,11 @@
                 { name: 'empty array', data: [] }
             ];
 
-            algos.forEach(function(algo) {
+            algos.forEach(function (algo) {
                 assert(typeof window.SortingAlgorithms[algo] === 'function', algo + ' is implemented');
 
                 // Ascending
-                testArrays.forEach(function(t) {
+                testArrays.forEach(function (t) {
                     var steps = window.SortingAlgorithms[algo](t.data, 'asc');
                     assert(Array.isArray(steps) && steps.length > 0, algo + ' (' + t.name + ', asc) returned non-empty steps');
                     var finalStep = steps[steps.length - 1];
@@ -80,14 +100,14 @@
                     assert(finalStep.array.length === t.data.length, algo + ' (' + t.name + ') preserved array length');
 
                     // Step invariant check
-                    var invariantsHold = steps.every(function(s) {
+                    var invariantsHold = steps.every(function (s) {
                         return Array.isArray(s.array) &&
-                               Array.isArray(s.comparing) &&
-                               Array.isArray(s.swapping) &&
-                               Array.isArray(s.sorted) &&
-                               typeof s.explanation === 'string' &&
-                               s.counters &&
-                               typeof s.counters.comparisons === 'number';
+                            Array.isArray(s.comparing) &&
+                            Array.isArray(s.swapping) &&
+                            Array.isArray(s.sorted) &&
+                            typeof s.explanation === 'string' &&
+                            s.counters &&
+                            typeof s.counters.comparisons === 'number';
                     });
                     assert(invariantsHold, algo + ' (' + t.name + ') all step objects satisfy schema');
                 });
@@ -136,6 +156,17 @@
             assert(Array.isArray(window.SearchifyUtils.generateRandomArray(10)), 'generateRandomArray returns array');
             assert(window.SearchifyUtils.parseCustomArray('1, 2, 3').length === 3, 'parseCustomArray parses valid string');
             assert(window.SearchifyUtils.parseCustomArray('abc') === null, 'parseCustomArray rejects invalid string');
+            assert(window.SearchifyUtils.getSpeedLabel(1) === '1x', 'Speed 1 label is 1x');
+            assert(window.SearchifyUtils.getSpeedLabel(2) === '2x', 'Speed 2 label is 2x');
+            assert(window.SearchifyUtils.getSpeedLabel(3) === '3x', 'Speed 3 label is 3x');
+            assert(window.SearchifyUtils.getSpeedLabel(4) === '4x', 'Speed 4 label is 4x');
+            assert(window.SearchifyUtils.getSpeedLabel(5) === '5x', 'Speed 5 label is 5x');
+            assert(window.SearchifyUtils.getSpeedLabel(6) === '6x', 'Speed 6 label is 6x');
+            assert(window.SearchifyUtils.getSpeedMs(1) > window.SearchifyUtils.getSpeedMs(2), '1x is slower than 2x');
+            assert(window.SearchifyUtils.getSpeedMs(2) > window.SearchifyUtils.getSpeedMs(3), '2x is slower than 3x');
+            assert(window.SearchifyUtils.getSpeedMs(3) > window.SearchifyUtils.getSpeedMs(4), '3x is slower than 4x');
+            assert(window.SearchifyUtils.getSpeedMs(4) > window.SearchifyUtils.getSpeedMs(5), '4x is slower than 5x');
+            assert(window.SearchifyUtils.getSpeedMs(5) > window.SearchifyUtils.getSpeedMs(6), '5x is slower than 6x (6x highest speed)');
 
             summaryEl.innerHTML = '<strong>Total: ' + (passed + failed) + ' | Passed: ' + passed + ' | Failed: ' + failed + '</strong>';
             if (failed === 0) {
@@ -148,4 +179,5 @@
         })();
     </script>
 </body>
+
 </html>

@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sorting Visualizer — Searchify</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Kalam:wght@400;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/visualizer.css">
     <link rel="stylesheet" href="css/learning-features.css">
 </head>
+
 <body>
     <div class="viz-page">
         <!-- 1. Header with Algorithm Selector -->
@@ -40,7 +44,8 @@
                 <span class="cluster-label">Array</span>
                 <button id="generate-btn" class="btn btn-primary" title="Generate New Array">Generate</button>
                 <div class="control-item">
-                    <input type="text" id="custom-array" placeholder="e.g. 5, 3, 8, 1, 9" aria-label="Custom array input">
+                    <input type="text" id="custom-array" placeholder="e.g. 5, 3, 8, 1, 9"
+                        aria-label="Custom array input">
                     <button id="apply-custom-btn" class="btn btn-secondary">Apply</button>
                 </div>
                 <div class="control-item">
@@ -53,8 +58,8 @@
             <div class="controls-cluster">
                 <span class="cluster-label">Settings</span>
                 <div class="control-item">
-                    <label for="speed-slider">Speed: <span id="speed-value">Medium</span></label>
-                    <input type="range" id="speed-slider" min="1" max="5" value="3" aria-label="Animation speed">
+                    <label for="speed-slider">Speed: <span id="speed-value">1x</span></label>
+                    <input type="range" id="speed-slider" min="1" max="6" value="1" aria-label="Animation speed">
                 </div>
                 <div class="control-item">
                     <div class="toggle-group">
@@ -66,9 +71,12 @@
 
             <!-- Playback Controls Cluster -->
             <div class="controls-cluster playback-cluster">
-                <button id="prev-btn" class="btn btn-icon" title="Previous Step (Left Arrow)" aria-label="Previous step">&#9664;</button>
-                <button id="play-btn" class="btn btn-icon btn-play btn-play-prominent" title="Play / Pause (Space)" aria-label="Play">&#9654;</button>
-                <button id="next-btn" class="btn btn-icon" title="Next Step (Right Arrow)" aria-label="Next step">&#9654;</button>
+                <button id="prev-btn" class="btn btn-icon" title="Previous Step (Left Arrow)"
+                    aria-label="Previous step">&#9664;</button>
+                <button id="play-btn" class="btn btn-icon btn-play btn-play-prominent" title="Play / Pause (Space)"
+                    aria-label="Play">&#9654;</button>
+                <button id="next-btn" class="btn btn-icon" title="Next Step (Right Arrow)"
+                    aria-label="Next step">&#9654;</button>
                 <button id="reset-btn" class="btn btn-secondary" title="Reset (R)">Reset</button>
                 <button id="restart-btn" class="btn btn-secondary" title="Restart">Restart</button>
             </div>
@@ -80,11 +88,16 @@
                 <div class="viz-area" id="visualization-area">
                     <!-- Color Legend -->
                     <div class="color-legend">
-                        <span class="legend-item"><span class="legend-dot" style="background: var(--color-default)"></span> Default</span>
-                        <span class="legend-item"><span class="legend-dot" style="background: var(--color-comparing)"></span> Comparing</span>
-                        <span class="legend-item"><span class="legend-dot" style="background: var(--color-swapping)"></span> Swapping</span>
-                        <span class="legend-item"><span class="legend-dot" style="background: var(--color-pivot)"></span> Pivot</span>
-                        <span class="legend-item"><span class="legend-dot" style="background: var(--color-sorted)"></span> Sorted</span>
+                        <span class="legend-item"><span class="legend-dot"
+                                style="background: var(--color-default)"></span> Default</span>
+                        <span class="legend-item"><span class="legend-dot"
+                                style="background: var(--color-comparing)"></span> Comparing</span>
+                        <span class="legend-item"><span class="legend-dot"
+                                style="background: var(--color-swapping)"></span> Swapping</span>
+                        <span class="legend-item"><span class="legend-dot"
+                                style="background: var(--color-pivot)"></span> Pivot</span>
+                        <span class="legend-item"><span class="legend-dot"
+                                style="background: var(--color-sorted)"></span> Sorted</span>
                     </div>
 
                     <!-- Floating Canvas Status Indicator -->
@@ -97,7 +110,8 @@
                     <div id="completion-banner" class="completion-banner">
                         <div>
                             <div class="completion-banner-text">🎉 Array successfully sorted!</div>
-                            <div class="completion-banner-sub" id="completion-banner-stats">Completed in 0 comparisons and 0 swaps</div>
+                            <div class="completion-banner-sub" id="completion-banner-stats">Completed in 0 comparisons
+                                and 0 swaps</div>
                         </div>
                         <button id="completion-replay-btn" class="btn-replay">Replay</button>
                     </div>
@@ -131,7 +145,8 @@
                         <span class="op-badge compare" id="op-tag-element">READY</span>
                     </div>
                     <div class="explanation-card" id="explanation-card">
-                        <div class="op-text" id="explanation-text">Select an algorithm and click Generate to start.</div>
+                        <div class="op-text" id="explanation-text">Select an algorithm and click Generate to start.
+                        </div>
                         <div class="op-result" id="explanation-result" style="display: none;"></div>
                     </div>
                 </div>
@@ -174,4 +189,5 @@
     <script src="js/sorting-visualizer.js"></script>
     <script src="js/learning-features.js"></script>
 </body>
+
 </html>

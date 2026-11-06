@@ -13,7 +13,7 @@
     var currentStep = 0;
     var isPlaying = false;
     var playTimer = null;
-    var speed = 400;          // ms between steps
+    var speed = 800;          // ms between steps (1x default)
     var arraySize = 15;
 
     /* ---------- DOM cache ---------- */
@@ -610,6 +610,7 @@
     function init() {
         cacheElements();
         bindEvents();
+        onSpeedChange();
         renderComplexity();
         onGenerate();
     }

@@ -4,6 +4,56 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## [2026-11-06 — Extended Numerical Speed Controls (1x to 6x) for Searching & Sorting Visualizers]
+
+### Changed
+- **Extended Numerical Speed Multipliers from 1x to 6x**:
+  - Expanded speed settings in [sorting.html](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/sorting.html) and [searching.html](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/searching.html) to support a 6-level slider range (`min="1" max="6"`), providing progressively faster stepping speeds:
+    - **1x**: Lowest speed (850ms delay per step) — deliberate progression for careful inspection of comparisons.
+    - **2x**: 500ms delay per step — comfortable paced animation.
+    - **3x**: 300ms delay per step — active steady progression.
+    - **4x**: 160ms delay per step — brisk exploratory speed.
+    - **5x**: 80ms delay per step — very fast sweep across arrays.
+    - **6x**: Highest speed (35ms delay per step) — ultra-fast rapid completion of passes.
+  - Updated `SPEED_MAP` and `SPEED_LABELS` in [js/main.js](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/js/main.js).
+  - Updated `#speed-slider` elements in both visualizers to `min="1" max="6" value="1"`.
+
+### Verified
+- Extended [tests/test_algorithms.html](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/test_algorithms.html) with assertions for all 6 speed labels and strict monotonic delay decreases (all 164 unit tests pass).
+- Updated [tests/verify_numerical_speeds.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_numerical_speeds.py) dynamically verifying slider steps 1 through 6 on both pages in Headless Chrome.
+- Master test runner [tests/run_all_tests.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/run_all_tests.py) executed and passed 100% across all 12 test suites.
+
+---
+
+## [2026-11-06 — Navbar Clean-up: Removed Redundant Playgrounds Link]
+
+### Removed
+- **Redundant Playgrounds Nav Link**:
+  - Removed `<a href="#playgrounds" class="nav-link-item">Playgrounds</a>` from `.home-nav-links` in [index.html](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/index.html).
+  - The `"Start exploring ↗"` primary CTA button (`.nav-cta`) already navigates to `#playgrounds`, eliminating the duplicate link and keeping the navbar clean and uncluttered.
+
+### Verified
+- Master test runner [tests/run_all_tests.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/run_all_tests.py) executed and passed 100% across all 11 test suites (desktop, tablet, mobile viewports down to 320px).
+
+---
+
+## [2026-11-06 — Staggered Brand Motion: Glide Towards Icon, Then Fade Right Before Entering Box]
+
+### Changed
+- **Staggered Motion Choreography**:
+  - Re-timed the brand scroll animation so the text visibly glides across the gap towards the icon *before* fading.
+  - Translation starts immediately at $t = 0\text{s}$ (`delay: 0s`, `duration: 0.28s`, `cubic-bezier(0.4, 0, 0.2, 1)`), moving the letters leftward towards the `.brand-mark` badge box.
+  - Opacity fade is staggered with a `0.08s` delay (`opacity 0.16s cubic-bezier(0.4, 0, 0.2, 1) 0.08s`), keeping the letters at 100% opacity during the approach, and triggering the fade *right before* touching the icon boundary.
+  - Added `0.05s` delay on `max-width` collapse so the entire wordmark travels together into the box without premature right-side clipping.
+  - On scroll back to top (unboxing), opacity returns with minimal delay (`0.02s`) as the brand text re-emerges from the box.
+
+### Verified
+- Created `tests/verify_glide_fade.py` sampling computed styles, transition delays, and durations in headless Chrome.
+- Integrated `verify_glide_fade.py` as Stage 11 in `tests/run_all_tests.py`.
+- All 11 verification suites passed 100%.
+
+---
+
 ## [2026-11-06 — Brand Text "Into the Box" Scroll Animation]
 
 ### Changed
