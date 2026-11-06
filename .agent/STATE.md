@@ -4,34 +4,30 @@
 Transform the AlgoViz homepage (`index.html`) from a plain static page into a modern, visually engaging, interactive algorithm playground. Upgrade typography to Bricolage Grotesque, elevate the hero container with subtle grid textures and depth, and transform the two cards (Searching & Sorting) with custom icons, miniature animated visualizations (step scanning for Searching, smooth ascending reordering for Sorting), descriptive lines, and responsive layout, without modifying visualizer pages or algorithm logic.
 
 ## Current Phase
-Phase 26 — Searchify Brand Logo Favicon Assets & Site Integration
+Phase 28 — Visualizer Controls Layout (Left Start/Stop, Center Array, Right Settings)
 
 ## Status
 COMPLETE
 
 ## Current Task
-Created and integrated a full suite of crisp favicon assets matching the Searchify logo brand mark across all pages (`index.html`, `sorting.html`, `searching.html`), including vector SVG (`favicon.svg`), multi-resolution PNGs (`favicon-16x16.png`, `favicon-32x32.png`, `apple-touch-icon.png`, `favicon-192x192.png`), and dual-resolution legacy ICO (`favicon.ico`).
+Reorganized the visualizer toolbar controls layout across both [sorting.html](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/sorting.html) and [searching.html](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/searching.html) per user request:
+- **Left Position**: Start/Stop playback controls (`#prev-btn`, `#play-btn`, `#next-btn`, `#reset-btn`, `#restart-btn`) moved to the left, occupying the space vacated by generate & apply.
+- **Center Position**: Array configuration controls (`#generate-btn`, `#custom-array`, `#apply-custom-btn`, `#array-size`, `#target-input`) moved to the center.
+- **Right Position**: Settings controls (`#speed-slider`, and sort order toggle) occupying the right.
+- Configured responsive flex layout in [css/visualizer.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/visualizer.css) with `margin: 0 auto` on `.array-cluster` for mathematically balanced gaps.
+- Verified 100% across all 19 stages in [tests/run_all_tests.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/run_all_tests.py) via updated [tests/verify_controls_layout.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_controls_layout.py).
 
 ## Last Completed Task
-- **Searchify Logo Favicon Generation**:
-  - `favicon.svg`: Scalable vector SVG featuring the Searchify signature brand squircle (`rx="19"`) filled with royal blue gradient (`#2D62BF` to `#16376E`), subtle top lighting bevel, bold white centered 'S', and vibrant pink algorithm pulse spark dot (`#D93D81` with white core).
-  - `favicon-32x32.png` & `favicon-16x16.png`: High-resolution anti-aliased PNG icons generated with 4x supersampling.
-  - `apple-touch-icon.png`: 180x180 PNG formatted for iOS home screen bookmarks and Apple devices.
-  - `favicon-192x192.png`: 192x192 PNG formatted for Android and PWA manifests.
-  - `favicon.ico`: Dual-image standard ICO header bundling both 32x32 and 16x16 payloads for legacy browser backwards-compatibility.
-- **HTML Document Integration**:
-  - Linked all favicon assets in the `<head>` of `index.html`, `sorting.html`, and `searching.html`:
-    - `<link rel="icon" type="image/svg+xml" href="favicon.svg">`
-    - `<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">`
-    - `<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">`
-    - `<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">`
-    - `<link rel="shortcut icon" href="favicon.ico">`
-- **Verification**:
-  - Updated `tests/verify_semantic_seo.py` to assert favicon link presence on all pages.
-  - Executed master test runner `tests/run_all_tests.py` with 100% pass across all 18 test suites.
-  - Created `tests/verify_code_trace_panel.py` testing mathematical 80:20 ratio, line counts, algorithm switching, active line highlighting on step execution, and toggle functionality.
-  - Added as Stage 17 in `tests/run_all_tests.py`.
-  - Master test runner executed and passed 100% across all 17 test suites.
+- **Controls Layout Reconfiguration**:
+  - `sorting.html` & `searching.html`:
+    - Updated cluster order: `playback-cluster` (Left) $\rightarrow$ `array-cluster` (Center) $\rightarrow$ `settings-cluster` (Right).
+  - `css/visualizer.css`:
+    - Desktop ($\ge 1320$px): `playback-cluster` sits at left margin (`margin: 0;`), `array-cluster` centers via `margin: 0 auto;`, `settings-cluster` sits at right margin (`margin: 0;`).
+    - Intermediate viewports (861px - 1319px): wrapped clusters center cleanly via `justify-content: center`.
+    - Mobile viewports ($\le 860$px): full-width vertical stacking.
+  - Automated test suite:
+    - Updated `tests/verify_controls_layout.py` verifying DOM order `[Playback] -> [Array] -> [Settings]`, computed layout geometry with equal margin gaps ($78\text{px}/79\text{px}$ on sorting, $64\text{px}/65\text{px}$ on searching), mobile stacking, and interactive play/pause and speed controls.
+    - Master test runner executed and passed 100% across all 19 test suites.
 
 ## Completed Work
 - Empty custom input "Apply" click UX fixed with guidance prompt across both Searching and Sorting visualizers.

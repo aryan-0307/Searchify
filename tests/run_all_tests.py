@@ -177,6 +177,14 @@ if proc_sync.returncode != 0:
     print("[FAIL] Pseudocode synchronization verification failed.")
     sys.exit(1)
 
+# 19. Visualizer Controls Layout (Center Play/Pause & Right Settings) Verification
+print("\n--- 19. Verifying Visualizer Controls Layout (Center Play/Pause & Right Settings) ---")
+proc_layout = subprocess.run([sys.executable, "tests/verify_controls_layout.py"], capture_output=True, text=True, encoding="utf-8")
+print(proc_layout.stdout)
+if proc_layout.returncode != 0:
+    print("[FAIL] Visualizer controls layout verification failed.")
+    sys.exit(1)
+
 print("\n" + "=" * 60)
 print("ALL VERIFICATIONS COMPLETED SUCCESSFULLY (100% PASS RATE)")
 print("=" * 60)

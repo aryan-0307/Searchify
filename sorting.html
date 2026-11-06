@@ -69,8 +69,20 @@
 
         <!-- 2. Controls Toolbar -->
         <nav class="viz-controls" aria-label="Visualizer controls toolbar">
-            <!-- Array Controls Cluster -->
-            <section class="controls-cluster" aria-label="Array configuration">
+            <!-- Playback Controls Cluster (Left: Start/Stop, Steps, Reset, Restart) -->
+            <section class="controls-cluster playback-cluster" aria-label="Playback controls">
+                <button id="prev-btn" class="btn btn-icon" title="Previous Step (Left Arrow)"
+                    aria-label="Previous step">&#9664;</button>
+                <button id="play-btn" class="btn btn-icon btn-play btn-play-prominent" title="Play / Pause (Space)"
+                    aria-label="Play">&#9654;</button>
+                <button id="next-btn" class="btn btn-icon" title="Next Step (Right Arrow)"
+                    aria-label="Next step">&#9654;</button>
+                <button id="reset-btn" class="btn btn-secondary" title="Reset (R)">Reset</button>
+                <button id="restart-btn" class="btn btn-secondary" title="Restart">Restart</button>
+            </section>
+
+            <!-- Array Controls Cluster (Center: Generate, Custom Input, Apply, Size) -->
+            <section class="controls-cluster array-cluster" aria-label="Array configuration">
                 <span class="cluster-label">Array</span>
                 <button id="generate-btn" class="btn btn-primary" title="Generate New Array">Generate</button>
                 <div class="control-item">
@@ -84,8 +96,8 @@
                 </div>
             </section>
 
-            <!-- Settings Cluster -->
-            <section class="controls-cluster" aria-label="Animation settings">
+            <!-- Settings Cluster (Right: Speed & Sort Order) -->
+            <section class="controls-cluster settings-cluster" aria-label="Animation settings">
                 <span class="cluster-label">Settings</span>
                 <div class="control-item">
                     <label for="speed-slider">Speed: <span id="speed-value">1x</span></label>
@@ -97,18 +109,6 @@
                         <button id="desc-btn" class="btn btn-secondary" aria-pressed="false">Desc</button>
                     </div>
                 </div>
-            </section>
-
-            <!-- Playback Controls Cluster -->
-            <section class="controls-cluster playback-cluster" aria-label="Playback controls">
-                <button id="prev-btn" class="btn btn-icon" title="Previous Step (Left Arrow)"
-                    aria-label="Previous step">&#9664;</button>
-                <button id="play-btn" class="btn btn-icon btn-play btn-play-prominent" title="Play / Pause (Space)"
-                    aria-label="Play">&#9654;</button>
-                <button id="next-btn" class="btn btn-icon" title="Next Step (Right Arrow)"
-                    aria-label="Next step">&#9654;</button>
-                <button id="reset-btn" class="btn btn-secondary" title="Reset (R)">Reset</button>
-                <button id="restart-btn" class="btn btn-secondary" title="Restart">Restart</button>
             </section>
         </nav>
 
