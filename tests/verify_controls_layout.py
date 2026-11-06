@@ -1,8 +1,8 @@
 """
 tests/verify_controls_layout.py
 Automated verification for the visualizer controls layout:
-- Playback (Start/Stop, steps, reset, restart) positioned on the LEFT (occupying the space left by generate/apply)
-- Array configuration (Generate, custom example input, apply, size) positioned in the CENTER
+- Start/Stop & Playback controls (prev, play/pause, next, reset, restart) positioned on the LEFT
+- Array generation & custom array controls (generate, example input, apply, size) positioned in the CENTER
 - Settings option (speed, sort order) positioned on the RIGHT
 - Verified on both sorting.html and searching.html across desktop and mobile viewports
 """
@@ -11,12 +11,13 @@ import subprocess
 import json
 import re
 import sys
+import os
 
 pages = ["sorting.html", "searching.html"]
 all_passed = True
 
 print("=" * 60)
-print("VERIFYING VISUALIZER CONTROLS LAYOUT (LEFT START/STOP, CENTER ARRAY, RIGHT SETTINGS)")
+print("VERIFYING VISUALIZER CONTROLS LAYOUT (LEFT PLAYBACK, CENTER ARRAY, RIGHT SETTINGS)")
 print("=" * 60)
 
 # Stage 1: DOM Hierarchy and Structural Order
@@ -38,11 +39,11 @@ for page in pages:
     c2_class, c2_label = clusters[1]
     c3_class, c3_label = clusters[2]
 
-    # Cluster 1: Playback (Left)
-    assert "Playback controls" in c1_label, f"Cluster 1 should be Playback controls (Start/Stop), got: {c1_label}"
+    # Cluster 1: Playback Controls (Left)
+    assert "Playback controls" in c1_label, f"Cluster 1 should be Playback controls, got: {c1_label}"
     assert "playback-cluster" in c1_class, f"Cluster 1 should have class 'playback-cluster', got: {c1_class}"
 
-    # Cluster 2: Array (Center)
+    # Cluster 2: Array Configuration (Center)
     assert "Array configuration" in c2_label, f"Cluster 2 should be Array configuration, got: {c2_label}"
     assert "array-cluster" in c2_class, f"Cluster 2 should have class 'array-cluster', got: {c2_class}"
 
@@ -50,20 +51,20 @@ for page in pages:
     assert "Animation settings" in c3_label, f"Cluster 3 should be Animation settings, got: {c3_label}"
     assert "settings-cluster" in c3_class, f"Cluster 3 should have class 'settings-cluster', got: {c3_class}"
 
-    # Check key buttons inside cluster 1 (Start/Stop, Steps, Reset, Restart)
+    # Check key buttons inside cluster 1 (Playback)
     assert 'id="play-btn"' in nav_content, f"play-btn missing in {page}"
     assert 'id="reset-btn"' in nav_content, f"reset-btn missing in {page}"
     assert 'id="restart-btn"' in nav_content, f"restart-btn missing in {page}"
     assert 'id="prev-btn"' in nav_content, f"prev-btn missing in {page}"
     assert 'id="next-btn"' in nav_content, f"next-btn missing in {page}"
 
-    # Check key items inside cluster 2 (Generate, Custom Input, Apply, Size)
+    # Check key buttons inside cluster 2 (Array)
     assert 'id="generate-btn"' in nav_content, f"generate-btn missing in {page}"
     assert 'id="custom-array"' in nav_content, f"custom-array missing in {page}"
     assert 'id="apply-custom-btn"' in nav_content, f"apply-custom-btn missing in {page}"
     assert 'id="array-size"' in nav_content, f"array-size missing in {page}"
 
-    # Check key items inside cluster 3 (Speed slider)
+    # Check key items inside cluster 3 (Settings)
     assert 'id="speed-slider"' in nav_content, f"speed-slider missing in {page}"
 
     print(f"  [PASS] {page}: DOM cluster sequence verified: [Playback (Left)] -> [Array (Center)] -> [Settings (Right)]")
@@ -100,7 +101,6 @@ window.addEventListener('load', () => {
 });
 """
 
-import os
 for page in pages:
     raw_html = open(page, encoding="utf-8").read()
     probe_html = raw_html.replace("</body>", f"<script>{probe_template}</script></body>")
@@ -134,18 +134,17 @@ for page in pages:
         assert play["left"] < arr["left"], f"Playback left ({play['left']}) should be less than Array left ({arr['left']})"
         assert arr["right"] < sett["right"], f"Array right ({arr['right']}) should be less than Settings right ({sett['right']})"
 
-        # Verify Array is centered between Playback (Left) and Settings (Right)
+        # Verify Array is centered between Playback and Settings
         gap_left = arr["left"] - play["right"]
         gap_right = sett["left"] - arr["right"]
         gap_diff = abs(gap_left - gap_right)
         assert gap_diff <= 3, f"Array should be centered between Playback and Settings! Gaps: left={gap_left}, right={gap_right}, diff={gap_diff}"
 
-        # Verify Settings is pushed to the right edge
+        # Verify Playback sits on the left edge and Settings on the right edge
+        dist_to_nav_left = play["left"] - data["navLeft"]
         dist_to_nav_right = data["navRight"] - sett["right"]
+        assert dist_to_nav_left <= 40, f"Playback should sit on left side, distance from left: {dist_to_nav_left}px"
         assert dist_to_nav_right <= 40, f"Settings should sit on right side, distance from right: {dist_to_nav_right}px"
-
-        # Verify Playback is positioned on the left edge
-        assert play["left"] <= 40, f"Playback should sit on left side, left={play['left']}px"
 
         print(f"  [PASS] {page} @ 1440px: Playback Left (L:{play['left']} R:{play['right']}), Array Center (L:{arr['left']} R:{arr['right']}, equal gaps {gap_left}px/{gap_right}px), Settings Right (R:{sett['right']})")
 
@@ -182,6 +181,7 @@ window.addEventListener('load', () => {
     const resetBtn = document.getElementById('reset-btn');
     const restartBtn = document.getElementById('restart-btn');
     const speedSlider = document.getElementById('speed-slider');
+    const generateBtn = document.getElementById('generate-btn');
 
     // 1. Click Play
     playBtn.click();
@@ -198,6 +198,9 @@ window.addEventListener('load', () => {
     speedSlider.value = "4";
     speedSlider.dispatchEvent(new Event('input', { bubbles: true }));
     const speedVal = document.getElementById('speed-value').textContent;
+
+    // 5. Generate Array
+    generateBtn.click();
 
     const probe = document.createElement('div');
     probe.id = 'interactive-probe-results';
@@ -237,7 +240,7 @@ for page in pages:
         assert data["afterPauseLabel"] == "Play", f"Expected 'Play' after pause click, got: {data['afterPauseLabel']}"
         assert data["speedVal"] == "4x", f"Expected '4x' after speed update, got: {data['speedVal']}"
 
-        print(f"  [PASS] {page}: Play/Pause toggle and Speed settings verified interactive and reactive!")
+        print(f"  [PASS] {page}: Play/Pause toggle, Generate, and Speed settings verified interactive and reactive!")
 
     finally:
         if os.path.exists(temp_file):
@@ -246,4 +249,3 @@ for page in pages:
 print("\n" + "=" * 60)
 print("ALL VISUALIZER CONTROLS LAYOUT VERIFICATIONS PASSED (100%)")
 print("=" * 60)
-

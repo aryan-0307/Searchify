@@ -4,30 +4,31 @@
 Transform the AlgoViz homepage (`index.html`) from a plain static page into a modern, visually engaging, interactive algorithm playground. Upgrade typography to Bricolage Grotesque, elevate the hero container with subtle grid textures and depth, and transform the two cards (Searching & Sorting) with custom icons, miniature animated visualizations (step scanning for Searching, smooth ascending reordering for Sorting), descriptive lines, and responsive layout, without modifying visualizer pages or algorithm logic.
 
 ## Current Phase
-Phase 28 — Visualizer Controls Layout (Left Start/Stop, Center Array, Right Settings)
+Phase 28 — Visualizer Controls Layout Reorganization (Left Playback, Center Array, Right Settings)
 
 ## Status
 COMPLETE
 
 ## Current Task
-Reorganized the visualizer toolbar controls layout across both [sorting.html](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/sorting.html) and [searching.html](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/searching.html) per user request:
-- **Left Position**: Start/Stop playback controls (`#prev-btn`, `#play-btn`, `#next-btn`, `#reset-btn`, `#restart-btn`) moved to the left, occupying the space vacated by generate & apply.
-- **Center Position**: Array configuration controls (`#generate-btn`, `#custom-array`, `#apply-custom-btn`, `#array-size`, `#target-input`) moved to the center.
-- **Right Position**: Settings controls (`#speed-slider`, and sort order toggle) occupying the right.
-- Configured responsive flex layout in [css/visualizer.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/visualizer.css) with `margin: 0 auto` on `.array-cluster` for mathematically balanced gaps.
-- Verified 100% across all 19 stages in [tests/run_all_tests.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/run_all_tests.py) via updated [tests/verify_controls_layout.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_controls_layout.py).
+Reorganized the visualizer toolbar controls layout across both [sorting.html](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/sorting.html) and [searching.html](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/searching.html):
+- Positioned the Start/Stop & Playback cluster (`#prev-btn`, `#play-btn`, `#next-btn`, `#reset-btn`, `#restart-btn`) on the **LEFT**, occupying the space previously held by the array controls.
+- Positioned the Array generation & configuration cluster (`#generate-btn`, `#custom-array`, `#apply-custom-btn`, `#array-size`, `#target-input`) in the **CENTER**, occupying the middle section with equal spacing on both sides.
+- Kept the Settings cluster (`#speed-slider`, and sort order toggle) on the **RIGHT**.
+- Configured responsive styling in [css/visualizer.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/visualizer.css) supporting wide desktop (`margin: 0 auto` centering for the array cluster), intermediate screen wrapping with centered groups, and mobile full-width vertical stacking.
+- Verified 100% across all 19 stages in [tests/run_all_tests.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/run_all_tests.py) via dedicated suite [tests/verify_controls_layout.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_controls_layout.py).
 
 ## Last Completed Task
-- **Controls Layout Reconfiguration**:
+- **Visualizer Toolbar Layout Reorganization (Left Playback, Center Array, Right Settings)**:
   - `sorting.html` & `searching.html`:
-    - Updated cluster order: `playback-cluster` (Left) $\rightarrow$ `array-cluster` (Center) $\rightarrow$ `settings-cluster` (Right).
+    - Cluster sequence in `<nav class="viz-controls">`: `playback-cluster` (Left) $\rightarrow$ `array-cluster` (Center) $\rightarrow$ `settings-cluster` (Right).
+    - Play/Pause button (`#play-btn`) remains prominent (`btn-play-prominent`) on the left, with the Array cluster (`#generate-btn`, `#custom-array`, `#apply-custom-btn`, `#array-size`) taking center stage.
   - `css/visualizer.css`:
-    - Desktop ($\ge 1320$px): `playback-cluster` sits at left margin (`margin: 0;`), `array-cluster` centers via `margin: 0 auto;`, `settings-cluster` sits at right margin (`margin: 0;`).
-    - Intermediate viewports (861px - 1319px): wrapped clusters center cleanly via `justify-content: center`.
-    - Mobile viewports ($\le 860$px): full-width vertical stacking.
+    - Responsive flex layout with `array-cluster` centered via `margin: 0 auto` on desktop viewports ($\ge 1320$px), resulting in equal spacing between left/center ($78\text{px}-64\text{px}$) and center/right ($79\text{px}-65\text{px}$) clusters.
+    - Intermediate viewports (861px - 1319px) center wrapped rows cleanly.
+    - Mobile viewports ($\le 860$px) stack all clusters with 100% full-width alignment and centered buttons.
   - Automated test suite:
-    - Updated `tests/verify_controls_layout.py` verifying DOM order `[Playback] -> [Array] -> [Settings]`, computed layout geometry with equal margin gaps ($78\text{px}/79\text{px}$ on sorting, $64\text{px}/65\text{px}$ on searching), mobile stacking, and interactive play/pause and speed controls.
-    - Master test runner executed and passed 100% across all 19 test suites.
+    - Updated `tests/verify_controls_layout.py` verifying DOM structural order, computed layout geometry across viewports in headless Chrome, and interactive functionality of play/pause, reset, restart, generate, and speed slider.
+    - Integrated as Stage 19 in `tests/run_all_tests.py` with 100% pass rate.
 
 ## Completed Work
 - Empty custom input "Apply" click UX fixed with guidance prompt across both Searching and Sorting visualizers.

@@ -4,27 +4,26 @@ All notable changes to this project are documented in this file.
 
 ---
 
-## [2026-11-07 — Visualizer Controls Layout (Left Start/Stop, Center Array, Right Settings)]
+## [2026-11-07 — Visualizer Controls Layout (Left Playback, Center Array, Right Settings)]
 
 ### Added
 - **Visualizer Toolbar Layout Reorganization**:
-  - Reorganized `<nav class="viz-controls">` across both [sorting.html](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/sorting.html) and [searching.html](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/searching.html) per user request:
-    - **Left**: Start/Stop playback controls (`.playback-cluster`: `#prev-btn`, `#play-btn`, `#next-btn`, `#reset-btn`, `#restart-btn`) moved towards the left, occupying the space vacated by generate & apply.
-    - **Center**: Array configuration controls (`.array-cluster`: `#generate-btn`, `#custom-array`, `#apply-custom-btn`, `#array-size`, `#target-input`) moved towards the center, occupying the central space.
-    - **Right**: Settings cluster (`.settings-cluster`: `#speed-slider`, sort order) occupying the right space.
+  - Reorganized `<nav class="viz-controls">` across both [sorting.html](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/sorting.html) and [searching.html](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/searching.html):
+    - **Left**: Start/Stop & Playback controls cluster (`.playback-cluster`) containing `#prev-btn`, `#play-btn` (prominent circular play/pause), `#next-btn`, `#reset-btn`, and `#restart-btn`, occupying the space left by the array controls.
+    - **Center**: Array configuration cluster (`.array-cluster`) containing `#generate-btn`, `#custom-array`, `#apply-custom-btn`, `#array-size`, and `#target-input`, occupying the center space.
+    - **Right**: Settings cluster (`.settings-cluster`) containing `#speed-slider` (and Asc/Desc sort order toggle on sorting).
 - **Responsive Toolbar Styling in [css/visualizer.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/visualizer.css)**:
-  - Configured `margin: 0;` on `.playback-cluster` for left alignment.
-  - Configured `margin: 0 auto;` on `.array-cluster` for centered positioning with equal margin spacing.
-  - Configured `margin: 0;` on `.settings-cluster` for right alignment.
-  - Smooth flex wrapping on intermediate screens ($861\text{px} - 1319\text{px}$) and vertical stacking on mobile ($\le 860\text{px}$).
+  - Configured `margin: 0 auto` on `.array-cluster` for wide desktop screens ($\ge 1320$px), producing equal spacing on both sides between Playback and Array, and between Array and Settings.
+  - Centered wrapped clusters cleanly on intermediate screens (861px - 1319px).
+  - Maintained full-width stacked alignment with centered buttons on mobile viewports ($\le 860$px).
 
 ### Verified
-- Updated automated test [tests/verify_controls_layout.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_controls_layout.py) verifying:
-  - DOM sequence `[Playback (Left)] -> [Array (Center)] -> [Settings (Right)]`.
+- Updated automated test [tests/verify_controls_layout.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_controls_layout.py) testing:
+  - DOM cluster sequence `Playback (Left) -> Array (Center) -> Settings (Right)`.
   - Geometric horizontal positioning and equal margin gaps at 1440px desktop.
   - Responsive vertical stacking at 768px mobile.
-  - Interactive play/pause toggling and live speed slider reactivity.
-- Executed master test runner [tests/run_all_tests.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/run_all_tests.py) with 100% pass across all 19 test suites.
+  - Interactive play/pause toggling, array generation, and live speed slider reactivity.
+- Integrated as Stage 19 in [tests/run_all_tests.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/run_all_tests.py) with 100% pass across all 19 test suites.
 
 ---
 
