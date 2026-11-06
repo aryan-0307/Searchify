@@ -27,7 +27,9 @@ for page in pages:
     assert '<meta property="og:title"' in html, f"Missing og:title in {page}"
     assert '<meta property="og:description"' in html, f"Missing og:description in {page}"
     assert '<meta name="twitter:card"' in html, f"Missing twitter:card in {page}"
-    print(f"  [PASS] All essential SEO & Open Graph meta tags present in {page}")
+    assert 'rel="icon"' in html and 'favicon.svg' in html, f"Missing favicon.svg link in {page}"
+    assert 'rel="shortcut icon"' in html and 'favicon.ico' in html, f"Missing favicon.ico link in {page}"
+    print(f"  [PASS] All essential SEO, Open Graph, and favicon links present in {page}")
 
     # 2. Semantic Tags Presence
     print(f"  [SEMANTIC] Checking HTML5 semantic structure...")

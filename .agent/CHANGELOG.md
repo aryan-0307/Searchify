@@ -4,6 +4,29 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## [2026-11-07 — Searchify Brand Logo Favicon Assets & Site Integration]
+
+### Added
+- **Searchify Logo Favicon Suite**:
+  - `favicon.svg`: Scalable vector SVG featuring the Searchify signature brand squircle (`rx="19"`) filled with royal blue gradient (`#2D62BF` to `#16376E`), subtle top lighting bevel, bold white centered 'S', and vibrant pink algorithm pulse spark dot (`#D93D81` with white core).
+  - `favicon-32x32.png` & `favicon-16x16.png`: High-resolution anti-aliased PNG icons generated with 4x supersampling via standalone software rasterizer script `scripts/create_favicons.py`.
+  - `apple-touch-icon.png`: 180x180 PNG formatted for iOS home screen bookmarks and Apple devices.
+  - `favicon-192x192.png`: 192x192 PNG formatted for Android and PWA manifests.
+  - `favicon.ico`: Dual-image standard ICO header bundling both 32x32 and 16x16 payloads for legacy browser backwards-compatibility.
+- **HTML Document Integration**:
+  - Linked all favicon assets in the `<head>` of [index.html](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/index.html), [sorting.html](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/sorting.html), and [searching.html](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/searching.html):
+    - `<link rel="icon" type="image/svg+xml" href="favicon.svg">`
+    - `<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">`
+    - `<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">`
+    - `<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">`
+    - `<link rel="shortcut icon" href="favicon.ico">`
+
+### Verified
+- Updated [tests/verify_semantic_seo.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_semantic_seo.py) to assert favicon link presence on all pages.
+- Executed master test runner [tests/run_all_tests.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/run_all_tests.py) with 100% pass across all 18 test suites.
+
+---
+
 ## [2026-11-07 — Perfect Visualization-to-Pseudocode Synchronization]
 
 ### Added

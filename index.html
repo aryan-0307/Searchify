@@ -27,6 +27,14 @@
         content="Stop memorising dry steps. Explore searching and sorting algorithms through live animations, hands-on controls, and clear explanations.">
 
     <title>Searchify — Learn Algorithms by Seeing Them</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="shortcut icon" href="favicon.ico">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -81,39 +89,43 @@
             <div class="hero-art" role="region" aria-label="Decorative algorithm visualization preview">
                 <div class="hero-orbit orbit-one" aria-hidden="true"></div>
                 <div class="hero-orbit orbit-two" aria-hidden="true"></div>
-                <div class="floating-chip chip-top"><span class="chip-dot pink-dot" aria-hidden="true"></span> COMPARE <b>08 ↔ 03</b></div>
+                <div class="floating-chip chip-top"><span class="chip-dot pink-dot" aria-hidden="true"></span> COMPARE
+                    <b>08 ↔ 03</b></div>
                 <div class="hero-code-card">
-                    <div class="code-card-top"><span aria-hidden="true"><i></i><i></i><i></i></span><b>bubble_sort.js</b><em>LIVE
+                    <div class="code-card-top"><span
+                            aria-hidden="true"><i></i><i></i><i></i></span><b>bubble_sort.js</b><em>LIVE
                             TRACE</em></div>
                     <div class="hero-code-line"><small>01</small><code>for (let i = 0; i &lt; n; i++)</code></div>
                     <div class="hero-code-line code-highlight">
-                        <small>02</small><code>  if (arr[j] &gt; arr[j + 1])</code></div>
+                        <small>02</small><code>  if (arr[j] &gt; arr[j + 1])</code>
+                    </div>
                     <div class="hero-code-line"><small>03</small><code>    swap(arr[j], arr[j + 1])</code></div>
                     <div class="hero-code-line"><small>04</small><code>  // repeat &amp; improve</code></div>
-                    <div class="hero-mini-bars" aria-hidden="true"><i style="height:35%"></i><i style="height:58%"></i><i
-                            style="height:43%"></i><i style="height:82%"></i><i style="height:66%"></i><i
-                            style="height:94%"></i><i style="height:50%"></i></div>
+                    <div class="hero-mini-bars" aria-hidden="true"><i style="height:35%"></i><i
+                            style="height:58%"></i><i style="height:43%"></i><i style="height:82%"></i><i
+                            style="height:66%"></i><i style="height:94%"></i><i style="height:50%"></i></div>
                     <div class="code-card-foot"><span><b></b> Visualising operation</span><strong>STEP 08 / 24</strong>
                     </div>
                 </div>
-                <div class="floating-chip chip-bottom"><span class="chip-dot green-dot" aria-hidden="true"></span> SORTED <b>✓ 100%</b>
+                <div class="floating-chip chip-bottom"><span class="chip-dot green-dot" aria-hidden="true"></span>
+                    SORTED <b>✓ 100%</b>
                 </div>
                 <div class="hero-sparkle sparkle-one" aria-hidden="true">✳</div>
                 <div class="hero-sparkle sparkle-two" aria-hidden="true">✦</div>
             </div>
         </section>
-                    <div class="hero-code-line"><small>04</small><code>  // repeat &amp; improve</code></div>
-                    <div class="hero-mini-bars"><i style="height:35%"></i><i style="height:58%"></i><i
-                            style="height:43%"></i><i style="height:82%"></i><i style="height:66%"></i><i
-                            style="height:94%"></i><i style="height:50%"></i></div>
-                    <div class="code-card-foot"><span><b></b> Visualising operation</span><strong>STEP 08 / 24</strong>
-                    </div>
-                </div>
-                <div class="floating-chip chip-bottom"><span class="chip-dot green-dot"></span> SORTED <b>✓ 100%</b>
-                </div>
-                <div class="hero-sparkle sparkle-one">✳</div>
-                <div class="hero-sparkle sparkle-two">✦</div>
-            </div>
+        <div class="hero-code-line"><small>04</small><code>  // repeat &amp; improve</code></div>
+        <div class="hero-mini-bars"><i style="height:35%"></i><i style="height:58%"></i><i style="height:43%"></i><i
+                style="height:82%"></i><i style="height:66%"></i><i style="height:94%"></i><i style="height:50%"></i>
+        </div>
+        <div class="code-card-foot"><span><b></b> Visualising operation</span><strong>STEP 08 / 24</strong>
+        </div>
+        </div>
+        <div class="floating-chip chip-bottom"><span class="chip-dot green-dot"></span> SORTED <b>✓ 100%</b>
+        </div>
+        <div class="hero-sparkle sparkle-one">✳</div>
+        <div class="hero-sparkle sparkle-two">✦</div>
+        </div>
         </section>
 
         <section class="home-stats" aria-label="Searchify highlights">
@@ -216,14 +228,18 @@
                 <div class="home-demo-status" id="home-demo-status" role="status" aria-live="polite">Ready when you are
                 </div>
             </header>
-            <figure class="home-demo-bars" id="home-demo-bars" role="region" aria-label="Eight values being sorted"></figure>
-            <nav class="home-demo-actions" aria-label="Demo interactive actions"><button type="button" id="home-demo-run">▶ Run Bubble Sort</button><button
-                    type="button" id="home-demo-shuffle">↻ Shuffle values</button></nav>
+            <figure class="home-demo-bars" id="home-demo-bars" role="region" aria-label="Eight values being sorted">
+            </figure>
+            <nav class="home-demo-actions" aria-label="Demo interactive actions"><button type="button"
+                    id="home-demo-run">▶ Run Bubble Sort</button><button type="button" id="home-demo-shuffle">↻ Shuffle
+                    values</button></nav>
         </section>
 
-        <footer class="home-footer" role="contentinfo"><a href="#" class="footer-brand" aria-label="Searchify brand">Searchify<span>✳</span></a>
-            <p>Made to make algorithms click.</p><nav aria-label="Back to top"><a href="#top"
-                onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">Back to top ↑</a></nav>
+        <footer class="home-footer" role="contentinfo"><a href="#" class="footer-brand"
+                aria-label="Searchify brand">Searchify<span>✳</span></a>
+            <p>Made to make algorithms click.</p>
+            <nav aria-label="Back to top"><a href="#top"
+                    onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">Back to top ↑</a></nav>
         </footer>
     </main>
     <script src="js/home-nav.js"></script>
