@@ -241,6 +241,14 @@ if proc_clearance.returncode != 0:
     print("[FAIL] Mobile visualizer clearance & non-overlapping status verification failed.")
     sys.exit(1)
 
+# 27. Zero Scroll Hijack During Algorithm Execution Verification
+print("\n--- 27. Verifying Zero Scroll Hijack During Algorithm Execution ---")
+proc_scroll = subprocess.run([sys.executable, "tests/verify_no_scroll_hijack.py"], capture_output=True, text=True, encoding="utf-8")
+print(proc_scroll.stdout)
+if proc_scroll.returncode != 0:
+    print("[FAIL] Zero scroll hijack verification failed.")
+    sys.exit(1)
+
 print("\n" + "=" * 60)
 print("ALL VERIFICATIONS COMPLETED SUCCESSFULLY (100% PASS RATE)")
 print("=" * 60)

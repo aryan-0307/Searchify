@@ -4,6 +4,48 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## [2026-11-07 — Zero Scroll Hijack During Algorithm Execution]
+
+### Changed
+- **Code Trace Line Scroll Segregation**:
+  - In [js/learning-features.js](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/js/learning-features.js), replaced `targetEl.scrollIntoView({ block: 'nearest', behavior: 'smooth' })` inside `highlightTraceStep()` with container-local scrolling on `.viz-code-body`.
+  - Calculated relative bounding rect offset between active pseudocode line (`targetEl`) and code body container (`codeBody`):
+    - `codeBody.scrollTop -= (bodyRect.top - targetRect.top)` when line is above view.
+    - `codeBody.scrollTop += (targetRect.bottom - bodyRect.bottom)` when line is below view.
+  - Keeps active pseudocode lines visible inside the Live Code panel without ever affecting `window.scrollY` or triggering document-level scroll.
+  - Users can freely scroll down to view live statistics, explanations, and complexity cards while algorithm execution continues uninterrupted.
+
+### Verified
+- Created automated test [tests/verify_no_scroll_hijack.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_no_scroll_hijack.py) testing live playback on both `sorting.html` and `searching.html`:
+  - Verified window scroll position (`targetScrollY = 500`) is preserved with 0.0px deviation during active execution across multiple steps (2/2 tests pass).
+- Integrated as Stage 27 in master regression suite [tests/run_all_tests.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/run_all_tests.py) (27/27 stages pass 100%).
+
+---
+
+## [2026-11-07 — Array Status Conditions Layout Under Visualizer Area]
+
+### Changed
+- **Array Status Legend Relocation Under Visualizer Area on Mobile**:
+  - In [sorting.html](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/sorting.html) and [searching.html](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/searching.html), repositioned `.color-legend` as a direct child of `.viz-canvas-wrapper` immediately following `.viz-area`.
+  - In [css/visualizer.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/visualizer.css):
+    - Desktop (>768px): Kept `position: absolute; top: 14px; left: 24px;` within the relative `.viz-canvas-wrapper`, preserving the exact desktop visual display inside the canvas.
+    - Mobile (<=768px): Structured `.viz-canvas-wrapper` as a column (`display: flex; flex-direction: column;`), placing `.color-legend` with `order: 2; position: static; width: 100%;` directly underneath `.viz-area` (`order: 1`).
+    - Styled the legend bar under the visualizer area with a subtle `#FAF9F5` background, top/bottom borders, and `flex-wrap: wrap; justify-content: center; gap: 8px 14px;`.
+    - Every condition (Default, Comparing, Swapping, Pivot, Sorted / Found) fits cleanly and wraps symmetrically without any clipping, cutting off, or horizontal overflow on all screen sizes down to 320px.
+- **Visualizer Canvas Optimization**:
+  - Decreased `.viz-area` mobile top padding to `56px` to reclaim vertical headroom inside the canvas.
+  - Positioned `.canvas-status-pill` at `top: 14px; right: 14px;` floating in its own open, empty area inside the canvas.
+  - In [js/sorting-visualizer.js](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/js/sorting-visualizer.js), configured dynamic usable height reservation (`reservedSpace = 144`), guaranteeing 40px+ clearance between the tallest bar label and the floating status indicator.
+
+### Verified
+- Automated test [tests/verify_mobile_visualizer_clearance.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_mobile_visualizer_clearance.py) verified:
+  - `.color-legend` is located cleanly under the visualizer area (`legend.top >= area.bottom - 4`).
+  - Zero overflow or cutoff across all legend conditions.
+  - Zero collision between floating status pill and array elements across 8 viewports (320px to 1280px) on both visualizers (**16/16 tests pass**).
+- Full regression test suite [tests/run_all_tests.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/run_all_tests.py) passed all **26 stages with a 100% pass rate**.
+
+---
+
 ## [2026-11-07 — Mobile Visualizer Layout & Clearance Overhaul]
 
 ### Changed

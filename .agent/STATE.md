@@ -4,32 +4,30 @@
 Transform the AlgoViz homepage (`index.html`) from a plain static page into a modern, visually engaging, interactive algorithm playground. Upgrade typography to Bricolage Grotesque, elevate the hero container with subtle grid textures and depth, and transform the two cards (Searching & Sorting) with custom icons, miniature animated visualizations (step scanning for Searching, smooth ascending reordering for Sorting), descriptive lines, and responsive layout, without modifying visualizer pages or algorithm logic.
 
 ## Current Phase
-Phase 36 — Mobile Visualizer Non-Overlapping Layout & Height Clearance Overhaul
+Phase 38 — Zero Scroll Hijack During Algorithm Execution
 
 ## Status
 COMPLETE
 
 ## Current Task
-Resolved mobile visualizer layout mixing & collision issues across Sorting and Searching pages:
-- **Mutual Non-Overlap for Status and Legend**:
-  - In [css/visualizer.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/visualizer.css):
-    - Configured `.color-legend` on mobile (<=768px) as a sleek, single-line horizontal pill bar at `top: 8px; left: 8px; right: 8px;` with `flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none;` (height ~26-30px).
-    - Positioned `.canvas-status-pill` cleanly on Level 2 at `top: 44px; right: 10px; left: auto;` in dedicated empty canvas space, completely segregated from the color legend with guaranteed vertical clearance.
-- **Strict Element Clearance Below Status Options**:
-  - In [js/sorting-visualizer.js](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/js/sorting-visualizer.js):
-    - Implemented `getUsableAreaHeight(areaEl)` dynamically reserving 176px of vertical clearance on mobile viewports (<=768px), ensuring the tallest bar and `.bar-label` always sit at least 40px+ strictly below the status options/pill.
-    - Updated desktop formula with 116px reservation to prevent bar labels from extending above status pill level.
-  - In [css/visualizer.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/visualizer.css):
-    - Set `.viz-area` on mobile to `min-height: 400px; padding: 96px 14px 38px;` and overrode `align-items: center` for searching visualizer to `align-items: flex-start !important; padding-top: 96px !important;` so search cells and target indicators begin comfortably below the status pill.
-    - Adjusted mobile `@keyframes gravity-fall` and `gravity-launch` to animate within the lower canvas zone (`translateY(-20px)` instead of `-140px`), eliminating mid-air fly-through collisions when opening on mobile.
+Eliminated window scroll hijacking during algorithm execution across both Sorting and Searching visualizers:
+- **Root Cause Identified**:
+  - In [js/learning-features.js](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/js/learning-features.js), `highlightTraceStep` previously called `targetEl.scrollIntoView({ block: 'nearest', behavior: 'smooth' })` on every single step execution (`searchify:step` event).
+  - In modern browsers, `scrollIntoView()` scrolls not only the container, but also the entire window/document back to the element's position. This caused the page to forcefully jump/glide back up to the visualizer whenever the user tried to scroll down during algorithm playback.
+- **Scroll Segregation Implemented**:
+  - In [js/learning-features.js](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/js/learning-features.js), replaced `scrollIntoView()` with container-local scrolling on `.viz-code-body`.
+  - Computed bounding rect delta between `targetEl` and `codeBody`:
+    - If `targetRect.top < bodyRect.top`: `codeBody.scrollTop -= (bodyRect.top - targetRect.top)`
+    - If `targetRect.bottom > bodyRect.bottom`: `codeBody.scrollTop += (targetRect.bottom - bodyRect.bottom)`
+  - Active line remains visible inside the live code panel with zero interaction or effect on window/page scroll. The user can scroll freely to any section while algorithms run uninterrupted.
 - **Automated Verification**:
-  - Created [tests/verify_mobile_visualizer_clearance.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_mobile_visualizer_clearance.py) testing across 8 mobile/tablet/desktop viewports (320px, 360px, 375px, 390px, 412px, 430px, 768px, 1280px) on both `sorting.html` and `searching.html` (16/16 tests pass).
-  - Integrated as Stage 26 in master regression suite [tests/run_all_tests.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/run_all_tests.py) (26/26 stages pass 100%).
+  - Created [tests/verify_no_scroll_hijack.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_no_scroll_hijack.py) testing live playback on both `sorting.html` and `searching.html`: scrolled `window.scrollTo(0, 500)` during active execution, waited across multiple steps, and asserted `window.scrollY` remained safely preserved (diff = 0.0px).
+  - Integrated as Stage 27 in master regression suite [tests/run_all_tests.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/run_all_tests.py) (27/27 stages pass 100%).
 
 ## Last Completed Task
-- **Searchify Brand Font Size & Primary Font Weight Upgrade**:
-  - Increased navbar and footer brand logo to 25px and set body/content font-weight to 500 across all pages.
-  - Stage 25 automated verification added to test suite.
+- **Array Status Conditions Layout Under Visualizer Area**:
+  - Positioned `.color-legend` under the canvas on mobile with responsive wrapping for all conditions.
+  - Stage 26 automated verification added to test suite.
 
 ## Completed Work
 - Empty custom input "Apply" click UX fixed with guidance prompt across both Searching and Sorting visualizers.

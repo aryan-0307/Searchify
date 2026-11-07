@@ -119,18 +119,6 @@
             <section class="viz-canvas-wrapper" aria-label="Searching visualizer interactive area">
                 <figure class="viz-area" id="visualization-area" role="region"
                     aria-label="Search cells array visualization" style="align-items:center;">
-                    <!-- Color Legend -->
-                    <aside class="color-legend" aria-label="Cell state color legend">
-                        <span class="legend-item"><span class="legend-dot"
-                                style="background: var(--color-default)"></span> Default</span>
-                        <span class="legend-item"><span class="legend-dot"
-                                style="background: var(--color-current)"></span> Current</span>
-                        <span class="legend-item"><span class="legend-dot"
-                                style="background: var(--color-checked)"></span> Checked</span>
-                        <span class="legend-item"><span class="legend-dot"
-                                style="background: var(--color-found)"></span> Found</span>
-                    </aside>
-
                     <!-- Floating Canvas Status Indicator -->
                     <div id="canvas-status-pill" class="canvas-status-pill" role="status" aria-live="polite">
                         <span class="pulse-dot"></span>
@@ -149,6 +137,18 @@
 
                     <p class="viz-placeholder">Click "Generate" or enter a target value to start searching.</p>
                 </figure>
+
+                <!-- Color Legend (Cell State / Array Status Conditions) -->
+                <aside class="color-legend" aria-label="Cell state color legend">
+                    <span class="legend-item"><span class="legend-dot"
+                            style="background: var(--color-default)"></span> Default</span>
+                    <span class="legend-item"><span class="legend-dot"
+                            style="background: var(--color-current)"></span> Current</span>
+                    <span class="legend-item"><span class="legend-dot"
+                            style="background: var(--color-checked)"></span> Checked</span>
+                    <span class="legend-item"><span class="legend-dot"
+                            style="background: var(--color-found)"></span> Found</span>
+                </aside>
 
                 <!-- Right: 20% Live Code (Trace) Demonstration Area -->
                 <aside class="viz-code-panel" id="viz-code-panel" aria-label="Live code trace demonstration">

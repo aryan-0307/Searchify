@@ -144,8 +144,19 @@
       }
     }
 
-    if (targetEl && targetEl.scrollIntoView) {
-      targetEl.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    if (targetEl) {
+      // Keep active line visible inside the code panel container without affecting window scroll
+      var codeBody = document.getElementById('viz-code-body') || (panel.closest ? panel.closest('.viz-code-body') : panel.parentElement);
+      if (codeBody) {
+        var targetRect = targetEl.getBoundingClientRect();
+        var bodyRect = codeBody.getBoundingClientRect();
+
+        if (targetRect.top < bodyRect.top) {
+          codeBody.scrollTop -= (bodyRect.top - targetRect.top);
+        } else if (targetRect.bottom > bodyRect.bottom) {
+          codeBody.scrollTop += (targetRect.bottom - bodyRect.bottom);
+        }
+      }
     }
 
     if (stepBadge) {

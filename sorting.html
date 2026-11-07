@@ -123,20 +123,6 @@
             <section class="viz-canvas-wrapper" aria-label="Sorting visualizer interactive area">
                 <figure class="viz-area" id="visualization-area" role="region"
                     aria-label="Vertical array bars visualization">
-                    <!-- Color Legend -->
-                    <aside class="color-legend" aria-label="Bar state color legend">
-                        <span class="legend-item"><span class="legend-dot"
-                                style="background: var(--color-default)"></span> Default</span>
-                        <span class="legend-item"><span class="legend-dot"
-                                style="background: var(--color-comparing)"></span> Comparing</span>
-                        <span class="legend-item"><span class="legend-dot"
-                                style="background: var(--color-swapping)"></span> Swapping</span>
-                        <span class="legend-item"><span class="legend-dot"
-                                style="background: var(--color-pivot)"></span> Pivot</span>
-                        <span class="legend-item"><span class="legend-dot"
-                                style="background: var(--color-sorted)"></span> Sorted</span>
-                    </aside>
-
                     <!-- Floating Canvas Status Indicator -->
                     <div id="canvas-status-pill" class="canvas-status-pill" role="status" aria-live="polite">
                         <span class="pulse-dot"></span>
@@ -155,6 +141,20 @@
 
                     <p class="viz-placeholder">Click "Generate" or enter a custom array to start playing.</p>
                 </figure>
+
+                <!-- Color Legend (Bar State / Array Status Conditions) -->
+                <aside class="color-legend" aria-label="Bar state color legend">
+                    <span class="legend-item"><span class="legend-dot"
+                            style="background: var(--color-default)"></span> Default</span>
+                    <span class="legend-item"><span class="legend-dot"
+                            style="background: var(--color-comparing)"></span> Comparing</span>
+                    <span class="legend-item"><span class="legend-dot"
+                            style="background: var(--color-swapping)"></span> Swapping</span>
+                    <span class="legend-item"><span class="legend-dot"
+                            style="background: var(--color-pivot)"></span> Pivot</span>
+                    <span class="legend-item"><span class="legend-dot"
+                            style="background: var(--color-sorted)"></span> Sorted</span>
+                </aside>
 
                 <!-- Right: 20% Live Code (Trace) Demonstration Area -->
                 <aside class="viz-code-panel" id="viz-code-panel" aria-label="Live code trace demonstration">

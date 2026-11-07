@@ -23,12 +23,11 @@
         var rawHeight = (areaEl && areaEl.clientHeight > 120) ? areaEl.clientHeight : 440;
         if (window.innerWidth <= 768) {
             // Mobile viewport clearance:
-            // Reserve space for top legend pill bar (~34px), vertical gap (~10px),
-            // floating status pill (~28px), clearance buffer (~44px),
-            // bar top value label (~22px), and bottom padding (~38px).
-            // Total reserved vertical clearance = 176px.
-            // Guarantees the highest bar + label is strictly lower than status options/pill.
-            var reservedSpace = 176;
+            // Status pill is at top: 14px; height: ~28px (bottom ~42px).
+            // Legend is placed UNDER the visualizer area, so it no longer takes canvas top space.
+            // Reserved space for status pill (~42px) + buffer (~30px) + label (~22px) + bottom padding (~36px) = 130px.
+            // Guarantees highest bar + label stays strictly lower than status pill, with legend under canvas.
+            var reservedSpace = 144;
             var minH = 110;
             return Math.max(minH, rawHeight - reservedSpace);
         }

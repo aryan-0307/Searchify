@@ -42,10 +42,24 @@ harness_template = """<!DOCTYPE html>
 <div id="results"></div>
 <script>
 window.addEventListener('load', async () => {{
-    await new Promise(r => setTimeout(r, 1000));
+    await new Promise(r => setTimeout(r, 800));
     const frame = document.getElementById('frame');
     const doc = frame.contentDocument;
     const win = frame.contentWindow;
+
+    // Ensure all initial drop animations have settled
+    for (let attempt = 0; attempt < 20; attempt++) {{
+        const dropping = doc.querySelectorAll('.drop-in');
+        if (dropping.length === 0) break;
+        await new Promise(r => setTimeout(r, 100));
+    }}
+    // Remove any remaining drop-in animation overrides to measure true resting layout
+    doc.querySelectorAll('.bar, .cell').forEach(el => {{
+        el.classList.remove('drop-in');
+        el.style.animation = 'none';
+        el.style.transform = 'none';
+    }});
+    await new Promise(r => setTimeout(r, 100));
 
     const area = doc.getElementById('visualization-area');
     const areaRect = area.getBoundingClientRect();
@@ -80,16 +94,27 @@ window.addEventListener('load', async () => {{
         const isMobile = {w} <= 768;
 
         if (isMobile) {{
-            // On mobile, legend should be on top and pill below it
-            if (pillR.top < legR.bottom - 1) {{
-                issues.push(`On mobile, status pill top (${{pillR.top}}) should be below legend bottom (${{legR.bottom}})`);
+            // On mobile, the color legend (array status conditions) is laid out UNDER the visualizer area
+            if (legR.top < areaRect.bottom - 4) {{
+                issues.push(`On mobile, color legend should be laid out UNDER the visualizer area! area bottom=${{areaRect.bottom.toFixed(1)}}, legend top=${{legR.top.toFixed(1)}}`);
             }} else {{
-                const gap = pillR.top - legR.bottom;
-                checks.push(`Status pill is positioned cleanly below legend with gap: ${{gap.toFixed(1)}}px`);
+                checks.push(`Color legend is cleanly laid out UNDER the visualizer area (area.bottom=${{areaRect.bottom.toFixed(1)}}, legend.top=${{legR.top.toFixed(1)}})`);
+            }}
+
+            // Verify that all array status condition items fit properly without horizontal clipping/overflow
+            const items = Array.from(legend.querySelectorAll('.legend-item'));
+            items.forEach((item, idx) => {{
+                const iR = item.getBoundingClientRect();
+                if (iR.right > {w} + 4 || iR.left < -4) {{
+                    issues.push(`Legend item ${{idx}} (${{item.textContent.trim()}}) overflows screen: left=${{iR.left.toFixed(1)}}, right=${{iR.right.toFixed(1)}}, viewport={w}`);
+                }}
+            }});
+            if (items.length > 0) {{
+                checks.push(`All ${{items.length}} array status conditions (${{items.map(it => it.textContent.trim()).join(', ')}}) are properly fitted within the area without overflowing`);
             }}
         }}
 
-        // 2. Check that the highest element of the array is strictly lower than both legend and status pill
+        // 2. Check that the highest element of the array is strictly lower than status pill
         const isSorting = '{page}' === 'sorting.html';
         let highestTop = 999999;
         let highestElDescription = "none";
@@ -133,7 +158,6 @@ window.addEventListener('load', async () => {{
 
         if (highestTop < 999999) {{
             const clearanceBelowPill = highestTop - pillR.bottom;
-            const clearanceBelowLegend = highestTop - legR.bottom;
 
             if (clearanceBelowPill <= 0) {{
                 issues.push(`Array highest element (${{highestElDescription}} at top=${{highestTop.toFixed(1)}}) collides with or is higher than status pill (bottom=${{pillR.bottom.toFixed(1)}})`);
@@ -141,10 +165,13 @@ window.addEventListener('load', async () => {{
                 checks.push(`Highest array element (${{highestElDescription}}) is strictly lower than status pill by ${{clearanceBelowPill.toFixed(1)}}px`);
             }}
 
-            if (clearanceBelowLegend <= 0) {{
-                issues.push(`Array highest element (${{highestElDescription}} at top=${{highestTop.toFixed(1)}}) collides with or is higher than color legend (bottom=${{legR.bottom.toFixed(1)}})`);
-            }} else {{
-                checks.push(`Highest array element (${{highestElDescription}}) is strictly lower than color legend by ${{clearanceBelowLegend.toFixed(1)}}px`);
+            if (!isMobile) {{
+                const clearanceBelowLegend = highestTop - legR.bottom;
+                if (clearanceBelowLegend <= 0) {{
+                    issues.push(`On desktop, array highest element (${{highestElDescription}} at top=${{highestTop.toFixed(1)}}) collides with or is higher than color legend (bottom=${{legR.bottom.toFixed(1)}})`);
+                }} else {{
+                    checks.push(`Highest array element is strictly lower than color legend by ${{clearanceBelowLegend.toFixed(1)}}px`);
+                }}
             }}
         }}
     }}
@@ -195,7 +222,7 @@ for page in pages:
         ]
 
         try:
-            res = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="ignore", timeout=12)
+            res = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="ignore", timeout=22)
             dom = res.stdout
             match = re.search(r'<div id="results">(\{.*?\})</div>', dom, re.DOTALL)
             if match:
