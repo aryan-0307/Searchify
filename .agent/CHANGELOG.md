@@ -4,6 +4,74 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## [2026-11-07 — Searchify Brand Font Size & Primary Font Weight Upgrade]
+
+### Changed
+- **Searchify Brand Font Size on Homepage**:
+  - In [css/home.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/home.css), increased font-size for all occurrences of visible 'Searchify' brand text:
+    - `.home-brand-logo`: Increased to `25px` on desktop navbar (was `20px` and `15px`), `21px` on mobile phones (was `18px`), and `19px` on compact screens (was `16px`).
+    - `.footer-brand`: Increased to `25px` (was `17px`), and scaled brand spark icon to `22px`.
+- **Primary Font Stack Weight Upgrade**:
+  - In [css/style.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/style.css), added `--font-primary-weight: 500;` for `--font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;`.
+  - Configured `font-weight: var(--font-primary-weight, 500);` on `body` in both [css/style.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/style.css) and [css/home.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/home.css).
+  - Explicitly upgraded font weights to `500` / `600` on `.hero-description`, `.card-long-desc`, `.section-heading>p`, `.home-demo-heading p`, `.viz-subtitle`, and `.complexity-algo-desc` for cleaner, higher-contrast legibility.
+
+### Verified
+- Created automated test [tests/verify_searchify_size_and_weight.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_searchify_size_and_weight.py) verifying `font-size >= 24px` on homepage Searchify elements and `font-weight >= 500` across all pages.
+- Integrated as Stage 25 in master test runner [tests/run_all_tests.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/run_all_tests.py).
+
+---
+
+## [2026-11-07 — Aalto Display Letter Spacing & Zero-Gravity Space Physics Floating Typography]
+
+### Changed
+- **Aalto Display Breathable Letter Spacing**:
+  - Replaced tight negative letter spacings with generous, positive letter spacings across all Aalto Display elements to prevent glyph crowding and overlapping.
+  - Defined `--letter-spacing-display: 0.03em;` in [css/style.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/style.css).
+  - Updated [css/home.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/home.css):
+    - `.hero-copy h1`: `letter-spacing: 0.035em;` and line-height `1.08` (was `-3.6px`).
+    - Responsive hero headlines: `0.03em` (900px), `0.025em` (680px), `0.02em` (540px).
+    - `.section-heading h2`: `letter-spacing: 0.03em;` and line-height `1.15` (was `-1.5px`).
+    - `.home-demo-heading h2`: `letter-spacing: 0.03em;` (was `-.7px`).
+    - `.card-title`: `letter-spacing: 0.025em;` (was `-0.5px`).
+    - `.home-brand-logo`: `letter-spacing: 0.025em;` (was `-.8px`).
+    - `.brand-mark`: `letter-spacing: 0.02em;` (was `-0.3px`).
+    - `.home-stats>div strong`: `letter-spacing: 0.025em;`.
+    - `.footer-brand`: `letter-spacing: 0.025em;`.
+  - Updated [css/visualizer.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/visualizer.css):
+    - `.viz-title`: `letter-spacing: var(--letter-spacing-display, 0.03em);`.
+    - `.complexity-algo-name`: `letter-spacing: var(--letter-spacing-display, 0.03em);`.
+
+### Added
+- **Zero-Gravity Space Physics Floating Typography**:
+  - Structured "Algorithms make more sense when you see them move" in [index.html](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/index.html) into microgravity floating line groups: `.hero-space-line.line-1`, `.line-2`, `.line-3`, and `.see-them-move`.
+  - In [css/home.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/home.css), implemented orbital Lissajous floating curves (`spaceOrbitalDrift1`, `spaceOrbitalDrift2`, `spaceOrbitalDrift3`) with gentle angular tilt ($\pm 0.6^\circ$) and staggered orbital periods (7.4s, 8.6s, 9.4s).
+  - Implemented dynamic celestial accent float and cosmic pink glow for `see them move.` (`spaceCosmicAura`).
+  - Added microgravity space drift to `.chip-top` and `.chip-bottom` in the hero art.
+  - In [css/style.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/style.css), added zero-g floating animation (`spacePillFloat`) to `.canvas-status-pill` above the visualizer canvas.
+  - Guaranteed accessibility with `@media (prefers-reduced-motion: reduce)` suppression.
+
+### Verified
+- Created automated test [tests/verify_space_physics_and_spacing.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_space_physics_and_spacing.py) verifying positive computed letter spacing across 11 elements and active space physics animations.
+- Added as Stage 24 in master test runner [tests/run_all_tests.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/run_all_tests.py).
+
+---
+
+## [2026-11-07 — Aalto Display Typography Across the Site]
+
+### Changed
+- **Global Typography Upgrade**:
+  - Replaced Bricolage Grotesque with **Aalto Display** (`'Aalto Display', 'Aalto Display-Personal-use'`) across all headings, branding, numbers, and display text on [index.html](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/index.html), [sorting.html](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/sorting.html), [searching.html](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/searching.html), and [favicon.svg](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/favicon.svg).
+  - Added `@font-face` declarations for `Aalto Display` and `Aalto Display-Personal-use` in [css/style.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/style.css) and defined `--font-display: 'Aalto Display', 'Aalto Display-Personal-use', sans-serif;`.
+  - Updated [css/home.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/home.css) for `.home-brand-logo`, `.brand-mark`, `.hero-copy h1`, `.card-title`, `.card-number`, `.section-heading h2`, `.home-demo-heading h2`, and `.footer-brand`.
+  - Updated [css/visualizer.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/visualizer.css) for `.viz-title` and `.complexity-algo-name`.
+
+### Verified
+- Created automated test [tests/verify_font_family.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_font_family.py) testing computed `fontFamily` across 10 elements on all three pages.
+- Integrated as Stage 23 in master test runner [tests/run_all_tests.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/run_all_tests.py).
+
+---
+
 ## [2026-11-07 — Visualizer Header Title & Subtitle Centering]
 
 ### Added

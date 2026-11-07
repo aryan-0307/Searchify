@@ -10,11 +10,16 @@
     --vibrant-pink: #D93D81;
 
     /* Semantic Surface Colors */
-    --bg-primary: #F5F3ED;      /* Warm Ivory */
-    --bg-secondary: #ECEBDB;    /* Soft Cream */
-    --bg-tertiary: #FFFFFF;     /* White surfaces */
-    --bg-elevated: #ECEBDB;     /* Soft Cream */
-    --bg-canvas: #FFFFFF;       /* Clean visualization canvas */
+    --bg-primary: #F5F3ED;
+    /* Warm Ivory */
+    --bg-secondary: #ECEBDB;
+    /* Soft Cream */
+    --bg-tertiary: #FFFFFF;
+    /* White surfaces */
+    --bg-elevated: #ECEBDB;
+    /* Soft Cream */
+    --bg-canvas: #FFFFFF;
+    /* Clean visualization canvas */
 
     /* Typography Colors */
     --text-primary: #252525;
@@ -28,24 +33,40 @@
     --border-accent: #224D95;
 
     /* Brand & Accents */
-    --accent-blue: #224D95;     /* Royal Blue */
-    --accent-pink: #D93D81;     /* Vibrant Pink */
+    --accent-blue: #224D95;
+    /* Royal Blue */
+    --accent-pink: #D93D81;
+    /* Vibrant Pink */
 
     /* Algorithm Visual States */
-    --color-default: #224D95;   /* Royal Blue */
-    --color-comparing: #D4AC0D; /* Warm Gold / Yellow */
-    --color-swapping: #D93D81;  /* Vibrant Pink */
-    --color-sorted: #27AE60;    /* Emerald Green */
-    --color-pivot: #8E44AD;     /* Amethyst Purple */
-    --color-found: #27AE60;     /* Emerald Green */
-    --color-current: #D93D81;   /* Vibrant Pink for examined search cell */
-    --color-checked: #D8D5C9;   /* Muted Beige */
-    --color-eliminated: #EAE7DB;/* Eliminated cell bg */
-    --color-error: #D93D81;     /* Vibrant Pink */
-    --color-warning: #D4AC0D;   /* Warm Gold */
+    --color-default: #224D95;
+    /* Royal Blue */
+    --color-comparing: #D4AC0D;
+    /* Warm Gold / Yellow */
+    --color-swapping: #D93D81;
+    /* Vibrant Pink */
+    --color-sorted: #27AE60;
+    /* Emerald Green */
+    --color-pivot: #8E44AD;
+    /* Amethyst Purple */
+    --color-found: #27AE60;
+    /* Emerald Green */
+    --color-current: #D93D81;
+    /* Vibrant Pink for examined search cell */
+    --color-checked: #D8D5C9;
+    /* Muted Beige */
+    --color-eliminated: #EAE7DB;
+    /* Eliminated cell bg */
+    --color-error: #D93D81;
+    /* Vibrant Pink */
+    --color-warning: #D4AC0D;
+    /* Warm Gold */
 
     /* Fonts */
     --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    --font-primary-weight: 500;
+    --font-display: 'Aalto Display', 'Aalto Display-Personal-use', sans-serif;
+    --letter-spacing-display: 0.03em;
     --font-mono: 'Consolas', 'Monaco', 'Courier New', monospace;
     --font-handwritten: 'Kalam', 'Caveat', cursive;
 
@@ -64,8 +85,35 @@
     --transition: 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* === Aalto Display Webfont Declarations === */
+@font-face {
+    font-family: 'Aalto Display';
+    src: local('Aalto Display'),
+        local('Aalto Display-Personal-use'),
+        url('https://db.onlinewebfonts.com/t/f6ec291f284d1c8ba5a1706ba94e4a9d.woff2') format('woff2'),
+        url('https://db.onlinewebfonts.com/t/f6ec291f284d1c8ba5a1706ba94e4a9d.woff') format('woff'),
+        url('https://db.onlinewebfonts.com/t/f6ec291f284d1c8ba5a1706ba94e4a9d.ttf') format('truetype');
+    font-weight: 400 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Aalto Display-Personal-use';
+    src: local('Aalto Display'),
+        local('Aalto Display-Personal-use'),
+        url('https://db.onlinewebfonts.com/t/f6ec291f284d1c8ba5a1706ba94e4a9d.woff2') format('woff2'),
+        url('https://db.onlinewebfonts.com/t/f6ec291f284d1c8ba5a1706ba94e4a9d.woff') format('woff'),
+        url('https://db.onlinewebfonts.com/t/f6ec291f284d1c8ba5a1706ba94e4a9d.ttf') format('truetype');
+    font-weight: 400 900;
+    font-style: normal;
+    font-display: swap;
+}
+
 /* === Reset === */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -79,6 +127,7 @@ html {
 
 body {
     font-family: var(--font-primary);
+    font-weight: var(--font-primary-weight, 500);
     background-color: var(--bg-primary);
     color: var(--text-primary);
     line-height: 1.6;
@@ -309,10 +358,14 @@ input[type="range"]::-moz-range-thumb:hover {
     justify-content: center;
     gap: 10px;
     padding: 8px 22px;
-    border-radius: 9999px; /* Rounded pill shape matching reference */
-    background: #ECEBDB; /* Soft Cream */
-    border: 1.5px solid #D8D5C9; /* Subtle beige */
-    color: #224D95; /* Royal Blue */
+    border-radius: 9999px;
+    /* Rounded pill shape matching reference */
+    background: #ECEBDB;
+    /* Soft Cream */
+    border: 1.5px solid #D8D5C9;
+    /* Subtle beige */
+    color: #224D95;
+    /* Royal Blue */
     font-family: var(--font-sans);
     font-size: 14px;
     font-weight: 600;
@@ -321,9 +374,10 @@ input[type="range"]::-moz-range-thumb:hover {
     box-shadow: 0 4px 16px rgba(34, 77, 149, 0.12), 0 2px 6px rgba(37, 37, 37, 0.06);
     z-index: 10000;
     opacity: 0;
-    pointer-events: none; /* Never blocks user interaction with the visualizer */
+    pointer-events: none;
+    /* Never blocks user interaction with the visualizer */
     transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-                transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     max-width: min(440px, 90vw);
     width: auto;
     word-break: break-word;
@@ -354,7 +408,8 @@ input[type="range"]::-moz-range-thumb:hover {
 }
 
 .notification.success .notification-icon {
-    background: #27AE60; /* Success accent green */
+    background: #27AE60;
+    /* Success accent green */
     color: #FFFFFF;
 }
 
@@ -389,6 +444,7 @@ input[type="range"]::-moz-range-thumb:hover {
         transform: translateX(-50%) !important;
         transition: opacity 0.15s ease !important;
     }
+
     .notification.show {
         transform: translateX(-50%) !important;
     }
@@ -405,7 +461,7 @@ input[type="range"]::-moz-range-thumb:hover {
     color: var(--royal-blue);
     font-family: var(--font-mono);
     font-size: 12px;
-    box-shadow: 0 1px 2px rgba(37,37,37,0.05);
+    box-shadow: 0 1px 2px rgba(37, 37, 37, 0.05);
 }
 
 .val-chip.highlight {
@@ -475,6 +531,22 @@ input[type="range"]::-moz-range-thumb:hover {
     box-shadow: var(--shadow-sm);
     z-index: 10;
     transition: all var(--transition-fast);
+    animation: spacePillFloat 4.6s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite alternate;
+    will-change: transform;
+}
+
+@keyframes spacePillFloat {
+    0% {
+        transform: translate3d(0, 0, 0);
+    }
+
+    50% {
+        transform: translate3d(-1px, -4.5px, 0) rotate(0.4deg);
+    }
+
+    100% {
+        transform: translate3d(1px, 1px, 0) rotate(-0.3deg);
+    }
 }
 
 .canvas-status-pill .pulse-dot {
@@ -565,7 +637,7 @@ input[type="range"]::-moz-range-thumb:hover {
     padding: 0;
     margin: -1px;
     overflow: hidden;
-    clip: rect(0,0,0,0);
+    clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border: 0;
 }

@@ -85,7 +85,7 @@ window.onload = function() {
     var container = doc.querySelector('.home-container');
     var containerStyle = win.getComputedStyle(container);
 
-    var passTypography = titleStyle.fontFamily.includes('Bricolage Grotesque') || titleStyle.fontFamily.includes('sans-serif');
+    var passTypography = titleStyle.fontFamily.includes('Aalto Display') || titleStyle.fontFamily.includes('Bricolage Grotesque') || titleStyle.fontFamily.includes('sans-serif');
     var passCards = searchStyle.display === 'flex' && sortStyle.display === 'flex';
     var passLinks = searchCard.getAttribute('href') === 'searching.html' && sortCard.getAttribute('href') === 'sorting.html';
     

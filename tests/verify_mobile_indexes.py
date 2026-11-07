@@ -28,7 +28,7 @@ harness_template = """<!DOCTYPE html>
 <div id="results"></div>
 <script>
 window.addEventListener('load', async () => {{
-    await new Promise(r => setTimeout(r, 200));
+    await new Promise(r => setTimeout(r, 1000));
     const frame = document.getElementById('frame');
     const doc = frame.contentDocument;
     const win = frame.contentWindow;
@@ -56,12 +56,13 @@ window.addEventListener('load', async () => {{
                 issues.push(`Cell ${{i}} index extends beyond canvas bottom (idxBottom=${{idxR.bottom}}, areaBottom=${{areaRect.bottom}})`);
             }}
 
-            // Check if index overlaps another cell below it
+            // Check if index overlaps another cell below it in the same column
             cells.forEach((otherCell, j) => {{
                 if (i !== j) {{
                     const otherR = otherCell.getBoundingClientRect();
-                    // other cell is vertically below cell
-                    if (otherR.top >= cellR.bottom - 2) {{
+                    const horizOverlap = Math.max(idxR.left, otherR.left) < Math.min(idxR.right, otherR.right);
+                    // other cell is vertically below cell in the same column
+                    if (horizOverlap && otherR.top >= cellR.bottom - 2) {{
                         if (idxR.bottom > otherR.top) {{
                             issues.push(`Cell ${{i}} index overlaps Cell ${{j}} (idxBottom=${{idxR.bottom}}, nextCellTop=${{otherR.top}})`);
                         }}

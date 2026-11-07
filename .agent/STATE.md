@@ -4,24 +4,29 @@
 Transform the AlgoViz homepage (`index.html`) from a plain static page into a modern, visually engaging, interactive algorithm playground. Upgrade typography to Bricolage Grotesque, elevate the hero container with subtle grid textures and depth, and transform the two cards (Searching & Sorting) with custom icons, miniature animated visualizations (step scanning for Searching, smooth ascending reordering for Sorting), descriptive lines, and responsive layout, without modifying visualizer pages or algorithm logic.
 
 ## Current Phase
-Phase 32 — Visualizer Header Title & Subtitle Centering
+Phase 35 — Searchify Brand Font Size & Primary Font Weight Upgrade
 
 ## Status
 COMPLETE
 
 ## Current Task
-Moved the visualizer title and subtitle (`Searching Visualizer` / `Explore search paths step by step`, and `Sorting Visualizer` / `Watch algorithms come to life`) to the exact center of the header section:
-- In [css/visualizer.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/visualizer.css), updated `.viz-header` to use balanced 3-column CSS Grid (`grid-template-columns: 1fr auto 1fr; align-items: center;`), placing `.back-btn` on the left (`justify-self: start`), the algorithm selector on the right (`justify-self: end`), and `.viz-header-title-group` in the dead center (`justify-self: center; text-align: center; align-items: center;`).
-- Verified mathematical zero-pixel offset (`diff = 0px`) from the exact center of the header across desktop (1440px), tablet (768px), and mobile (375px).
-- Created automated test [tests/verify_header_title_centering.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_header_title_centering.py) and integrated as Stage 22 in [tests/run_all_tests.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/run_all_tests.py).
+Increased font-size of visible 'Searchify' brand text across the homepage and increased font-weight of the primary font stack ('Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif):
+- **Searchify Brand Font Size**:
+  - In [css/home.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/home.css):
+    - `.home-brand-logo`: Increased to `25px` (desktop navbar; was `20px` and `15px`), `21px` at 540px mobile (was `18px`), and `19px` at 400px compact mobile (was `16px`).
+    - `.footer-brand`: Increased to `25px` (was `17px`) and enlarged brand spark symbol to `22px`.
+- **Primary Font Stack Weight Upgrade**:
+  - In [css/style.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/style.css): Defined `--font-primary-weight: 500;` for `--font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;`.
+  - Configured `font-weight: var(--font-primary-weight, 500);` on `body` in both [css/style.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/style.css) and [css/home.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/home.css).
+  - Explicitly configured `font-weight: 500;` on `.hero-description`, `.card-long-desc`, `.section-heading>p`, `.home-demo-heading p`, and `.complexity-algo-desc`, and `font-weight: 600;` on `.viz-subtitle`.
+- **Automated Verification**:
+  - Created [tests/verify_searchify_size_and_weight.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_searchify_size_and_weight.py) verifying `font-size >= 24px` on all Searchify homepage brand elements and `font-weight >= 500` across all primary text elements on all pages.
+  - Integrated as Stage 25 in master test runner [tests/run_all_tests.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/run_all_tests.py).
 
 ## Last Completed Task
-- **Mobile Visualizer Layout & Stacked Playback Controls**:
-  - `sorting.html` & `searching.html`:
-    - Structured `.playback-cluster` into `.transport-group` (`prev`, `play`, `next`) and `.reset-restart-group` (`reset`, `restart`).
-    - Configured vertical stacking with 10px spacing on mobile, resolving horizontal overflow and page zoom-out bugs while preserving desktop single-row clustering.
-  - Automated test suite:
-    - Added `tests/verify_mobile_visualizer_layout.py` as Stage 21 in `tests/run_all_tests.py`.
+- **Aalto Display Letter Spacing & Zero-Gravity Space Physics Floating Typography**:
+  - Provided breathable letter spacing across all Aalto Display typography and implemented zero-gravity space physics floating typography for "Algorithms make more sense when you see them move".
+  - Stage 24 automated verification added to test suite.
 
 ## Completed Work
 - Empty custom input "Apply" click UX fixed with guidance prompt across both Searching and Sorting visualizers.

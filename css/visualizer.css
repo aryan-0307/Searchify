@@ -47,17 +47,18 @@
 }
 
 .viz-title {
+    font-family: var(--font-display);
     font-size: 19px;
     font-weight: 700;
     color: var(--royal-blue);
-    letter-spacing: -0.3px;
+    letter-spacing: var(--letter-spacing-display, 0.03em);
     line-height: 1.2;
     text-align: center;
 }
 
 .viz-subtitle {
     font-size: 12px;
-    font-weight: 500;
+    font-weight: 600;
     color: var(--text-secondary);
     text-align: center;
 }
@@ -188,12 +189,15 @@
     .viz-controls {
         flex-wrap: nowrap;
     }
+
     .playback-cluster {
         margin: 0;
     }
+
     .array-cluster {
         margin: 0 auto;
     }
+
     .settings-cluster {
         margin: 0;
     }
@@ -204,6 +208,7 @@
         justify-content: center;
         gap: 12px;
     }
+
     .array-cluster,
     .playback-cluster,
     .settings-cluster {
@@ -308,10 +313,13 @@
 }
 
 @keyframes codePulse {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: scale(1);
         opacity: 1;
     }
+
     50% {
         transform: scale(1.35);
         opacity: 0.6;
@@ -659,34 +667,42 @@
         transform: translateY(0) scale(1);
         opacity: 1;
     }
+
     9% {
         /* Pre-launch micro-hop */
         transform: translateY(-5px) scaleY(1.0) scaleX(1.0);
     }
+
     18% {
         /* Pre-launch touchdown */
         transform: translateY(0) scaleY(0.94) scaleX(1.03);
     }
+
     30% {
         /* Rebound apex */
         transform: translateY(-22px) scaleY(1.02) scaleX(0.98);
     }
+
     42% {
         /* Pre-load descent pushing down */
         transform: translateY(-10px) scaleY(1.06) scaleX(0.95);
     }
+
     50% {
         /* Maximum ground compression squash (loading kinetic spring) */
         transform: translateY(0) scaleY(0.82) scaleX(1.12);
     }
+
     56% {
         /* Elastic spring decompression leaving ground */
         transform: translateY(0) scaleY(1.0) scaleX(1.0);
     }
+
     84% {
         /* High-speed upward rocket ascent */
         opacity: 1;
     }
+
     100% {
         /* Launched high into sky and vanished */
         transform: translateY(-140px) scaleY(1.08) scaleX(0.94);
@@ -1147,15 +1163,17 @@
 }
 
 .complexity-algo-name {
+    font-family: var(--font-display);
     font-size: 24px;
     font-weight: 800;
     color: var(--royal-blue);
-    letter-spacing: -0.3px;
+    letter-spacing: var(--letter-spacing-display, 0.03em);
     margin-bottom: 8px;
 }
 
 .complexity-algo-desc {
     font-size: 14px;
+    font-weight: 500;
     color: var(--text-secondary);
     line-height: 1.6;
     max-width: 900px;
@@ -1595,6 +1613,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+
     .bar.drop-in,
     .cell.drop-in,
     .bar-launching,

@@ -11,6 +11,7 @@ cmd_hash = [
     "--no-sandbox",
     "--disable-gpu",
     "--allow-file-access-from-files",
+    "--virtual-time-budget=2000",
     "--dump-dom",
     "file:///c:/Users/aryan/Desktop/Sorting and Searching/index.html#playgrounds"
 ]

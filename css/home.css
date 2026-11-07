@@ -10,6 +10,7 @@ body {
     padding: 3.5vh 4vw;
     background-color: var(--warm-ivory);
     font-family: var(--font-primary);
+    font-weight: var(--font-primary-weight, 500);
     color: var(--text-primary);
     overflow-x: hidden;
 }
@@ -47,11 +48,11 @@ body {
 }
 
 .home-brand-logo {
-    font-family: 'Bricolage Grotesque', sans-serif;
+    font-family: 'Aalto Display', 'Aalto Display-Personal-use', sans-serif;
     font-weight: 800;
-    font-size: 15px;
+    font-size: 25px;
     color: var(--royal-blue);
-    letter-spacing: -0.3px;
+    letter-spacing: 0.025em;
 }
 
 .home-brand-dot {
@@ -143,11 +144,11 @@ body {
 }
 
 .card-title {
-    font-family: 'Bricolage Grotesque', sans-serif;
+    font-family: 'Aalto Display', 'Aalto Display-Personal-use', sans-serif;
     font-size: 32px;
     font-weight: 700;
     color: var(--royal-blue);
-    letter-spacing: -0.5px;
+    letter-spacing: 0.025em;
     line-height: 1.1;
     transition: color 0.25s ease;
 }
@@ -615,13 +616,15 @@ body {
 }
 
 .home-demo-heading h2 {
-    font: 700 22px 'Bricolage Grotesque', sans-serif;
+    font: 700 22px 'Aalto Display', 'Aalto Display-Personal-use', sans-serif;
     color: var(--royal-blue);
+    letter-spacing: 0.03em;
     margin: 2px 0 4px
 }
 
 .home-demo-heading p {
     font-size: 12.5px;
+    font-weight: 500;
     color: var(--text-secondary);
     margin: 0
 }
@@ -860,7 +863,8 @@ html {
     border-radius: 12px;
     background: var(--royal-blue);
     color: #fff;
-    font: 800 20px 'Bricolage Grotesque', sans-serif;
+    font: 800 20px 'Aalto Display', 'Aalto Display-Personal-use', sans-serif;
+    letter-spacing: 0.02em;
     box-shadow: 0 4px 12px rgba(34, 77, 149, .2);
     flex-shrink: 0;
     position: relative;
@@ -912,11 +916,11 @@ html {
 }
 
 .home-brand-logo {
-    font-size: 20px;
-    letter-spacing: -.8px;
+    font-size: 25px;
+    letter-spacing: 0.025em;
     color: var(--royal-blue);
     font-weight: 800;
-    font-family: 'Bricolage Grotesque', sans-serif;
+    font-family: 'Aalto Display', 'Aalto Display-Personal-use', sans-serif;
     transition: color 0.2s ease;
 }
 
@@ -1031,19 +1035,43 @@ html {
 }
 
 .hero-copy h1 {
-    font: 800 clamp(43px, 5.4vw, 70px)/.99 'Bricolage Grotesque', sans-serif;
-    letter-spacing: -3.6px;
+    font: 800 clamp(43px, 5.4vw, 70px)/1.08 'Aalto Display', 'Aalto Display-Personal-use', sans-serif;
+    letter-spacing: 0.035em;
     color: #20283A;
-    margin: 22px 0 18px
+    margin: 22px 0 18px;
 }
 
-.hero-copy h1 span {
+/* === Zero-Gravity Space Physics Floating Typography === */
+.hero-space-line {
+    display: inline-block;
+    will-change: transform;
+    transform-origin: center center;
+    backface-visibility: hidden;
+}
+
+.hero-space-line.line-1 {
+    animation: spaceOrbitalDrift1 7.4s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite;
+}
+
+.hero-space-line.line-2 {
+    animation: spaceOrbitalDrift2 8.6s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite 1.4s;
+}
+
+.hero-space-line.line-3 {
+    animation: spaceOrbitalDrift3 9.4s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite 2.8s;
+}
+
+.hero-copy h1 .see-them-move,
+.hero-copy h1 span:not(.hero-space-line) {
     color: var(--vibrant-pink);
     position: relative;
-    white-space: nowrap
+    white-space: nowrap;
+    display: inline-block;
+    animation: spaceCosmicAura 5.8s ease-in-out infinite alternate;
 }
 
-.hero-copy h1 span:after {
+.hero-copy h1 .see-them-move:after,
+.hero-copy h1 span:not(.hero-space-line):after {
     content: "";
     position: absolute;
     left: 0;
@@ -1052,13 +1080,98 @@ html {
     height: 7px;
     border-radius: 50%;
     background: rgba(217, 61, 129, .17);
-    transform: rotate(-2deg)
+    transform: rotate(-2deg);
+}
+
+@keyframes spaceOrbitalDrift1 {
+    0% {
+        transform: translate3d(0, 0, 0) rotate(0deg);
+    }
+
+    20% {
+        transform: translate3d(3px, -5px, 0) rotate(0.45deg);
+    }
+
+    45% {
+        transform: translate3d(-2px, -8px, 0) rotate(-0.35deg);
+    }
+
+    72% {
+        transform: translate3d(-5px, -3px, 0) rotate(-0.6deg);
+    }
+
+    88% {
+        transform: translate3d(2px, -1px, 0) rotate(0.25deg);
+    }
+
+    100% {
+        transform: translate3d(0, 0, 0) rotate(0deg);
+    }
+}
+
+@keyframes spaceOrbitalDrift2 {
+    0% {
+        transform: translate3d(0, 0, 0) rotate(0deg);
+    }
+
+    25% {
+        transform: translate3d(-4px, -6px, 0) rotate(-0.5deg);
+    }
+
+    50% {
+        transform: translate3d(2px, -9px, 0) rotate(0.35deg);
+    }
+
+    75% {
+        transform: translate3d(5px, -4px, 0) rotate(0.65deg);
+    }
+
+    100% {
+        transform: translate3d(0, 0, 0) rotate(0deg);
+    }
+}
+
+@keyframes spaceOrbitalDrift3 {
+    0% {
+        transform: translate3d(0, 0, 0) rotate(0deg);
+    }
+
+    22% {
+        transform: translate3d(4px, -4px, 0) rotate(0.55deg);
+    }
+
+    55% {
+        transform: translate3d(-3px, -8.5px, 0) rotate(-0.45deg);
+    }
+
+    80% {
+        transform: translate3d(-2px, -2px, 0) rotate(-0.25deg);
+    }
+
+    100% {
+        transform: translate3d(0, 0, 0) rotate(0deg);
+    }
+}
+
+@keyframes spaceCosmicAura {
+
+    0%,
+    100% {
+        transform: translate3d(0, 0, 0) scale(1);
+        filter: drop-shadow(0 0 0 rgba(217, 61, 129, 0));
+    }
+
+    50% {
+        transform: translate3d(0, -3.5px, 0) scale(1.02);
+        filter: drop-shadow(0 4px 14px rgba(217, 61, 129, 0.35));
+    }
 }
 
 .hero-description {
     max-width: 510px;
     color: #626575;
     font-size: 15px;
+    font-weight: 500;
     line-height: 1.8;
     margin: 0
 }
@@ -1360,13 +1473,45 @@ html {
 .chip-top {
     top: 37px;
     left: -5px;
-    transform: rotate(-5deg)
+    transform: rotate(-5deg);
+    animation: spaceChipDriftTop 6.8s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite alternate;
+    will-change: transform;
 }
 
 .chip-bottom {
     bottom: 35px;
     right: -5px;
-    transform: rotate(4deg)
+    transform: rotate(4deg);
+    animation: spaceChipDriftBottom 7.6s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite alternate 1.8s;
+    will-change: transform;
+}
+
+@keyframes spaceChipDriftTop {
+    0% {
+        transform: rotate(-5deg) translate3d(0, 0, 0);
+    }
+
+    50% {
+        transform: rotate(-3.5deg) translate3d(-4px, -9px, 0);
+    }
+
+    100% {
+        transform: rotate(-6deg) translate3d(2px, -3px, 0);
+    }
+}
+
+@keyframes spaceChipDriftBottom {
+    0% {
+        transform: rotate(4deg) translate3d(0, 0, 0);
+    }
+
+    50% {
+        transform: rotate(5.5deg) translate3d(4px, -8px, 0);
+    }
+
+    100% {
+        transform: rotate(3deg) translate3d(-2px, -3px, 0);
+    }
 }
 
 .chip-dot {
@@ -1425,7 +1570,8 @@ html {
 }
 
 .home-stats>div strong {
-    font: 800 25px 'Bricolage Grotesque', sans-serif;
+    font: 800 25px 'Aalto Display', 'Aalto Display-Personal-use', sans-serif;
+    letter-spacing: 0.025em;
     color: var(--royal-blue)
 }
 
@@ -1459,8 +1605,8 @@ html {
 }
 
 .section-heading h2 {
-    font: 800 clamp(27px, 3vw, 38px)/1.1 'Bricolage Grotesque', sans-serif;
-    letter-spacing: -1.5px;
+    font: 800 clamp(27px, 3vw, 38px)/1.15 'Aalto Display', 'Aalto Display-Personal-use', sans-serif;
+    letter-spacing: 0.03em;
     color: #252B3A;
     margin: 8px 0 0
 }
@@ -1471,6 +1617,7 @@ html {
 
 .section-heading>p {
     font-size: 11px;
+    font-weight: 500;
     line-height: 1.7;
     color: var(--text-secondary);
     margin: 0 0 3px
@@ -1531,6 +1678,7 @@ html {
 .card-long-desc {
     min-height: 42px;
     font-size: 12px;
+    font-weight: 500;
     line-height: 1.65;
     color: var(--text-secondary);
     margin: 0
@@ -1589,14 +1737,15 @@ html {
 }
 
 .home-demo-heading h2 {
-    font: 800 26px 'Bricolage Grotesque', sans-serif;
-    letter-spacing: -.7px;
+    font: 800 26px 'Aalto Display', 'Aalto Display-Personal-use', sans-serif;
+    letter-spacing: 0.03em;
     margin: 5px 0;
     color: #252B3A
 }
 
 .home-demo-heading p {
     font-size: 12px;
+    font-weight: 500;
     line-height: 1.6
 }
 
@@ -1623,14 +1772,15 @@ html {
 }
 
 .footer-brand {
-    font: 800 17px 'Bricolage Grotesque', sans-serif;
+    font: 800 25px 'Aalto Display', 'Aalto Display-Personal-use', sans-serif;
+    letter-spacing: 0.025em;
     color: var(--royal-blue);
     text-decoration: none
 }
 
 .footer-brand span {
     color: var(--vibrant-pink);
-    margin-left: 5px
+    font-size: 22px;
 }
 
 .home-footer p,
@@ -1651,7 +1801,7 @@ html {
     }
 
     .hero-copy h1 {
-        letter-spacing: -2.5px
+        letter-spacing: 0.03em
     }
 
     .hero-art {
@@ -1729,7 +1879,7 @@ html {
 
     .hero-copy h1 {
         font-size: clamp(43px, 12vw, 59px);
-        letter-spacing: -2.8px
+        letter-spacing: 0.025em
     }
 
     .hero-description {
@@ -1853,7 +2003,7 @@ html {
     }
 
     .home-brand-logo {
-        font-size: 18px;
+        font-size: 21px;
     }
 
     .brand-mark {
@@ -1865,7 +2015,7 @@ html {
 
     .hero-copy h1 {
         font-size: clamp(34px, 11vw, 50px);
-        letter-spacing: -2px;
+        letter-spacing: 0.02em;
     }
 
     .hero-actions {
@@ -1894,7 +2044,7 @@ html {
     }
 
     .home-brand-logo {
-        font-size: 16px;
+        font-size: 19px;
     }
 
     .brand-mark {
@@ -1910,8 +2060,14 @@ html {
     .hero-live-dot,
     .stats-pulse,
     .hero-code-card,
-    .hero-mini-bars i {
-        animation: none !important
+    .hero-mini-bars i,
+    .hero-space-line,
+    .see-them-move,
+    .chip-top,
+    .chip-bottom,
+    .canvas-status-pill {
+        animation: none !important;
+        transform: none !important;
     }
 
     .home-card,

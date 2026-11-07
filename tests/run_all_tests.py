@@ -209,6 +209,30 @@ if proc_header.returncode != 0:
     print("[FAIL] Visualizer header title centering verification failed.")
     sys.exit(1)
 
+# 23. Aalto Display Font Application Verification
+print("\n--- 23. Verifying Aalto Display Font Application ---")
+proc_font = subprocess.run([sys.executable, "tests/verify_font_family.py"], capture_output=True, text=True, encoding="utf-8")
+print(proc_font.stdout)
+if proc_font.returncode != 0:
+    print("[FAIL] Aalto Display font verification failed.")
+    sys.exit(1)
+
+# 24. Aalto Display Letter-Spacing & Zero-Gravity Space Physics Floating Verification
+print("\n--- 24. Verifying Aalto Display Letter-Spacing & Space Physics ---")
+proc_space = subprocess.run([sys.executable, "tests/verify_space_physics_and_spacing.py"], capture_output=True, text=True, encoding="utf-8")
+print(proc_space.stdout)
+if proc_space.returncode != 0:
+    print("[FAIL] Aalto Display letter-spacing and space physics verification failed.")
+    sys.exit(1)
+
+# 25. Searchify Font Size & Primary Font Weight Verification
+print("\n--- 25. Verifying Searchify Font Size & Primary Font Weight ---")
+proc_weight = subprocess.run([sys.executable, "tests/verify_searchify_size_and_weight.py"], capture_output=True, text=True, encoding="utf-8")
+print(proc_weight.stdout)
+if proc_weight.returncode != 0:
+    print("[FAIL] Searchify font size and primary font weight verification failed.")
+    sys.exit(1)
+
 print("\n" + "=" * 60)
 print("ALL VERIFICATIONS COMPLETED SUCCESSFULLY (100% PASS RATE)")
 print("=" * 60)
