@@ -71,14 +71,18 @@
         <nav class="viz-controls" aria-label="Visualizer controls toolbar">
             <!-- Playback Controls Cluster (Left: Start/Stop, Steps, Reset, Restart) -->
             <section class="controls-cluster playback-cluster" aria-label="Playback controls">
-                <button id="prev-btn" class="btn btn-icon" title="Previous Step (Left Arrow)"
-                    aria-label="Previous step">&#9664;</button>
-                <button id="play-btn" class="btn btn-icon btn-play btn-play-prominent" title="Play / Pause (Space)"
-                    aria-label="Play">&#9654;</button>
-                <button id="next-btn" class="btn btn-icon" title="Next Step (Right Arrow)"
-                    aria-label="Next step">&#9654;</button>
-                <button id="reset-btn" class="btn btn-secondary" title="Reset (R)">Reset</button>
-                <button id="restart-btn" class="btn btn-secondary" title="Restart">Restart</button>
+                <div class="playback-btn-group transport-group">
+                    <button id="prev-btn" class="btn btn-icon" title="Previous Step (Left Arrow)"
+                        aria-label="Previous step">&#9664;</button>
+                    <button id="play-btn" class="btn btn-icon btn-play btn-play-prominent" title="Play / Pause (Space)"
+                        aria-label="Play">&#9654;</button>
+                    <button id="next-btn" class="btn btn-icon" title="Next Step (Right Arrow)"
+                        aria-label="Next step">&#9654;</button>
+                </div>
+                <div class="playback-btn-group reset-restart-group">
+                    <button id="reset-btn" class="btn btn-secondary" title="Reset (R)">Reset</button>
+                    <button id="restart-btn" class="btn btn-secondary" title="Restart">Restart</button>
+                </div>
             </section>
 
             <!-- Array Controls Cluster (Center: Generate, Example Array, Apply, Size) -->

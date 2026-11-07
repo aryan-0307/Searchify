@@ -10,9 +10,17 @@
     background-color: var(--bg-primary);
 }
 
-/* === Refined Header with Subtitle === */
+/* === Refined Header with Subtitle (Sticky Top Navbar) === */
 .viz-header {
-    display: flex;
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    width: 100%;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
     gap: 1.5rem;
     padding: 12px 28px;
@@ -26,13 +34,16 @@
     font-size: 13px;
     padding: 7px 14px;
     font-weight: 600;
+    justify-self: start;
 }
 
 .viz-header-title-group {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    text-align: center;
     gap: 1px;
-    flex: 1;
+    justify-self: center;
 }
 
 .viz-title {
@@ -41,12 +52,18 @@
     color: var(--royal-blue);
     letter-spacing: -0.3px;
     line-height: 1.2;
+    text-align: center;
 }
 
 .viz-subtitle {
     font-size: 12px;
     font-weight: 500;
     color: var(--text-secondary);
+    text-align: center;
+}
+
+.viz-header-controls {
+    justify-self: end;
 }
 
 .viz-header-controls select {
@@ -139,10 +156,16 @@
 .playback-cluster {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     padding: 5px 8px;
     margin: 0;
     flex-shrink: 0;
+}
+
+.playback-btn-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .array-cluster {
@@ -1339,32 +1362,117 @@
     }
 
     .viz-controls {
-        padding: 8px 16px;
+        padding: 8px 12px;
         gap: 10px;
+        overflow-x: hidden;
+        max-width: 100%;
+        box-sizing: border-box;
     }
 
     .controls-cluster {
         width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
         justify-content: center;
         margin: 0;
     }
 
     .playback-cluster {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         justify-content: center;
+        gap: 10px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        padding: 10px 14px;
         margin: 0;
     }
 
-    .settings-cluster {
+    .playback-btn-group {
+        display: flex;
+        align-items: center;
         justify-content: center;
+        width: 100%;
+    }
+
+    .playback-btn-group.transport-group {
+        gap: 14px;
+    }
+
+    .playback-btn-group.reset-restart-group {
+        gap: 10px;
+    }
+
+    .playback-btn-group.reset-restart-group .btn {
+        flex: 1;
+        max-width: 140px;
+        min-height: 36px;
+        padding: 6px 14px;
+        font-size: 13px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .array-cluster {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 10px 12px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        padding: 10px 12px;
+        margin: 0;
+    }
+
+    .array-cluster .control-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        max-width: 100%;
+    }
+
+    .array-cluster .control-item input[type="text"] {
+        width: min(130px, 36vw);
+        min-width: 80px;
+    }
+
+    .settings-cluster {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 10px 14px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        padding: 10px 12px;
         margin: 0;
     }
 }
 
 @media (max-width: 768px) {
     .viz-header {
-        flex-wrap: wrap;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         padding: 10px 16px;
-        gap: 10px;
+        gap: 8px;
+    }
+
+    .back-btn {
+        align-self: flex-start;
+    }
+
+    .viz-header-title-group {
+        text-align: center;
+        align-items: center;
+        width: 100%;
     }
 
     .viz-header-controls {

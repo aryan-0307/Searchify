@@ -4,6 +4,78 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## [2026-11-07 — Visualizer Header Title & Subtitle Centering]
+
+### Added
+- **Centered Header Title & Subtitle**:
+  - Moved the visualizer title and subtitle (`Searching Visualizer` / `Explore search paths step by step`, and `Sorting Visualizer` / `Watch algorithms come to life`) to the exact horizontal center of the header section in [css/visualizer.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/visualizer.css).
+  - Implemented balanced 3-column CSS Grid (`grid-template-columns: 1fr auto 1fr; align-items: center;`) on `.viz-header`:
+    - Column 1 (`1fr`): `.back-btn` aligned to `justify-self: start`.
+    - Column 2 (`auto`): `.viz-header-title-group` centered with `justify-self: center; text-align: center; align-items: center;`.
+    - Column 3 (`1fr`): `.viz-header-controls` aligned to `justify-self: end`.
+  - Configured centered alignment on mobile devices (`text-align: center; align-items: center; width: 100%;`).
+
+### Verified
+- Created automated test [tests/verify_header_title_centering.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_header_title_centering.py) measuring exact midpoint centering (`centerDiff == 0px`) and `text-align: center` on both [searching.html](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/searching.html) and [sorting.html](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/sorting.html) across 1440px desktop, 768px tablet, and 375px mobile viewports.
+- Integrated as Stage 22 in master test runner [tests/run_all_tests.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/run_all_tests.py).
+
+---
+
+## [2026-11-07 — Mobile Visualizer Layout & Stacked Playback Controls]
+
+### Added
+- **Mobile Stacked Playback Controls**:
+  - Organized playback controls into `.transport-group` (`#prev-btn`, `#play-btn`, `#next-btn`) and `.reset-restart-group` (`#reset-btn`, `#restart-btn`) in both [sorting.html](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/sorting.html) and [searching.html](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/searching.html).
+  - In [css/visualizer.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/visualizer.css), on mobile viewports ($\le 768$px), configured `.playback-cluster` with `flex-direction: column` and `gap: 10px`, stacking the step navigation group and the reset/restart group on top of each other with balanced spacing and centered alignment.
+  - Provided generous mobile touch dimensions (`min-height: 36px`, `max-width: 140px`) for Reset and Restart buttons.
+  - On desktop viewports ($\ge 769$px), controls remain horizontally clustered on a single row with zero change to layout geometry.
+
+### Fixed
+- **Mobile Visualizer Horizontal Overflow & Zoom-Out Bug**:
+  - Fixed issue where the array configuration cluster was overflowing up to 483px on mobile, forcing mobile browsers to zoom out and leave empty space.
+  - Configured `flex-wrap: wrap`, auto widths, and responsive input boundaries (`width: min(130px, 36vw)`) on `.array-cluster` and `.settings-cluster`.
+  - Added `overflow-x: hidden` and `max-width: 100vw` protection on `.viz-page` and `.viz-controls`.
+  - Eliminated horizontal scrollbars across all tested mobile phone widths (320px, 360px, 375px, 390px, 412px, 430px).
+
+### Verified
+- Created automated test suite [tests/verify_mobile_visualizer_layout.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_mobile_visualizer_layout.py) verifying zero horizontal overflow, stacked playback groups (10px gap), and desktop single-row preservation across all devices.
+- Integrated as Stage 21 in master test suite [tests/run_all_tests.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/run_all_tests.py).
+
+---
+
+## [2026-11-07 — Homepage Hero Stray Duplicate Removal & Layout Cleanup]
+
+### Fixed
+- **Stray Duplicate Elements on Homepage**:
+  - Removed accidental duplicate markup in [index.html](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/index.html) that had leaked outside `<section class="home-hero">` into `main.home-container`.
+  - Removed orphaned code line `04 // repeat & improve`, stray `.hero-mini-bars` visualizer, and footer `Visualising operation STEP 08 / 24` that rendered awkwardly in the gap above `.home-stats`.
+  - Removed mismatched duplicate closing tags (`</div>`, `.floating-chip`, `.hero-sparkle`, `</section>`), ensuring valid semantic HTML structure where `<section class="home-stats">` directly succeeds `<section class="home-hero">`.
+
+### Added
+- **Automated Verification**:
+  - Created [tests/verify_homepage_cleanup.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_homepage_cleanup.py) testing DOM tree integrity, asserting zero stray children in `.home-container` and checking direct sibling adjacency between hero and stats.
+  - Added Stage 20 to master test suite [tests/run_all_tests.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/run_all_tests.py).
+
+---
+
+## [2026-11-07 — Sticky Top Navbar Positioning Across Visualizers]
+
+### Added
+- **Visualizer Top Navbar Sticky Pinning**:
+  - Pinned the visualizer top navbar (`.viz-header`) to the top of the viewport in [css/visualizer.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/visualizer.css) via `position: sticky; top: 0; left: 0; right: 0; width: 100%; z-index: 1000; box-sizing: border-box;`.
+  - Content smoothly passes underneath the navbar with solid background (`var(--soft-cream)` / `#FAF9F5`), bottom border, and subtle drop shadow.
+  - Ensures the Back button, algorithm title, notification pill, and algorithm switcher dropdown remain accessible at all scroll depths.
+
+### Fixed
+- **Toolbar Cluster Duplication**:
+  - Removed an orphaned duplicate playback cluster inside `<nav class="viz-controls">` on both [sorting.html](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/sorting.html) and [searching.html](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/searching.html), establishing the exact 3-cluster layout: Playback (Left) $\rightarrow$ Array (Center) $\rightarrow$ Settings (Right).
+
+### Verified
+- Enhanced automated test [tests/verify_controls_layout.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_controls_layout.py) to assert `headerPos == 'sticky'` and `headerTop == 0`.
+- All 19 stages pass 100% in master test runner [tests/run_all_tests.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/run_all_tests.py).
+
+---
+
 ## [2026-11-07 — Visualizer Controls Layout (Left Playback, Center Array, Right Settings)]
 
 ### Added

@@ -4,31 +4,24 @@
 Transform the AlgoViz homepage (`index.html`) from a plain static page into a modern, visually engaging, interactive algorithm playground. Upgrade typography to Bricolage Grotesque, elevate the hero container with subtle grid textures and depth, and transform the two cards (Searching & Sorting) with custom icons, miniature animated visualizations (step scanning for Searching, smooth ascending reordering for Sorting), descriptive lines, and responsive layout, without modifying visualizer pages or algorithm logic.
 
 ## Current Phase
-Phase 28 — Visualizer Controls Layout Reorganization (Left Playback, Center Array, Right Settings)
+Phase 32 — Visualizer Header Title & Subtitle Centering
 
 ## Status
 COMPLETE
 
 ## Current Task
-Reorganized the visualizer toolbar controls layout across both [sorting.html](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/sorting.html) and [searching.html](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/searching.html):
-- Positioned the Start/Stop & Playback cluster (`#prev-btn`, `#play-btn`, `#next-btn`, `#reset-btn`, `#restart-btn`) on the **LEFT**, occupying the space previously held by the array controls.
-- Positioned the Array generation & configuration cluster (`#generate-btn`, `#custom-array`, `#apply-custom-btn`, `#array-size`, `#target-input`) in the **CENTER**, occupying the middle section with equal spacing on both sides.
-- Kept the Settings cluster (`#speed-slider`, and sort order toggle) on the **RIGHT**.
-- Configured responsive styling in [css/visualizer.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/visualizer.css) supporting wide desktop (`margin: 0 auto` centering for the array cluster), intermediate screen wrapping with centered groups, and mobile full-width vertical stacking.
-- Verified 100% across all 19 stages in [tests/run_all_tests.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/run_all_tests.py) via dedicated suite [tests/verify_controls_layout.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_controls_layout.py).
+Moved the visualizer title and subtitle (`Searching Visualizer` / `Explore search paths step by step`, and `Sorting Visualizer` / `Watch algorithms come to life`) to the exact center of the header section:
+- In [css/visualizer.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/visualizer.css), updated `.viz-header` to use balanced 3-column CSS Grid (`grid-template-columns: 1fr auto 1fr; align-items: center;`), placing `.back-btn` on the left (`justify-self: start`), the algorithm selector on the right (`justify-self: end`), and `.viz-header-title-group` in the dead center (`justify-self: center; text-align: center; align-items: center;`).
+- Verified mathematical zero-pixel offset (`diff = 0px`) from the exact center of the header across desktop (1440px), tablet (768px), and mobile (375px).
+- Created automated test [tests/verify_header_title_centering.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_header_title_centering.py) and integrated as Stage 22 in [tests/run_all_tests.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/run_all_tests.py).
 
 ## Last Completed Task
-- **Visualizer Toolbar Layout Reorganization (Left Playback, Center Array, Right Settings)**:
+- **Mobile Visualizer Layout & Stacked Playback Controls**:
   - `sorting.html` & `searching.html`:
-    - Cluster sequence in `<nav class="viz-controls">`: `playback-cluster` (Left) $\rightarrow$ `array-cluster` (Center) $\rightarrow$ `settings-cluster` (Right).
-    - Play/Pause button (`#play-btn`) remains prominent (`btn-play-prominent`) on the left, with the Array cluster (`#generate-btn`, `#custom-array`, `#apply-custom-btn`, `#array-size`) taking center stage.
-  - `css/visualizer.css`:
-    - Responsive flex layout with `array-cluster` centered via `margin: 0 auto` on desktop viewports ($\ge 1320$px), resulting in equal spacing between left/center ($78\text{px}-64\text{px}$) and center/right ($79\text{px}-65\text{px}$) clusters.
-    - Intermediate viewports (861px - 1319px) center wrapped rows cleanly.
-    - Mobile viewports ($\le 860$px) stack all clusters with 100% full-width alignment and centered buttons.
+    - Structured `.playback-cluster` into `.transport-group` (`prev`, `play`, `next`) and `.reset-restart-group` (`reset`, `restart`).
+    - Configured vertical stacking with 10px spacing on mobile, resolving horizontal overflow and page zoom-out bugs while preserving desktop single-row clustering.
   - Automated test suite:
-    - Updated `tests/verify_controls_layout.py` verifying DOM structural order, computed layout geometry across viewports in headless Chrome, and interactive functionality of play/pause, reset, restart, generate, and speed slider.
-    - Integrated as Stage 19 in `tests/run_all_tests.py` with 100% pass rate.
+    - Added `tests/verify_mobile_visualizer_layout.py` as Stage 21 in `tests/run_all_tests.py`.
 
 ## Completed Work
 - Empty custom input "Apply" click UX fixed with guidance prompt across both Searching and Sorting visualizers.

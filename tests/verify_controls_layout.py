@@ -74,6 +74,8 @@ for page in pages:
 print("\n--- 2. Verifying Computed Layout Geometry in Chrome ---")
 probe_template = """
 window.addEventListener('load', () => {
+    const header = document.querySelector('.viz-header');
+    const headerCS = header ? window.getComputedStyle(header) : null;
     const nav = document.querySelector('.viz-controls');
     const clusters = Array.from(document.querySelectorAll('.controls-cluster')).map(c => {
         const rect = c.getBoundingClientRect();
@@ -91,6 +93,8 @@ window.addEventListener('load', () => {
     const probe = document.createElement('div');
     probe.id = 'layout-probe-results';
     probe.textContent = JSON.stringify({
+        headerPos: headerCS ? headerCS.position : null,
+        headerTop: header ? Math.round(header.getBoundingClientRect().top) : null,
         navLeft: Math.round(navRect.left),
         navRight: Math.round(navRect.right),
         navWidth: Math.round(navRect.width),
@@ -129,6 +133,10 @@ for page in pages:
         play = clusters[0]
         arr = clusters[1]
         sett = clusters[2]
+
+        # Verify Navbar is fixed/sticky at top: 0
+        assert data["headerPos"] == "sticky", f"Expected header position 'sticky', got {data['headerPos']}"
+        assert data["headerTop"] == 0, f"Expected header top to be 0, got {data['headerTop']}"
 
         # Verify geometric order on desktop: Playback.left < Array.left < Settings.left
         assert play["left"] < arr["left"], f"Playback left ({play['left']}) should be less than Array left ({arr['left']})"

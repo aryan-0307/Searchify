@@ -185,6 +185,30 @@ if proc_layout.returncode != 0:
     print("[FAIL] Visualizer controls layout verification failed.")
     sys.exit(1)
 
+# 20. Homepage Hero Cleanup & Duplicate Removal Verification
+print("\n--- 20. Verifying Homepage Hero Cleanup & Duplicate Removal ---")
+proc_cleanup = subprocess.run([sys.executable, "tests/verify_homepage_cleanup.py"], capture_output=True, text=True, encoding="utf-8")
+print(proc_cleanup.stdout)
+if proc_cleanup.returncode != 0:
+    print("[FAIL] Homepage hero cleanup verification failed.")
+    sys.exit(1)
+
+# 21. Mobile Visualizer Layout & Stacked Controls Verification
+print("\n--- 21. Verifying Mobile Visualizer Layout & Stacked Controls ---")
+proc_mobile = subprocess.run([sys.executable, "tests/verify_mobile_visualizer_layout.py"], capture_output=True, text=True, encoding="utf-8")
+print(proc_mobile.stdout)
+if proc_mobile.returncode != 0:
+    print("[FAIL] Mobile visualizer layout verification failed.")
+    sys.exit(1)
+
+# 22. Visualizer Header Title & Subtitle Centering Verification
+print("\n--- 22. Verifying Visualizer Header Title & Subtitle Centering ---")
+proc_header = subprocess.run([sys.executable, "tests/verify_header_title_centering.py"], capture_output=True, text=True, encoding="utf-8")
+print(proc_header.stdout)
+if proc_header.returncode != 0:
+    print("[FAIL] Visualizer header title centering verification failed.")
+    sys.exit(1)
+
 print("\n" + "=" * 60)
 print("ALL VERIFICATIONS COMPLETED SUCCESSFULLY (100% PASS RATE)")
 print("=" * 60)
