@@ -4,6 +4,28 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## [2026-11-07 — Mobile Visualizer Layout & Clearance Overhaul]
+
+### Changed
+- **Mobile Color Legend & Floating Status Segregation**:
+  - In [css/visualizer.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/visualizer.css), updated `@media (max-width: 768px)`:
+    - Positioned `.color-legend` as a single horizontal strip across the top of `.viz-area` (`top: 8px; left: 8px; right: 8px;`) with `flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none;` preventing multi-line collisions.
+    - Positioned `.canvas-status-pill` cleanly on Level 2 at `top: 44px; right: 10px; left: auto;` in dedicated empty canvas space, fully separated from the legend (zero intersection or space-occupancy conflict).
+- **Strict Element Clearance Below Status Options**:
+  - In [js/sorting-visualizer.js](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/js/sorting-visualizer.js):
+    - Added `getUsableAreaHeight(areaEl)` dynamically reserving 176px on mobile viewports ($\le 768$px) and 116px on desktop, ensuring the tallest bar and `.bar-label` are strictly and comfortably lower than both the status pill and the color legend.
+    - Updated slider live resize, `renderBars()`, and `renderStep()` to use `getUsableAreaHeight()`.
+  - In [css/visualizer.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/visualizer.css):
+    - Set `.viz-area` on mobile to `min-height: 400px; padding: 96px 14px 38px;`.
+    - Overrode `align-items: center` in Searching visualizer to `align-items: flex-start !important; padding-top: 96px !important;` so search cells and target indicators begin comfortably below the status pill.
+    - Adjusted mobile `@keyframes gravity-fall` and `gravity-launch` to animate within the lower canvas zone (`translateY(-20px)` instead of `-140px`), eliminating mid-air fly-through collisions when opening on mobile.
+
+### Verified
+- Created automated test [tests/verify_mobile_visualizer_clearance.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_mobile_visualizer_clearance.py) testing across 8 mobile/tablet/desktop viewports (320px, 360px, 375px, 390px, 412px, 430px, 768px, 1280px) on both `sorting.html` and `searching.html` (16/16 tests pass).
+- Integrated as Stage 26 in master regression suite [tests/run_all_tests.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/run_all_tests.py) (26/26 stages pass 100%).
+
+---
+
 ## [2026-11-07 — Searchify Brand Font Size & Primary Font Weight Upgrade]
 
 ### Changed

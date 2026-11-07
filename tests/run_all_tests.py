@@ -233,6 +233,14 @@ if proc_weight.returncode != 0:
     print("[FAIL] Searchify font size and primary font weight verification failed.")
     sys.exit(1)
 
+# 26. Mobile Visualizer Clearance & Non-Overlapping Status Verification
+print("\n--- 26. Verifying Mobile Visualizer Clearance & Non-Overlapping Status ---")
+proc_clearance = subprocess.run([sys.executable, "tests/verify_mobile_visualizer_clearance.py"], capture_output=True, text=True, encoding="utf-8")
+print(proc_clearance.stdout)
+if proc_clearance.returncode != 0:
+    print("[FAIL] Mobile visualizer clearance & non-overlapping status verification failed.")
+    sys.exit(1)
+
 print("\n" + "=" * 60)
 print("ALL VERIFICATIONS COMPLETED SUCCESSFULLY (100% PASS RATE)")
 print("=" * 60)

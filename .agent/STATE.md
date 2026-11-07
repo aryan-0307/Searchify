@@ -4,29 +4,32 @@
 Transform the AlgoViz homepage (`index.html`) from a plain static page into a modern, visually engaging, interactive algorithm playground. Upgrade typography to Bricolage Grotesque, elevate the hero container with subtle grid textures and depth, and transform the two cards (Searching & Sorting) with custom icons, miniature animated visualizations (step scanning for Searching, smooth ascending reordering for Sorting), descriptive lines, and responsive layout, without modifying visualizer pages or algorithm logic.
 
 ## Current Phase
-Phase 35 — Searchify Brand Font Size & Primary Font Weight Upgrade
+Phase 36 — Mobile Visualizer Non-Overlapping Layout & Height Clearance Overhaul
 
 ## Status
 COMPLETE
 
 ## Current Task
-Increased font-size of visible 'Searchify' brand text across the homepage and increased font-weight of the primary font stack ('Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif):
-- **Searchify Brand Font Size**:
-  - In [css/home.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/home.css):
-    - `.home-brand-logo`: Increased to `25px` (desktop navbar; was `20px` and `15px`), `21px` at 540px mobile (was `18px`), and `19px` at 400px compact mobile (was `16px`).
-    - `.footer-brand`: Increased to `25px` (was `17px`) and enlarged brand spark symbol to `22px`.
-- **Primary Font Stack Weight Upgrade**:
-  - In [css/style.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/style.css): Defined `--font-primary-weight: 500;` for `--font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;`.
-  - Configured `font-weight: var(--font-primary-weight, 500);` on `body` in both [css/style.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/style.css) and [css/home.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/home.css).
-  - Explicitly configured `font-weight: 500;` on `.hero-description`, `.card-long-desc`, `.section-heading>p`, `.home-demo-heading p`, and `.complexity-algo-desc`, and `font-weight: 600;` on `.viz-subtitle`.
+Resolved mobile visualizer layout mixing & collision issues across Sorting and Searching pages:
+- **Mutual Non-Overlap for Status and Legend**:
+  - In [css/visualizer.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/visualizer.css):
+    - Configured `.color-legend` on mobile (<=768px) as a sleek, single-line horizontal pill bar at `top: 8px; left: 8px; right: 8px;` with `flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none;` (height ~26-30px).
+    - Positioned `.canvas-status-pill` cleanly on Level 2 at `top: 44px; right: 10px; left: auto;` in dedicated empty canvas space, completely segregated from the color legend with guaranteed vertical clearance.
+- **Strict Element Clearance Below Status Options**:
+  - In [js/sorting-visualizer.js](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/js/sorting-visualizer.js):
+    - Implemented `getUsableAreaHeight(areaEl)` dynamically reserving 176px of vertical clearance on mobile viewports (<=768px), ensuring the tallest bar and `.bar-label` always sit at least 40px+ strictly below the status options/pill.
+    - Updated desktop formula with 116px reservation to prevent bar labels from extending above status pill level.
+  - In [css/visualizer.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/visualizer.css):
+    - Set `.viz-area` on mobile to `min-height: 400px; padding: 96px 14px 38px;` and overrode `align-items: center` for searching visualizer to `align-items: flex-start !important; padding-top: 96px !important;` so search cells and target indicators begin comfortably below the status pill.
+    - Adjusted mobile `@keyframes gravity-fall` and `gravity-launch` to animate within the lower canvas zone (`translateY(-20px)` instead of `-140px`), eliminating mid-air fly-through collisions when opening on mobile.
 - **Automated Verification**:
-  - Created [tests/verify_searchify_size_and_weight.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_searchify_size_and_weight.py) verifying `font-size >= 24px` on all Searchify homepage brand elements and `font-weight >= 500` across all primary text elements on all pages.
-  - Integrated as Stage 25 in master test runner [tests/run_all_tests.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/run_all_tests.py).
+  - Created [tests/verify_mobile_visualizer_clearance.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_mobile_visualizer_clearance.py) testing across 8 mobile/tablet/desktop viewports (320px, 360px, 375px, 390px, 412px, 430px, 768px, 1280px) on both `sorting.html` and `searching.html` (16/16 tests pass).
+  - Integrated as Stage 26 in master regression suite [tests/run_all_tests.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/run_all_tests.py) (26/26 stages pass 100%).
 
 ## Last Completed Task
-- **Aalto Display Letter Spacing & Zero-Gravity Space Physics Floating Typography**:
-  - Provided breathable letter spacing across all Aalto Display typography and implemented zero-gravity space physics floating typography for "Algorithms make more sense when you see them move".
-  - Stage 24 automated verification added to test suite.
+- **Searchify Brand Font Size & Primary Font Weight Upgrade**:
+  - Increased navbar and footer brand logo to 25px and set body/content font-weight to 500 across all pages.
+  - Stage 25 automated verification added to test suite.
 
 ## Completed Work
 - Empty custom input "Apply" click UX fixed with guidance prompt across both Searching and Sorting visualizers.
