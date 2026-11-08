@@ -9,7 +9,7 @@ print("============================================================")
 print("VERIFYING SEMANTIC HTML5 TAGS & SEO OPTIMIZATION")
 print("============================================================")
 
-pages = ["index.html", "sorting.html", "searching.html"]
+pages = ["index.html", "sorting.html", "searching.html", "compare.html"]
 all_passed = True
 
 semantic_tags = ["header", "nav", "main", "section", "footer"]
@@ -46,6 +46,10 @@ for page in pages:
     if page == "index.html":
         assert "<article" in html, "Expected <article> tags for playground cards in index.html"
         assert "<hgroup" in html or "h1" in html, "Expected heading structure in index.html"
+    elif page == "compare.html":
+        assert "<article" in html, "Expected <article> in compare.html"
+        assert "<aside" in html, "Expected <aside> in compare.html"
+        assert "<hgroup" in html or "h1" in html, "Expected heading structure in compare.html"
     elif page in ["sorting.html", "searching.html"]:
         assert "<hgroup" in html, f"Expected <hgroup> in {page}"
         assert "<nav class=\"viz-controls\"" in html, f"Expected <nav class=\"viz-controls\"> in {page}"

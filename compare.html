@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#F5F3ED">
+    <meta name="description"
+        content="Interactive Multi-Algorithm Sorting Comparison Showcase — pitch Bubble Sort, Selection Sort, Insertion Sort, Merge Sort, Quick Sort, Heap Sort, Shell Sort, Counting Sort, Radix Sort, and Bucket Sort head-to-head on the exact same array.">
+    <meta name="keywords"
+        content="multi-algorithm sorting, algorithm race, compare sorting algorithms, sorting benchmark, dsa visualizer, searchify">
+    <meta name="author" content="Searchify">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Social Sharing -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://searchify.dev/compare.html">
+    <meta property="og:title" content="Multi-Algorithm Sorting Showcase — Searchify">
+    <meta property="og:description"
+        content="Select any combination of sorting techniques. Watch them compete on identical data in real time, compare their step counts, operations, and execution speed.">
+    <meta property="og:site_name" content="Searchify">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Multi-Algorithm Sorting Showcase — Searchify">
+    <meta name="twitter:description"
+        content="Select any combination of sorting techniques. Watch them compete on identical data in real time, compare their step counts, operations, and execution speed.">
+
+    <title>Multi-Algorithm Sorting Showcase — Searchify</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://db.onlinewebfonts.com/c/f6ec291f284d1c8ba5a1706ba94e4a9d?family=Aalto+Display-Personal-use"
+        rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/visualizer.css">
+    <link rel="stylesheet" href="css/home.css">
+</head>
+
+<body class="searchify-home compare-page-body">
+    <!-- Top Sticky Navigation Bar -->
+    <header class="home-nav no-transition" id="home-nav" role="banner">
+        <div class="home-nav-inner">
+            <a class="home-brand" id="home-brand" href="index.html" aria-label="Searchify home">
+                <span class="brand-mark" aria-hidden="true">S</span>
+                <span class="home-brand-text">
+                    <span class="home-brand-logo">Searchify</span>
+                    <span class="home-brand-tag">DSA playground</span>
+                </span>
+            </a>
+            <nav class="home-nav-links" aria-label="Main navigation">
+                <a href="searching.html" class="nav-link-item">Searching</a>
+                <a href="sorting.html" class="nav-link-item">Sorting</a>
+                <a href="compare.html" class="nav-link-item active" aria-current="page">Compare</a>
+                <a class="nav-cta" href="index.html">← Back to Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="home-container compare-container" id="main-content">
+        <!-- Multi-Algorithm Sorting Comparison Showcase Interactive Laboratory -->
+        <section class="home-showcase-section" id="try-it" aria-labelledby="home-showcase-title">
+            <header class="home-showcase-header home-demo-heading">
+                <div class="home-showcase-title-group">
+                    <span class="home-showcase-kicker">✳ MULTI-ALGORITHM SHOWCASE</span>
+                    <h1 id="home-showcase-title">Compare N Sorting Algorithms on the Same Array</h1>
+                    <p class="home-showcase-subtitle">Select any combination of sorting techniques below. Watch them compete on identical data in real time, compare their step counts, operations, and execution speed.</p>
+                </div>
+                <div class="showcase-status-badge" id="showcase-global-status" role="status" aria-live="polite">
+                    <span class="showcase-pulse-dot"></span>
+                    <span id="showcase-status-text">Ready to race</span>
+                </div>
+            </header>
+
+            <article class="compare-lead-article" aria-label="Showcase feature overview">
+                <figure class="compare-lead-figure" aria-hidden="true">
+                    <span class="compare-lead-pill">🚀 10 Algorithms</span>
+                    <span class="compare-lead-pill">⚡ Shared Dataset</span>
+                    <span class="compare-lead-pill">🏁 Real-time Race</span>
+                </figure>
+            </article>
+
+            <!-- Algorithm Selection Toolbar (Select N Sorting Techniques) -->
+            <div class="showcase-selection-panel" aria-label="Select sorting algorithms to compare">
+                <div class="showcase-selection-top">
+                    <div class="showcase-selection-label-group">
+                        <span class="showcase-panel-label">Choose Algorithms to Compare:</span>
+                        <span class="showcase-selected-count" id="showcase-selected-count">3 Selected</span>
+                    </div>
+                    <div class="showcase-presets-group" role="group" aria-label="Algorithm presets">
+                        <button type="button" class="preset-btn active" data-preset="popular">Top 3 (Popular)</button>
+                        <button type="button" class="preset-btn" data-preset="nlogn">O(n log n) Trio</button>
+                        <button type="button" class="preset-btn" data-preset="n2">O(n²) Classic</button>
+                        <button type="button" class="preset-btn" data-preset="linear">Linear Time</button>
+                        <button type="button" class="preset-btn" data-preset="all">Compare All (10)</button>
+                    </div>
+                </div>
+
+                <!-- 10 Multi-Select Algorithm Chips -->
+                <div class="showcase-chips-grid" id="showcase-chips-grid" role="group" aria-label="Available sorting algorithms">
+                    <!-- Injected dynamically by multi-sort-showcase.js -->
+                </div>
+            </div>
+
+            <!-- Shared Array Controls & Multi-Play Toolbar -->
+            <div class="showcase-controls-bar" aria-label="Shared array and playback controls">
+                <!-- Shared Array Configuration -->
+                <div class="showcase-array-group">
+                    <span class="showcase-group-tag">Shared Array:</span>
+                    <button type="button" id="showcase-shuffle-btn" class="showcase-btn btn-secondary" title="Generate New Shared Array">
+                        <span>↻ Shuffle Array</span>
+                    </button>
+                    <div class="showcase-custom-wrap">
+                        <input type="text" id="showcase-custom-input" placeholder="e.g. 52, 18, 94, 33, 76, 21, 65, 87" aria-label="Custom shared array">
+                        <button type="button" id="showcase-apply-btn" class="showcase-btn btn-secondary">Apply</button>
+                    </div>
+                </div>
+
+                <!-- Playback & Speed Controls -->
+                <div class="showcase-playback-group">
+                    <div class="showcase-transport-btns">
+                        <button type="button" id="showcase-prev-btn" class="showcase-btn btn-icon" title="Step Backward" aria-label="Step backward">◀</button>
+                        <button type="button" id="showcase-play-btn" class="showcase-btn btn-primary btn-play-prominent" title="Play / Pause" aria-label="Play">
+                            <span class="play-icon">▶</span>
+                        </button>
+                        <button type="button" id="showcase-next-btn" class="showcase-btn btn-icon" title="Step Forward" aria-label="Step forward">▶</button>
+                        <button type="button" id="showcase-reset-btn" class="showcase-btn btn-secondary" title="Reset" aria-label="Reset">Reset</button>
+                    </div>
+                    <div class="showcase-speed-item">
+                        <label for="showcase-speed">Speed: <span id="showcase-speed-val">2x</span></label>
+                        <input type="range" id="showcase-speed" min="1" max="4" value="2" aria-label="Playback speed">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Multi-Track Sorting Visualization Grid -->
+            <div class="showcase-grid" id="showcase-grid" role="region" aria-label="Simultaneous algorithm tracks on the same array">
+                <!-- Injected dynamically: 1 card per selected algorithm -->
+            </div>
+
+            <!-- Live Race Leaderboard / Comparison Summary -->
+            <aside class="showcase-leaderboard" id="showcase-leaderboard" style="display: none;" aria-label="Race comparison results">
+                <header class="leaderboard-header">
+                    <span class="leaderboard-badge">🏁 Race Results</span>
+                    <h3 class="leaderboard-title">Efficiency Breakdown on Identical Data</h3>
+                </header>
+                <div class="leaderboard-content" id="leaderboard-content">
+                    <!-- Injected dynamically upon completion of all tracks -->
+                </div>
+            </aside>
+        </section>
+
+        <footer class="home-footer" role="contentinfo"><a href="#" class="footer-brand"
+                aria-label="Searchify brand">Searchify<span>✳</span></a>
+            <p>Made to make algorithms click.</p>
+            <nav aria-label="Back to top"><a href="#top"
+                    onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">Back to top ↑</a></nav>
+        </footer>
+    </main>
+
+    <script src="js/home-nav.js"></script>
+    <script src="js/sorting-algorithms.js"></script>
+    <script src="js/multi-sort-showcase.js"></script>
+</body>
+
+</html>

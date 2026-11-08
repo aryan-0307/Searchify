@@ -196,3 +196,29 @@ Tasks:
 - [x] Responsive layout across all viewports (Desktop 1280px, Tablet 768px, Mobile 412px, Mobile 375px) with zero horizontal overflow.
 - [x] Create comprehensive automated headless Chrome verification `tests/verify_multi_sort_showcase.py` (DOM structure, 10 chips, presets, shared array identity, custom input, playback, completion, leaderboard, and zero overflow across 4 viewports).
 - [x] Integrate into master test runner `tests/run_all_tests.py` as Stage 32.
+
+---
+
+## Phase 44 — Minimalist Hero Showcase & Dedicated Comparison Laboratory (`compare.html`)
+Status: COMPLETE
+
+Tasks:
+- [x] Architectural separation of hero landing page and multi-algorithm visualizer:
+  - Keep `index.html` lightweight and focused on minimalist hero content.
+  - Create dedicated page `compare.html` hosting the complete interactive Multi-Algorithm Sorting Comparison Laboratory.
+- [x] Hero page visual card integration:
+  - Add Card 03 (`.compare-card`) into `.home-cards` alongside Searching (`searching.html`) and Sorting (`sorting.html`).
+  - Implement `<figure class="mini-viz compare-mini-viz">` matching the aesthetic of `searching-mini-viz` and `sorting-mini-viz`, showcasing animated mini racing tracks (Merge Sort vs Bubble Sort with green sorted bars, rank badges `🥇 1st`, and ops counters).
+  - Update `.home-cards` grid layout to 3 columns on desktop (`grid-template-columns: repeat(3, minmax(0, 1fr))`) and single column on mobile/tablet ($\le 980$px).
+- [x] Minimalist showcase section on `index.html`:
+  - Retain `.home-showcase-section.home-showcase-minimal` under `#try-it`.
+  - Feature visual preview (`.showcase-feature-viz`) simulating 3 concurrent race tracks (Merge Sort, Quick Sort, Bubble Sort) on identical data with live dot pulsing, status pills, and complexity badges.
+  - Include feature highlight pills and a prominent call-to-action button (`.showcase-launch-btn`) linking directly to `compare.html`.
+  - Remove heavy DOM tracks grid and script loops from `index.html`.
+- [x] Dedicated comparison page `compare.html`:
+  - Host the complete interactive showcase: 10 algorithm chips, 5 presets, shared array configuration (shuffle, custom input, apply), synchronized playback dock (play/pause, step prev/next, reset, speed slider), simultaneous multi-tracks `#showcase-grid`, and live race leaderboard `#showcase-leaderboard`.
+  - Full SEO metadata, Open Graph cards, Twitter cards, and semantic HTML5 landmarks (`header`, `nav`, `main`, `section`, `article`, `figure`, `aside`, `footer`).
+- [x] Automated testing and verification:
+  - Update `tests/verify_multi_sort_showcase.py` to test both `index.html` (minimalist hero content, Card 03 with mini-viz, zero overflow, no heavy grid) and `compare.html` (dynamic selection, shared dataset identity, custom input, synchronized playback, leaderboard, zero overflow across 4 viewports).
+  - Update `tests/check_console_errors.py` and `tests/verify_semantic_seo.py` to include `compare.html`.
+  - Run full 32-stage master verification suite `tests/run_all_tests.py` with 100% pass rate.

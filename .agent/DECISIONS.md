@@ -263,3 +263,29 @@ The user requested replacing the single-algorithm "GET HANDS-ON" demo on the hom
 6. **Responsive Layout & Zero Overflow**:
    - CSS Grid with `repeat(auto-fit, minmax(min(280px, 100%), 1fr))` on desktop/tablet, and `minmax(0, 1fr)` on mobile.
    - Zero horizontal scroll across all desktop, tablet, and mobile devices (1280px, 768px, 412px, 375px).
+
+## Decision 022
+Date: 2026-11-08
+Phase: Phase 44 — Minimalist Hero Showcase & Dedicated Comparison Laboratory (`compare.html`)
+
+### Problem
+The user requested that the multi-algorithm showcase on the hero landing page (`index.html`) contain only minimalistic content, while the actual interactive visualization should reside inside the section (a dedicated page), and the hero page of this section should contain visuals like searching and sorting on hero page visuals.
+
+### Options Considered
+1. **In-place collapse**: Collapse the multi-track visualizer into a modal or accordion on `index.html`. Rejected because `index.html` already represents playgrounds via distinct pages (`searching.html`, `sorting.html`) and cards with miniature visualizations (`searching-mini-viz`, `sorting-mini-viz`).
+2. **Dedicated section page (`compare.html`) + Hero Card 03 + Minimal Preview**: Create `compare.html` hosting the complete interactive laboratory, add Card 03 (`.compare-card`) to `.home-cards` with `.compare-mini-viz` matching Searching and Sorting visuals, and provide a lightweight feature visual preview with launch CTA on `index.html#try-it`.
+
+### Decision
+Adopt Option 2:
+1. **Dedicated Comparison Page (`compare.html`)**:
+   - Hosts the full interactive laboratory: 10 algorithm chips, 5 presets, shared array controls (shuffle, custom input, apply), synchronized playback dock (play/pause, step prev/next, reset, speed slider), live multi-track canvas `#showcase-grid`, and finish leaderboard `#showcase-leaderboard`.
+   - Full semantic SEO landmarks (`header`, `nav`, `main`, `section`, `article`, `figure`, `aside`, `footer`) and meta tags.
+2. **Hero Page Card 03 (`.compare-card`)**:
+   - Placed in `.home-cards` alongside Searching (`searching.html`) and Sorting (`sorting.html`).
+   - Features `<figure class="mini-viz compare-mini-viz">` designed with miniature racing tracks (Merge Sort vs Bubble Sort with green sorted bars, rank badges `🥇 1st`, and ops counters).
+   - Card hover states animate track 1 sorted bars and track 2 comparison/swap states.
+   - Responsive layout: 3 columns on desktop (`grid-template-columns: repeat(3, minmax(0, 1fr))`) and 1 column on mobile/tablet ($\le 980$px).
+3. **Minimalist Hero Section (`index.html#try-it`)**:
+   - Displays a clean visual preview (`.showcase-feature-viz`) simulating 3 concurrent race tracks on identical data.
+   - Includes feature tags and prominent CTA button (`.showcase-launch-btn`) directing users to `compare.html`.
+   - Eliminates heavy DOM track loops and script loading from `index.html`.
