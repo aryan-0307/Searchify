@@ -1,14 +1,21 @@
 """
 tests/verify_multi_sort_showcase.py
-Automated verification for the Multi-Algorithm Sorting Comparison Showcase on the hero/home page:
-1. DOM Structure & Metadata in index.html (section #try-it, chips for all 10 algorithms, presets, controls, grid, leaderboard).
-2. Dynamic multi-selection of algorithms (select N of user choice, add/remove cards).
-3. Presets activation (Popular, O(n log n), O(n^2), Linear Time, All 10).
-4. Exact same shared array rendered across all selected algorithm cards.
-5. Custom input and shuffle updating all active cards synchronously with identical data.
-6. Synchronized playback lockstep (Play/Pause, Step Next/Prev, Reset, Speed scaling).
-7. Completion detection, finish ranks (1st, 2nd, etc.), and race leaderboard rendering.
-8. Responsive layout verification (zero horizontal scroll/overflow across Desktop 1280px, iPad 768px, Galaxy S23 412px, iPhone SE 375px).
+Automated verification for the Multi-Algorithm Sorting Comparison Showcase:
+1. DOM Structure & Minimalist Content in index.html:
+   - Card 03 (.compare-card) in .home-cards with <figure class="mini-viz compare-mini-viz"> (visuals like searching and sorting).
+   - Card 03 links to compare.html.
+   - Minimalist preview section #try-it (.home-showcase-minimal, .showcase-feature-viz with multi-track preview).
+   - Launch CTA button linking to compare.html.
+   - Verifies heavy visualization grid (#showcase-grid) is NOT on index.html.
+2. Dedicated Comparison Laboratory in compare.html:
+   - Full interactive visualization with 10 algorithm chips, 5 presets, shared array controls.
+   - Playback dock (play/pause, step backward/forward, reset, speed slider) with no 'Start' text.
+   - Live simultaneous tracks (#showcase-grid) and leaderboard (#showcase-leaderboard).
+   - Script loading order (sorting engine before showcase controller).
+3. Chrome Headless Dynamic Execution Across Viewports:
+   - Verified on compare.html across Desktop 1280px, iPad 768px, Galaxy S23 412px, iPhone SE 375px.
+   - Zero horizontal overflow on compare.html and index.html across all viewports.
+   - Dynamic algorithm selection, shared array updates, custom input, synchronized playback, and leaderboard race results.
 """
 
 import subprocess
@@ -37,64 +44,92 @@ print("VERIFYING MULTI-ALGORITHM SORTING COMPARISON SHOWCASE")
 print("=" * 65)
 
 # -------------------------------------------------------------
-# Stage 1: DOM Hierarchy and Structural Order in index.html
+# Stage 1: DOM Hierarchy in index.html (Minimalist Content & Hero Visuals)
 # -------------------------------------------------------------
-print("\n--- 1. Testing DOM Structure & Section Markers in index.html ---")
+print("\n--- 1. Testing Minimalist Hero Content & Card Visuals in index.html ---")
 with open("index.html", "r", encoding="utf-8") as f:
-    html = f.read()
+    html_home = f.read()
+
+# 1. Card 03 in .home-cards with compare-mini-viz
+assert 'compare-card' in html_home, "Missing .compare-card in index.html .home-cards"
+assert 'compare-mini-viz' in html_home, "Missing .compare-mini-viz in index.html"
+assert 'mini-race-tracks' in html_home, "Missing .mini-race-tracks inside compare-mini-viz"
+assert 'href="compare.html"' in html_home, "Missing link to compare.html on index.html"
+print("  [PASS] Card 03 (Comparison) with mini-race visual present in index.html")
+
+# 2. Section #try-it has minimalist showcase preview
+assert 'id="try-it"' in html_home, "Missing #try-it anchor in index.html"
+assert 'home-showcase-minimal' in html_home, "Missing .home-showcase-minimal class in index.html"
+assert 'showcase-feature-viz' in html_home, "Missing .showcase-feature-viz preview in index.html"
+assert 'showcase-launch-btn' in html_home, "Missing launch CTA button in index.html"
+assert "MULTI-ALGORITHM SHOWCASE" in html_home, "Missing kicker 'MULTI-ALGORITHM SHOWCASE' in index.html"
+assert "Compare N Sorting Algorithms on the Same Array" in html_home, "Missing heading in index.html"
+print("  [PASS] Minimalist preview section #try-it with feature viz and launch CTA present in index.html")
+
+# 3. Heavy visualizer grid is NOT on index.html
+assert 'id="showcase-grid"' not in html_home, "#showcase-grid should NOT be on index.html (it belongs in compare.html)"
+assert 'js/multi-sort-showcase.js' not in html_home, "multi-sort-showcase.js should NOT be loaded on index.html"
+print("  [PASS] Heavy visualizer grid and script correctly excluded from hero page")
+
+# -------------------------------------------------------------
+# Stage 2: DOM Hierarchy in compare.html (Actual Interactive Visualization)
+# -------------------------------------------------------------
+print("\n--- 2. Testing Dedicated Visualization Laboratory in compare.html ---")
+with open("compare.html", "r", encoding="utf-8") as f:
+    html_compare = f.read()
 
 # 1. Section #try-it
-assert 'id="try-it"' in html, "Missing #try-it anchor in index.html"
-assert 'class="home-showcase-section"' in html, "Missing .home-showcase-section in index.html"
-assert "MULTI-ALGORITHM SHOWCASE" in html, "Missing kicker 'MULTI-ALGORITHM SHOWCASE' in index.html"
-assert "Compare N Sorting Algorithms on the Same Array" in html, "Missing section heading in index.html"
+assert 'id="try-it"' in html_compare, "Missing #try-it anchor in compare.html"
+assert 'class="home-showcase-section' in html_compare, "Missing .home-showcase-section in compare.html"
+assert "MULTI-ALGORITHM SHOWCASE" in html_compare, "Missing kicker 'MULTI-ALGORITHM SHOWCASE' in compare.html"
+assert "Compare N Sorting Algorithms on the Same Array" in html_compare, "Missing section heading in compare.html"
 
 # 2. Presets
 presets = ["popular", "nlogn", "n2", "linear", "all"]
 for p in presets:
-    assert f'data-preset="{p}"' in html, f"Missing preset '{p}' in index.html"
-print("  [PASS] All 5 quick presets present (Popular, nlogn, n2, linear, all)")
+    assert f'data-preset="{p}"' in html_compare, f"Missing preset '{p}' in compare.html"
+print("  [PASS] All 5 quick presets present (Popular, nlogn, n2, linear, all) in compare.html")
 
 # 3. Chips grid container
-assert 'id="showcase-chips-grid"' in html, "Missing #showcase-chips-grid container in index.html"
-print("  [PASS] Dynamic multi-select chips grid container present")
+assert 'id="showcase-chips-grid"' in html_compare, "Missing #showcase-chips-grid container in compare.html"
+print("  [PASS] Dynamic multi-select chips grid container present in compare.html")
 
 # 4. Shared array controls
-assert 'id="showcase-shuffle-btn"' in html, "Missing shuffle button in index.html"
-assert 'id="showcase-custom-input"' in html, "Missing custom input in index.html"
-assert 'id="showcase-apply-btn"' in html, "Missing apply button in index.html"
-print("  [PASS] Shared dataset controls (shuffle, custom input, apply) present")
+assert 'id="showcase-shuffle-btn"' in html_compare, "Missing shuffle button in compare.html"
+assert 'id="showcase-custom-input"' in html_compare, "Missing custom input in compare.html"
+assert 'id="showcase-apply-btn"' in html_compare, "Missing apply button in compare.html"
+print("  [PASS] Shared dataset controls (shuffle, custom input, apply) present in compare.html")
 
 # 5. Playback dock
-assert 'id="showcase-play-btn"' in html, "Missing play button in index.html"
-assert 'Start Race' not in html, "'Start Race' text should be removed from the play button in index.html"
-assert 'id="showcase-prev-btn"' in html, "Missing prev button in index.html"
-assert 'id="showcase-next-btn"' in html, "Missing next button in index.html"
-assert 'id="showcase-reset-btn"' in html, "Missing reset button in index.html"
-assert 'id="showcase-speed"' in html, "Missing speed slider in index.html"
+assert 'id="showcase-play-btn"' in html_compare, "Missing play button in compare.html"
+assert 'Start Race' not in html_compare, "'Start Race' text should be removed from the play button in compare.html"
+assert 'id="showcase-prev-btn"' in html_compare, "Missing prev button in compare.html"
+assert 'id="showcase-next-btn"' in html_compare, "Missing next button in compare.html"
+assert 'id="showcase-reset-btn"' in html_compare, "Missing reset button in compare.html"
+assert 'id="showcase-speed"' in html_compare, "Missing speed slider in compare.html"
 print("  [PASS] Playback dock controls (play/pause, prev, next, reset, speed slider) present without 'Start' text")
 
 # 6. Grid and leaderboard
-assert 'id="showcase-grid"' in html, "Missing #showcase-grid in index.html"
-assert 'id="showcase-leaderboard"' in html, "Missing #showcase-leaderboard in index.html"
-print("  [PASS] Showcase grid and leaderboard containers present")
+assert 'id="showcase-grid"' in html_compare, "Missing #showcase-grid in compare.html"
+assert 'id="showcase-leaderboard"' in html_compare, "Missing #showcase-leaderboard in compare.html"
+print("  [PASS] Showcase grid and leaderboard containers present in compare.html")
 
 # 7. Script tags ordering
-sorting_algo_idx = html.find('src="js/sorting-algorithms.js"')
-multi_sort_idx = html.find('src="js/multi-sort-showcase.js"')
-assert sorting_algo_idx != -1, "Missing js/sorting-algorithms.js script tag in index.html"
-assert multi_sort_idx != -1, "Missing js/multi-sort-showcase.js script tag in index.html"
-assert sorting_algo_idx < multi_sort_idx, "js/sorting-algorithms.js must be loaded BEFORE js/multi-sort-showcase.js"
-print("  [PASS] Script loading order verified (engine loaded before showcase controller)")
+sorting_algo_idx = html_compare.find('src="js/sorting-algorithms.js"')
+multi_sort_idx = html_compare.find('src="js/multi-sort-showcase.js"')
+assert sorting_algo_idx != -1, "Missing js/sorting-algorithms.js script tag in compare.html"
+assert multi_sort_idx != -1, "Missing js/multi-sort-showcase.js script tag in compare.html"
+assert sorting_algo_idx < multi_sort_idx, "js/sorting-algorithms.js must be loaded BEFORE js/multi-sort-showcase.js in compare.html"
+print("  [PASS] Script loading order verified on compare.html")
 
 # -------------------------------------------------------------
-# Stage 2: Chrome Headless Verification Across Viewports
+# Stage 3: Chrome Headless Verification on compare.html Across Viewports
 # -------------------------------------------------------------
-print("\n--- 2. Verifying Multi-Algorithm Dynamic Functionality in Chrome ---")
+print("\n--- 3. Verifying Multi-Algorithm Dynamic Functionality on compare.html ---")
 
 for vp in viewports:
-    print(f"\n--- Testing Viewport: {vp['name']} ({vp['width']}x{vp['height']}) ---")
-    page_abs = os.path.abspath("index.html").replace(os.sep, "/")
+    print(f"\n--- Testing compare.html Viewport: {vp['name']} ({vp['width']}x{vp['height']}) ---")
+    page_abs = os.path.abspath("compare.html").replace(os.sep, "/")
     harness_html = f"""<!DOCTYPE html>
 <html>
 <head><meta charset="utf-8"></head>
@@ -113,8 +148,6 @@ window.addEventListener('load', async () => {{
     // 1. Check responsive overflow of showcase section
     const showcase = doc.getElementById('try-it');
     const showcaseRect = showcase ? showcase.getBoundingClientRect() : null;
-    const bodyScrollWidth = doc.body.scrollWidth;
-    const docScrollWidth = doc.documentElement.scrollWidth;
     results.hasHorizontalOverflow = (showcase && showcase.scrollWidth > showcase.clientWidth + 2) || (showcaseRect && showcaseRect.right > {vp['width']} + 2);
     results.showcaseScrollWidth = showcase ? showcase.scrollWidth : 0;
     results.showcaseClientWidth = showcase ? showcase.clientWidth : 0;
@@ -189,7 +222,6 @@ window.addEventListener('load', async () => {{
     results.customInputAppliedAll = customArrays.every(arr => JSON.stringify(arr) === JSON.stringify([50, 20, 80, 10, 40]));
 
     // 6. Test Playback execution
-    // Select popular preset for playback test
     const popularPreset = doc.querySelector('.preset-btn[data-preset="popular"]');
     if (popularPreset) {{
         popularPreset.click();
@@ -209,7 +241,7 @@ window.addEventListener('load', async () => {{
     if (playBtn) {{
         playBtn.click();
     }}
-    // Wait for race to finish (small array of 5 elements sorts in < 1 second at 4x speed)
+    // Wait for race to finish
     await new Promise(r => setTimeout(r, 1400));
 
     // Check finished status and leaderboard
@@ -295,8 +327,53 @@ window.addEventListener('load', async () => {{
         print(f"  Reset: cardsReset={data['cardsReset']}")
         assert data["cardsReset"], "Cards did not reset properly to step 0"
 
-        print(f"  [PASS] {vp['name']}: All multi-algorithm showcase features verified!")
+        print(f"  [PASS] {vp['name']}: All multi-algorithm showcase features verified on compare.html!")
 
+    finally:
+        if os.path.exists(harness_path):
+            os.remove(harness_path)
+
+# -------------------------------------------------------------
+# Stage 4: Verify index.html Zero-Overflow Across Mobile and Desktop
+# -------------------------------------------------------------
+print("\n--- 4. Verifying index.html Minimal Hero Zero-Overflow in Chrome ---")
+for vp in viewports:
+    page_abs = os.path.abspath("index.html").replace(os.sep, "/")
+    harness_html = f"""<!DOCTYPE html>
+<html><body style="margin:0;padding:0;">
+<iframe id="test-frame" src="file:///{page_abs}" style="width:{vp['width']}px;height:{vp['height']}px;border:none;"></iframe>
+<div id="output"></div>
+<script>
+window.addEventListener('load', async () => {{
+    await new Promise(r => setTimeout(r, 400));
+    const iframe = document.getElementById('test-frame');
+    const doc = iframe.contentDocument;
+    const showcase = doc.getElementById('try-it');
+    const overflow = doc.documentElement.scrollWidth > {vp['width']} + 2;
+    document.getElementById('output').textContent = JSON.stringify({{ overflow, scrollWidth: doc.documentElement.scrollWidth }});
+}});
+</script></body></html>"""
+    harness_path = f"tests/temp_index_test_{vp['width']}.html"
+    with open(harness_path, "w", encoding="utf-8") as f:
+        f.write(harness_html)
+    try:
+        cmd = [
+            CHROME_PATH,
+            "--headless=new",
+            "--no-sandbox",
+            "--disable-gpu",
+            "--allow-file-access-from-files",
+            f"--window-size={vp['width'] + 60},{vp['height'] + 100}",
+            "--virtual-time-budget=4000",
+            "--dump-dom",
+            f"file:///{os.path.abspath(harness_path).replace(os.sep, '/')}"
+        ]
+        res = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="ignore")
+        m = re.search(r'<div id="output"[^>]*>(.*?)</div>', res.stdout)
+        assert m, "Failed to inspect index.html output"
+        data = json.loads(m.group(1).replace("&quot;", '"'))
+        assert not data["overflow"], f"Horizontal overflow detected on index.html at {vp['name']} (scrollWidth={data['scrollWidth']})"
+        print(f"  [PASS] index.html {vp['name']} scrollWidth: {data['scrollWidth']} (0 overflow)")
     finally:
         if os.path.exists(harness_path):
             os.remove(harness_path)

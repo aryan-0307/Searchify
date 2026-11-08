@@ -4,6 +4,34 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## [2026-11-08 — Minimalist Hero Showcase & Dedicated Comparison Laboratory (`compare.html`)]
+
+### Added
+- **Dedicated Comparison Laboratory (`compare.html`)**:
+  - Created a dedicated page (`compare.html`) hosting the complete interactive Multi-Algorithm Sorting Comparison Laboratory.
+  - Complete with 10 algorithm chips, 5 presets, shared array shuffle/custom inputs, playback controls (play/pause toggle, step navigation, reset, speed slider), simultaneous multi-track canvas `#showcase-grid`, and live finish leaderboard `#showcase-leaderboard`.
+  - Comprehensive SEO metadata, Open Graph tags, Twitter card, favicon links, and HTML5 semantic structure.
+- **Card 03 in Hero Playgrounds Grid (`index.html`)**:
+  - Added Card 03 (`.compare-card`) to `.home-cards` alongside Searching (`searching.html`) and Sorting (`sorting.html`).
+  - Added `<figure class="mini-viz compare-mini-viz">` designed to match `searching-mini-viz` and `sorting-mini-viz`, showcasing animated mini racing tracks (Merge Sort vs Bubble Sort with green sorted bars, rank badges `🥇 1st`, and ops counters).
+  - Responsive 3-column desktop layout (`grid-template-columns: repeat(3, minmax(0, 1fr))`) and single-column mobile wrapping.
+- **Minimalist Hero Section (`index.html#try-it`)**:
+  - Replaced the heavy dynamic visualizer on the hero landing page with a minimalist preview section (`.home-showcase-section.home-showcase-minimal`).
+  - Added simulated multi-track feature visual (`.showcase-feature-viz`) showing Merge Sort, Quick Sort, and Bubble Sort on identical data with live dot pulsing, status pills, and complexity badges.
+  - Added feature highlight pills and a prominent call-to-action button (`.showcase-launch-btn`) directing users to the full comparison laboratory on `compare.html`.
+  - Removed heavy DOM track rendering loops and script loading from `index.html`.
+
+### Changed
+- **Navigation & Links**:
+  - Updated navbar on `index.html` to link "Compare sorting" to `compare.html`.
+  - Added full top navigation bar to `compare.html` with links to Searching, Sorting, and "← Back to Home".
+- **Test Suite Updates**:
+  - Updated `tests/verify_multi_sort_showcase.py` to test both `index.html` (minimalist hero content, Card 03 with mini-viz, zero horizontal overflow) and `compare.html` (dynamic selection, shared dataset identity, custom input, playback, completion, leaderboard, zero horizontal overflow across 4 viewports).
+  - Added `compare.html` to `tests/check_console_errors.py` and `tests/verify_semantic_seo.py`.
+  - Full 32-stage master verification suite `tests/run_all_tests.py` passing with 100% pass rate.
+
+---
+
 ## [2026-11-08 — Multi-Algorithm Sorting Comparison Showcase on Shared Array]
 
 ### Added

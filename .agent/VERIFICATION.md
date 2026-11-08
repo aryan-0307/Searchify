@@ -327,16 +327,26 @@ Date: 2026-10-30T23:20:00
 ### 2. Automated Test Execution Evidence
 - **Automated Test (`tests/verify_multi_sort_showcase.py`)**:
   - Tested Desktop 1280px, iPad 768px, Galaxy S23 412px, and iPhone SE 375px in headless Chrome:
-    - DOM structure & markers: PASS
-    - Initial cards (3 cards with identical array): PASS
-    - Dynamic selection (toggle Heap Sort add/remove): PASS
-    - Presets switching ("Linear Time" -> counting, radix, bucket): PASS
-    - Custom input apply (`50, 20, 80, 10, 40` across all cards): PASS
-    - Synchronized playback & completion detection: PASS
-    - Leaderboard rendering & rankings: PASS
-    - Reset to initial state: PASS
-    - Zero horizontal overflow across all 4 viewports: PASS
+    - `index.html`: Card 03 (`.compare-card`) with `.compare-mini-viz` present: PASS
+    - `index.html`: Minimalist preview section `#try-it` with feature viz and launch CTA: PASS
+    - `index.html`: Heavy visualizer grid excluded from hero page: PASS
+    - `index.html`: Zero horizontal overflow across all 4 viewports: PASS
+    - `compare.html`: All 10 algorithm chips, 5 presets, shared array controls present: PASS
+    - `compare.html`: Initial cards (3 cards with identical array): PASS
+    - `compare.html`: Dynamic selection (toggle Heap Sort add/remove): PASS
+    - `compare.html`: Presets switching ("Linear Time" -> counting, radix, bucket): PASS
+    - `compare.html`: Custom input apply (`50, 20, 80, 10, 40` across all cards): PASS
+    - `compare.html`: Synchronized playback & completion detection: PASS
+    - `compare.html`: Leaderboard rendering & rankings: PASS
+    - `compare.html`: Reset to initial state: PASS
+    - `compare.html`: Zero horizontal overflow across all 4 viewports: PASS
   - Output: `ALL MULTI-ALGORITHM SHOWCASE VERIFICATIONS PASSED (100%)`
+- **Semantic HTML & SEO Verification (`tests/verify_semantic_seo.py`)**:
+  - Verified `index.html`, `sorting.html`, `searching.html`, and `compare.html`:
+  - Output: `ALL SEMANTIC & SEO VERIFICATIONS COMPLETED (100% PASS)`
+- **Console Runtime Error Check (`tests/check_console_errors.py`)**:
+  - Verified `index.html`, `sorting.html`, `searching.html`, `compare.html`, `test_algorithms.html`:
+  - Output: `ALL PAGES LOADED CLEANLY WITH ZERO JS RUNTIME ERRORS!`
 - **Master Regression Suite (`tests/run_all_tests.py`)**:
   - Output: `ALL VERIFICATIONS COMPLETED SUCCESSFULLY (100% PASS RATE - 32/32 STAGES)`
 

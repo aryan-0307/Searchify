@@ -57,7 +57,7 @@
                 </span>
             </a>
             <nav class="home-nav-links" aria-label="Main navigation">
-                <a href="#try-it" class="nav-link-item">Compare sorting</a>
+                <a href="compare.html" class="nav-link-item">Compare sorting</a>
                 <a class="nav-cta" href="#playgrounds">Start exploring <span>↗</span></a>
             </nav>
         </div>
@@ -206,16 +206,60 @@
                         </footer>
                     </article>
                 </a>
+                <a href="compare.html" class="home-card compare-card" aria-label="Explore Multi-Algorithm Comparison playground">
+                    <article class="card-inner">
+                        <header class="card-header">
+                            <div class="card-icon-wrap compare-icon-wrap" aria-hidden="true"><svg class="card-icon"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M16 3h5v5"></path>
+                                    <path d="M4 20L21 3"></path>
+                                    <path d="M21 16v5h-5"></path>
+                                    <path d="M15 15l6 6"></path>
+                                    <path d="M4 4l5 5"></path>
+                                </svg></div>
+                            <div class="card-title-group">
+                                <h3 class="card-title">Comparison</h3><span class="card-algo-tag">COMPARE N ALGOS</span>
+                            </div>
+                            <span class="card-number">03</span>
+                        </header>
+                        <p class="card-long-desc">Race sorting methods side-by-side on identical data. Watch step counts, operations, and efficiency in real time.</p>
+                        <figure class="mini-viz compare-mini-viz" aria-hidden="true">
+                            <div class="mini-race-tracks">
+                                <div class="mini-race-track track-1">
+                                    <span class="track-tag">MERGE</span>
+                                    <div class="mini-track-bars">
+                                        <i style="height:25%"></i><i style="height:45%"></i><i style="height:65%"></i><i style="height:85%"></i><i style="height:100%"></i>
+                                    </div>
+                                    <span class="track-rank">🥇 1st</span>
+                                </div>
+                                <div class="mini-race-track track-2">
+                                    <span class="track-tag">BUBBLE</span>
+                                    <div class="mini-track-bars">
+                                        <i style="height:70%"></i><i style="height:30%"></i><i style="height:90%"></i><i style="height:50%"></i><i style="height:40%"></i>
+                                    </div>
+                                    <span class="track-rank track-time">⏱ 45 ops</span>
+                                </div>
+                            </div>
+                        </figure>
+                        <div class="card-feature-row"><span>Multi-track race</span><span>Shared array</span><span>Live leaderboard</span></div>
+                        <footer class="card-footer">
+                            <p class="card-desc">Compare them. Crown the fastest.</p>
+                            <div class="card-action"><span>Explore comparison</span><span class="action-arrow">↗</span>
+                            </div>
+                        </footer>
+                    </article>
+                </a>
             </div>
         </section>
 
-        <!-- Multi-Algorithm Sorting Comparison Showcase -->
-        <section class="home-showcase-section" id="try-it" aria-labelledby="home-showcase-title">
+        <!-- Multi-Algorithm Sorting Comparison Showcase Section (Minimalist Content) -->
+        <section class="home-showcase-section home-showcase-minimal" id="try-it" aria-labelledby="home-showcase-title">
             <header class="home-showcase-header home-demo-heading">
                 <div class="home-showcase-title-group">
                     <span class="home-showcase-kicker">✳ MULTI-ALGORITHM SHOWCASE</span>
                     <h2 id="home-showcase-title">Compare N Sorting Algorithms on the Same Array</h2>
-                    <p class="home-showcase-subtitle">Select any combination of sorting techniques below. Watch them compete on identical data in real time, compare their step counts, operations, and execution speed.</p>
+                    <p class="home-showcase-subtitle">Select any combination of sorting techniques. Watch them compete on identical data in real time, compare their step counts, operations, and execution speed.</p>
                 </div>
                 <div class="showcase-status-badge" id="showcase-global-status" role="status" aria-live="polite">
                     <span class="showcase-pulse-dot"></span>
@@ -223,74 +267,100 @@
                 </div>
             </header>
 
-            <!-- Algorithm Selection Toolbar (Select N Sorting Techniques) -->
-            <div class="showcase-selection-panel" aria-label="Select sorting algorithms to compare">
-                <div class="showcase-selection-top">
-                    <div class="showcase-selection-label-group">
-                        <span class="showcase-panel-label">Choose Algorithms to Compare:</span>
-                        <span class="showcase-selected-count" id="showcase-selected-count">3 Selected</span>
+            <article class="showcase-minimal-body">
+                <figure class="showcase-feature-viz" aria-label="Visual preview of multi-track algorithm comparison">
+                    <div class="feature-viz-header">
+                        <div class="feature-viz-title">
+                            <span class="viz-dot-live"></span>
+                            <span>Simultaneous Multi-Track Sorting</span>
+                        </div>
+                        <span class="feature-viz-badge">Identical Data: [52, 18, 94, 33, 76, 21, 65, 87]</span>
                     </div>
-                    <div class="showcase-presets-group" role="group" aria-label="Algorithm presets">
-                        <button type="button" class="preset-btn active" data-preset="popular">Top 3 (Popular)</button>
-                        <button type="button" class="preset-btn" data-preset="nlogn">O(n log n) Trio</button>
-                        <button type="button" class="preset-btn" data-preset="n2">O(n²) Classic</button>
-                        <button type="button" class="preset-btn" data-preset="linear">Linear Time</button>
-                        <button type="button" class="preset-btn" data-preset="all">Compare All (10)</button>
+
+                    <div class="feature-viz-tracks">
+                        <!-- Track 1: Merge Sort -->
+                        <div class="feature-track track-merge">
+                            <div class="feature-track-head">
+                                <span class="feature-track-name">Merge Sort</span>
+                                <span class="feature-track-pill badge-first">🥇 1st Place • 28 ops</span>
+                            </div>
+                            <div class="feature-bars-strip">
+                                <div class="f-bar sorted" style="height: 25%"><span>18</span></div>
+                                <div class="f-bar sorted" style="height: 30%"><span>21</span></div>
+                                <div class="f-bar sorted" style="height: 45%"><span>33</span></div>
+                                <div class="f-bar sorted" style="height: 60%"><span>52</span></div>
+                                <div class="f-bar sorted" style="height: 72%"><span>65</span></div>
+                                <div class="f-bar sorted" style="height: 82%"><span>76</span></div>
+                                <div class="f-bar sorted" style="height: 92%"><span>87</span></div>
+                                <div class="f-bar sorted" style="height: 100%"><span>94</span></div>
+                            </div>
+                            <div class="feature-track-foot">
+                                <span>Status: <b>Sorted ✓</b></span>
+                                <span>Complexity: <b>O(n log n)</b></span>
+                            </div>
+                        </div>
+
+                        <!-- Track 2: Quick Sort -->
+                        <div class="feature-track track-quick">
+                            <div class="feature-track-head">
+                                <span class="feature-track-name">Quick Sort</span>
+                                <span class="feature-track-pill badge-second">🥈 2nd Place • 34 ops</span>
+                            </div>
+                            <div class="feature-bars-strip">
+                                <div class="f-bar sorted" style="height: 25%"><span>18</span></div>
+                                <div class="f-bar sorted" style="height: 30%"><span>21</span></div>
+                                <div class="f-bar sorted" style="height: 45%"><span>33</span></div>
+                                <div class="f-bar active" style="height: 60%"><span>52</span></div>
+                                <div class="f-bar active" style="height: 72%"><span>65</span></div>
+                                <div class="f-bar sorted" style="height: 82%"><span>76</span></div>
+                                <div class="f-bar sorted" style="height: 92%"><span>87</span></div>
+                                <div class="f-bar sorted" style="height: 100%"><span>94</span></div>
+                            </div>
+                            <div class="feature-track-foot">
+                                <span>Status: <b>Partitioning [33..65]</b></span>
+                                <span>Complexity: <b>O(n log n)</b></span>
+                            </div>
+                        </div>
+
+                        <!-- Track 3: Bubble Sort -->
+                        <div class="feature-track track-bubble">
+                            <div class="feature-track-head">
+                                <span class="feature-track-name">Bubble Sort</span>
+                                <span class="feature-track-pill badge-racing">⏱ Racing • 56 ops</span>
+                            </div>
+                            <div class="feature-bars-strip">
+                                <div class="f-bar" style="height: 60%"><span>52</span></div>
+                                <div class="f-bar compare" style="height: 25%"><span>18</span></div>
+                                <div class="f-bar compare" style="height: 100%"><span>94</span></div>
+                                <div class="f-bar" style="height: 45%"><span>33</span></div>
+                                <div class="f-bar" style="height: 82%"><span>76</span></div>
+                                <div class="f-bar" style="height: 30%"><span>21</span></div>
+                                <div class="f-bar sorted" style="height: 72%"><span>65</span></div>
+                                <div class="f-bar sorted" style="height: 92%"><span>87</span></div>
+                            </div>
+                            <div class="feature-track-foot">
+                                <span>Status: <b>Comparing [18 ↔ 94]</b></span>
+                                <span>Complexity: <b>O(n²)</b></span>
+                            </div>
+                        </div>
+                    </div>
+                </figure>
+
+                <div class="showcase-feature-meta">
+                    <div class="showcase-meta-tags">
+                        <span class="meta-tag"><span>✓</span> Choose Any N Algorithms</span>
+                        <span class="meta-tag"><span>✓</span> Identical Shared Array</span>
+                        <span class="meta-tag"><span>✓</span> Real-Time Leaderboard</span>
+                        <span class="meta-tag"><span>✓</span> Step-by-Step Lockstep</span>
+                    </div>
+                    <div class="showcase-cta-wrap">
+                        <a href="compare.html" class="showcase-launch-btn btn-primary" aria-label="Open Full Multi-Algorithm Comparison Playground">
+                            <span>Open Full Multi-Algorithm Comparison Playground</span>
+                            <span class="launch-icon">↗</span>
+                        </a>
                     </div>
                 </div>
-
-                <!-- 10 Multi-Select Algorithm Chips -->
-                <div class="showcase-chips-grid" id="showcase-chips-grid" role="group" aria-label="Available sorting algorithms">
-                    <!-- Injected dynamically by multi-sort-showcase.js -->
-                </div>
-            </div>
-
-            <!-- Shared Array Controls & Multi-Play Toolbar -->
-            <div class="showcase-controls-bar" aria-label="Shared array and playback controls">
-                <!-- Shared Array Configuration -->
-                <div class="showcase-array-group">
-                    <span class="showcase-group-tag">Shared Array:</span>
-                    <button type="button" id="showcase-shuffle-btn" class="showcase-btn btn-secondary" title="Generate New Shared Array">
-                        <span>↻ Shuffle Array</span>
-                    </button>
-                    <div class="showcase-custom-wrap">
-                        <input type="text" id="showcase-custom-input" placeholder="e.g. 52, 18, 94, 33, 76, 21, 65, 87" aria-label="Custom shared array">
-                        <button type="button" id="showcase-apply-btn" class="showcase-btn btn-secondary">Apply</button>
-                    </div>
-                </div>
-
-                <!-- Playback & Speed Controls -->
-                <div class="showcase-playback-group">
-                    <div class="showcase-transport-btns">
-                        <button type="button" id="showcase-prev-btn" class="showcase-btn btn-icon" title="Step Backward" aria-label="Step backward">◀</button>
-                        <button type="button" id="showcase-play-btn" class="showcase-btn btn-primary btn-play-prominent" title="Play / Pause" aria-label="Play">
-                            <span class="play-icon">▶</span>
-                        </button>
-                        <button type="button" id="showcase-next-btn" class="showcase-btn btn-icon" title="Step Forward" aria-label="Step forward">▶</button>
-                        <button type="button" id="showcase-reset-btn" class="showcase-btn btn-secondary" title="Reset" aria-label="Reset">Reset</button>
-                    </div>
-                    <div class="showcase-speed-item">
-                        <label for="showcase-speed">Speed: <span id="showcase-speed-val">2x</span></label>
-                        <input type="range" id="showcase-speed" min="1" max="4" value="2" aria-label="Playback speed">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Multi-Track Sorting Visualization Grid -->
-            <div class="showcase-grid" id="showcase-grid" role="region" aria-label="Simultaneous algorithm tracks on the same array">
-                <!-- Injected dynamically: 1 card per selected algorithm -->
-            </div>
-
-            <!-- Live Race Leaderboard / Comparison Summary -->
-            <aside class="showcase-leaderboard" id="showcase-leaderboard" style="display: none;" aria-label="Race comparison results">
-                <header class="leaderboard-header">
-                    <span class="leaderboard-badge">🏁 Race Results</span>
-                    <h3 class="leaderboard-title">Efficiency Breakdown on Identical Data</h3>
-                </header>
-                <div class="leaderboard-content" id="leaderboard-content">
-                    <!-- Injected dynamically upon completion of all tracks -->
-                </div>
-            </aside>
+            </article>
         </section>
 
         <footer class="home-footer" role="contentinfo"><a href="#" class="footer-brand"
@@ -301,8 +371,6 @@
         </footer>
     </main>
     <script src="js/home-nav.js"></script>
-    <script src="js/sorting-algorithms.js"></script>
-    <script src="js/multi-sort-showcase.js"></script>
 </body>
 
 </html>
