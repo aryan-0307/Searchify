@@ -300,6 +300,48 @@ Date: 2026-10-30T23:20:00
 
 ---
 
+## 32. Multi-Algorithm Sorting Comparison Showcase on Shared Array Verification
+
+### 1. Specification & Scope
+- **Section Overhaul (`#try-it`)**:
+  - Replaces `.home-quick-demo` with `.home-showcase-section`.
+  - Preserves `#try-it` anchor for in-page navigation links (`<a href="#try-it">`).
+  - Preserves `.home-demo-heading` and Aalto Display font verification.
+- **Dynamic Multi-Selection**:
+  - Selector toolbar with 10 algorithm chips for all 10 sorting algorithms with active toggle states and complexity badges.
+  - 5 presets: Top 3 (Popular), $O(n \log n)$ Trio, $O(n^2)$ Classic, Linear Time, Compare All (10).
+  - Users can select any combination of $1$ to $10$ algorithms.
+- **Identical Shared Dataset**:
+  - All active algorithms share and sort the exact same initial array data.
+  - Shuffle Array and Custom Array input allow testing custom values across all algorithms synchronously.
+- **Synchronized Multi-Track Engine**:
+  - Standalone modular controller `js/multi-sort-showcase.js` using `window.SortingAlgorithms`.
+  - Lockstep playback with Play/Pause, Step Backward, Step Forward, Reset, and Speed slider (1x to 4x).
+  - Live color-coded bars, counters (comparisons, swaps, steps, progress %), and operation explanations.
+- **Race Finish Leaderboard**:
+  - Dynamic race finish recording with rank badges (`🥇 1st`, `🥈 2nd`, etc.).
+  - Efficiency breakdown table comparing steps, comparisons, and swaps on identical data.
+- **Responsive Layout & Zero Overflow**:
+  - Zero horizontal overflow across Desktop (1280px), iPad (768px), Galaxy S23 (412px), and iPhone SE (375px).
+
+### 2. Automated Test Execution Evidence
+- **Automated Test (`tests/verify_multi_sort_showcase.py`)**:
+  - Tested Desktop 1280px, iPad 768px, Galaxy S23 412px, and iPhone SE 375px in headless Chrome:
+    - DOM structure & markers: PASS
+    - Initial cards (3 cards with identical array): PASS
+    - Dynamic selection (toggle Heap Sort add/remove): PASS
+    - Presets switching ("Linear Time" -> counting, radix, bucket): PASS
+    - Custom input apply (`50, 20, 80, 10, 40` across all cards): PASS
+    - Synchronized playback & completion detection: PASS
+    - Leaderboard rendering & rankings: PASS
+    - Reset to initial state: PASS
+    - Zero horizontal overflow across all 4 viewports: PASS
+  - Output: `ALL MULTI-ALGORITHM SHOWCASE VERIFICATIONS PASSED (100%)`
+- **Master Regression Suite (`tests/run_all_tests.py`)**:
+  - Output: `ALL VERIFICATIONS COMPLETED SUCCESSFULLY (100% PASS RATE - 32/32 STAGES)`
+
+---
+
 ## Known Limitations
 - Client-side application with zero backend or database (per project specification).
 - Custom array input capped at 80 elements to maintain optimal bar visibility.

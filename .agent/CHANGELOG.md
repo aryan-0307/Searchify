@@ -4,6 +4,47 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## [2026-11-08 — Multi-Algorithm Sorting Comparison Showcase on Shared Array]
+
+### Added
+- **Multi-Algorithm Sorting Comparison Showcase (`index.html`)**:
+  - Replaced the legacy single-algorithm quick demo (`.home-quick-demo`) with a comprehensive multi-algorithm comparison showcase section (`.home-showcase-section`, anchored at `#try-it`).
+  - Added multi-select algorithm chips toolbar (`.showcase-chips-grid`) featuring all 10 sorting algorithms (Bubble Sort, Selection Sort, Insertion Sort, Merge Sort, Quick Sort, Heap Sort, Shell Sort, Counting Sort, Radix Sort, Bucket Sort) with active toggle states, checkbox indicators, and asymptotic complexity badges.
+  - Added 5 comparison preset buttons:
+    - *Top 3 (Popular)*: Bubble Sort, Merge Sort, Quick Sort
+    - *O(n log n) Trio*: Merge Sort, Quick Sort, Heap Sort
+    - *O(n²) Classic*: Bubble Sort, Selection Sort, Insertion Sort
+    - *Linear Time*: Counting Sort, Radix Sort, Bucket Sort
+    - *Compare All (10)*: All 10 sorting algorithms running side-by-side
+- **Exact Same Shared Dataset Execution**:
+  - All selected algorithms execute on the exact same shared array.
+  - Includes Shuffle Array button for generating randomized shared datasets and a Custom Array input for testing custom numbers (e.g. `50, 20, 80, 10, 40`) across all active algorithms synchronously.
+- **Synchronized Multi-Track Engine (`js/multi-sort-showcase.js`)**:
+  - Modular controller integrating directly with `window.SortingAlgorithms` step-generator engine with zero code duplication.
+  - Multi-track lockstep playback loop with Start/Pause Race, Step Backward, Step Forward, Reset to Start, and a 4-level Speed multiplier slider (1x: 340ms, 2x: 160ms, 3x: 75ms, 4x: 30ms).
+  - Dynamic algorithm track cards (`.showcase-algo-card`) rendering real-time array bars with color-coded states: comparing (`#D93D81`), swapping (`#E67E22`), pivot (`#8E44AD`), and sorted (`#27AE60`).
+  - Real-time statistics counters per algorithm: comparisons, swaps, step count, percentage progress bar, and descriptive operation explanation.
+- **Race Finish Leaderboard & Efficiency Breakdown**:
+  - Dynamically records algorithm finish order and places (`🥇 1st`, `🥈 2nd`, `🥉 3rd`, etc.).
+  - Displays finish leaderboard banner (`#showcase-leaderboard`) with comparative efficiency metrics (total steps, total comparisons, total swaps) highlighting performance differences on identical input data.
+- **Responsive Layout & Typography Integrity**:
+  - CSS Grid with `repeat(auto-fit, minmax(min(280px, 100%), 1fr))` on desktop/tablet, and `minmax(0, 1fr)` with `min-width: 0;` on mobile ($\le 860$px).
+  - Preserved `.home-demo-heading` class and Aalto Display font styling (`800 26px 'Aalto Display', 'Aalto Display-Personal-use', sans-serif; letter-spacing: 0.03em;`).
+  - Zero horizontal overflow across all viewports (Desktop 1280px, iPad 768px, Galaxy S23 412px, iPhone SE 375px).
+
+### Verified
+- Created automated test `tests/verify_multi_sort_showcase.py` in headless Chrome across Desktop 1280px, iPad 768px, Galaxy S23 412px, and iPhone SE 375px:
+  - Verified DOM structure and metadata: section `#try-it`, 10 chips, 5 presets, controls bar, grid, leaderboard.
+  - Verified dynamic multi-selection: adding a 4th algorithm (Heap Sort) dynamically renders its card with the exact same array, removing restores previous selection.
+  - Verified presets: "Linear Time" switches selection to Counting, Radix, and Bucket Sort.
+  - Verified custom array input: custom values applied synchronously to all active cards.
+  - Verified race execution: lockstep synchronized stepping, status pill updates, completion detection, rank assignment, and leaderboard rendering.
+  - Verified responsive layout: zero horizontal overflow on all viewports.
+  - Result: **100% PASS RATE**.
+- Integrated into master test suite `tests/run_all_tests.py` as Stage 32.
+
+---
+
 ## [2026-11-08 — Merged Visualizer Controls Layout Split]
 
 ### Changed

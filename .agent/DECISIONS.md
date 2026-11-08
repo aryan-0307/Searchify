@@ -232,3 +232,34 @@ Split visualizer controls into a two-tier top/bottom architecture:
 3. **Responsive Execution**:
    - Desktop: Single elegant horizontal row above and below canvas.
    - Mobile ($\le 860$px): Clean vertical wrapping with centered items, stacked transport and reset groups, and zero horizontal overflow. All interactive IDs and event bindings preserved 100%.
+
+## Decision 021
+Date: 2026-11-08
+Phase: Phase 43 — Multi-Algorithm Sorting Comparison Showcase on Shared Array
+
+### Problem
+The user requested replacing the single-algorithm "GET HANDS-ON" demo on the homepage (`index.html`) with a section that allows users to select $N$ sorting techniques of their choice and showcases all selected algorithms sorting the EXACT same array simultaneously, allowing direct visual and performance comparison.
+
+### Decision
+1. **Homepage Section Overhaul**:
+   - Replaced `.home-quick-demo` with `.home-showcase-section` under `#try-it`.
+   - Added `home-demo-heading` class to preserve Aalto Display typography verification.
+2. **Multi-Algorithm Dynamic Selection**:
+   - Selector panel with 10 algorithm chips (`.showcase-chip`), displaying algorithm name and asymptotic complexity.
+   - 5 convenient comparison presets: Top 3 (Popular), $O(n \log n)$ Trio, $O(n^2)$ Classic, Linear Time, and Compare All (10).
+   - Allows users to select any subset of $1$ to $10$ algorithms simultaneously.
+3. **Identical Shared Dataset**:
+   - All active algorithms share and sort the exact same initial array data.
+   - Provides Shuffle Array button and Custom Array text input to load any custom dataset across all cards synchronously.
+4. **Synchronized Multi-Track Engine**:
+   - Implemented standalone modular controller `js/multi-sort-showcase.js`.
+   - Uses `window.SortingAlgorithms` step-generator engine directly with zero code duplication.
+   - Lockstep playback with Start/Pause Race, Step Backward, Step Forward, Reset, and Speed multiplier slider (1x: 340ms to 4x: 30ms).
+   - Real-time card animations with color-coded comparison (`#D93D81`), swap (`#E67E22`), pivot (`#8E44AD`), and sorted (`#27AE60`) states.
+   - Real-time statistics per card: comparison counter, swap counter, step counter, progress bar, and operation explanation.
+5. **Race Leaderboard & Comparison Summary**:
+   - Dynamic race finish recording with rank badges (`🥇 1st`, `🥈 2nd`, `🥉 3rd`, etc.).
+   - Comparison summary table/cards displaying final steps, comparisons, and swaps across all competing algorithms.
+6. **Responsive Layout & Zero Overflow**:
+   - CSS Grid with `repeat(auto-fit, minmax(min(280px, 100%), 1fr))` on desktop/tablet, and `minmax(0, 1fr)` on mobile.
+   - Zero horizontal scroll across all desktop, tablet, and mobile devices (1280px, 768px, 412px, 375px).
