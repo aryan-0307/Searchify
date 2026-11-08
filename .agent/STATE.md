@@ -4,30 +4,32 @@
 Transform the AlgoViz homepage (`index.html`) from a plain static page into a modern, visually engaging, interactive algorithm playground. Upgrade typography to Bricolage Grotesque, elevate the hero container with subtle grid textures and depth, and transform the two cards (Searching & Sorting) with custom icons, miniature animated visualizations (step scanning for Searching, smooth ascending reordering for Sorting), descriptive lines, and responsive layout, without modifying visualizer pages or algorithm logic.
 
 ## Current Phase
-Phase 38 — Zero Scroll Hijack During Algorithm Execution
+Phase 39 — Mobile Visualizer Controls Cluster Swap (Array Controls vs Playback)
 
 ## Status
-COMPLETE
+COMPLETE (IMPLEMENTED + VERIFIED)
 
 ## Current Task
-Eliminated window scroll hijacking during algorithm execution across both Sorting and Searching visualizers:
-- **Root Cause Identified**:
-  - In [js/learning-features.js](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/js/learning-features.js), `highlightTraceStep` previously called `targetEl.scrollIntoView({ block: 'nearest', behavior: 'smooth' })` on every single step execution (`searchify:step` event).
-  - In modern browsers, `scrollIntoView()` scrolls not only the container, but also the entire window/document back to the element's position. This caused the page to forcefully jump/glide back up to the visualizer whenever the user tried to scroll down during algorithm playback.
-- **Scroll Segregation Implemented**:
-  - In [js/learning-features.js](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/js/learning-features.js), replaced `scrollIntoView()` with container-local scrolling on `.viz-code-body`.
-  - Computed bounding rect delta between `targetEl` and `codeBody`:
-    - If `targetRect.top < bodyRect.top`: `codeBody.scrollTop -= (bodyRect.top - targetRect.top)`
-    - If `targetRect.bottom > bodyRect.bottom`: `codeBody.scrollTop += (targetRect.bottom - bodyRect.bottom)`
-  - Active line remains visible inside the live code panel with zero interaction or effect on window/page scroll. The user can scroll freely to any section while algorithms run uninterrupted.
+Swapped positions of Array Controls and Playback Controls exclusively on mobile viewports:
+- **Mobile Layout Swapped**:
+  - In [css/visualizer.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/visualizer.css), inside `@media (max-width: 860px)`:
+    - Added `order: 1;` to `.array-cluster` (Array label, Generate, Custom Array Input, Apply, Size slider, Target)
+    - Added `order: 2;` to `.playback-cluster` (Play/Pause, Step Prev/Next, Reset, Restart buttons)
+    - Added `order: 3;` to `.settings-cluster` (Speed slider)
+  - Array configuration controls now appear at the top of the toolbar on mobile screens, with playback controls (start/stop/reset/restart) positioned directly beneath them above the visualizer canvas.
+- **Desktop Layout Preserved 100%**:
+  - On desktop viewports (`> 860px`), clusters retain default CSS `order: 0` and display in natural DOM sequence: Playback on the left, Array controls in the center, Settings on the right.
 - **Automated Verification**:
-  - Created [tests/verify_no_scroll_hijack.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_no_scroll_hijack.py) testing live playback on both `sorting.html` and `searching.html`: scrolled `window.scrollTo(0, 500)` during active execution, waited across multiple steps, and asserted `window.scrollY` remained safely preserved (diff = 0.0px).
-  - Integrated as Stage 27 in master regression suite [tests/run_all_tests.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/run_all_tests.py) (27/27 stages pass 100%).
+  - Created [tests/verify_mobile_controls_swap.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_mobile_controls_swap.py) testing 22 viewport/page combinations across mobile (320px, 360px, 375px, 390px, 412px, 430px, 768px, 860px) and desktop (861px, 1024px, 1280px) on `sorting.html` and `searching.html`:
+    - On mobile: verified `arrayRect.top < playbackRect.top < settingsRect.top` with computed flex orders `1`, `2`, `3`.
+    - On desktop: verified left-to-right reading order (Playback -> Array -> Settings) with default flex order `0`.
+  - Updated [tests/verify_controls_layout.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_controls_layout.py) to assert mobile vertical ordering with Array first and Playback second.
+  - Integrated into [tests/run_all_tests.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/run_all_tests.py) as Stage 28 (28/28 stages pass 100%).
 
 ## Last Completed Task
-- **Array Status Conditions Layout Under Visualizer Area**:
-  - Positioned `.color-legend` under the canvas on mobile with responsive wrapping for all conditions.
-  - Stage 26 automated verification added to test suite.
+- **Zero Scroll Hijack During Algorithm Execution**:
+  - Replaced `scrollIntoView()` in `highlightTraceStep()` with container-local `.scrollTop` delta calculation on `.viz-code-body`.
+  - Window scroll position safely preserved during active playback (diff = 0.0px).
 
 ## Completed Work
 - Empty custom input "Apply" click UX fixed with guidance prompt across both Searching and Sorting visualizers.

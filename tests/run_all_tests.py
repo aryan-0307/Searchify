@@ -249,6 +249,14 @@ if proc_scroll.returncode != 0:
     print("[FAIL] Zero scroll hijack verification failed.")
     sys.exit(1)
 
+# 28. Mobile Controls Cluster Swap (Array Controls vs Playback) Verification
+print("\n--- 28. Verifying Mobile Controls Cluster Swap (Array vs Playback) ---")
+proc_controls = subprocess.run([sys.executable, "tests/verify_mobile_controls_swap.py"], capture_output=True, text=True, encoding="utf-8")
+print(proc_controls.stdout)
+if proc_controls.returncode != 0:
+    print("[FAIL] Mobile controls cluster swap verification failed.")
+    sys.exit(1)
+
 print("\n" + "=" * 60)
 print("ALL VERIFICATIONS COMPLETED SUCCESSFULLY (100% PASS RATE)")
 print("=" * 60)

@@ -4,6 +4,27 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## [2026-11-07 — Mobile Visualizer Controls Cluster Swap (Array Controls vs Playback)]
+
+### Changed
+- **Visualizer Controls Ordering on Mobile Viewports**:
+  - In [css/visualizer.css](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/css/visualizer.css) inside `@media (max-width: 860px)`:
+    - Added `order: 1;` to `.array-cluster` (Array label, Generate, Custom Array Input, Apply, Size slider, Target input).
+    - Added `order: 2;` to `.playback-cluster` (Play/Pause, Prev, Next, Reset, Restart buttons).
+    - Added `order: 3;` to `.settings-cluster` (Animation speed slider).
+  - On mobile screens ($\le 860$px), the Array Configuration controls now sit cleanly at the top of the controls bar, and the Playback Controls (start/stop/reset/restart) are positioned immediately below them, right above the visualizer canvas.
+  - On desktop viewports ($> 860$px), original DOM order and layout are 100% preserved (Playback on left, Array centered, Settings on right) with default `order: 0`.
+
+### Verified
+- Created automated test [tests/verify_mobile_controls_swap.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_mobile_controls_swap.py) testing 22 viewport and page configurations in headless Chrome:
+  - Mobile (320px, 360px, 375px, 390px, 412px, 430px, 768px, 860px): Verified `arrayRect.top < playbackRect.top < settingsRect.top` and computed flex orders (`1`, `2`, `3`).
+  - Desktop (861px, 1024px, 1280px): Verified natural DOM left-to-right reading order and default `order: 0`.
+  - All **22/22 tests passed**.
+- Updated [tests/verify_controls_layout.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_controls_layout.py) mobile checks to reflect the new mobile cluster order (**passed 100%**).
+- Full regression test suite [tests/run_all_tests.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/run_all_tests.py) executed across all **28 stages with a 100% pass rate**.
+
+---
+
 ## [2026-11-07 — Zero Scroll Hijack During Algorithm Execution]
 
 ### Changed

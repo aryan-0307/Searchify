@@ -173,9 +173,13 @@ for page in pages:
         data_mob = json.loads(m_mob.group(1))
         c_mob = data_mob["clusters"]
 
-        # Vertically stacked: top increases monotonically
-        assert c_mob[0]["top"] < c_mob[1]["top"] < c_mob[2]["top"], f"Mobile clusters should be vertically stacked, tops: {[c['top'] for c in c_mob]}"
-        print(f"  [PASS] {page} @ 768px: Mobile responsive stacking verified cleanly (tops: {[c['top'] for c in c_mob]})")
+        # On mobile (max-width: 860px), array controls and playback controls are swapped:
+        # Array cluster (c_mob[1]) is first, Playback cluster (c_mob[0]) is second, Settings (c_mob[2]) is third.
+        assert c_mob[1]["top"] < c_mob[0]["top"] < c_mob[2]["top"], (
+            f"Mobile clusters should have Array first, Playback second, Settings third. "
+            f"Tops: array={c_mob[1]['top']}, playback={c_mob[0]['top']}, settings={c_mob[2]['top']}"
+        )
+        print(f"  [PASS] {page} @ 768px: Mobile responsive swap verified (Array top={c_mob[1]['top']}, Playback top={c_mob[0]['top']}, Settings top={c_mob[2]['top']})")
 
     finally:
         if os.path.exists(temp_file):
