@@ -289,3 +289,20 @@ Adopt Option 2:
    - Displays a clean visual preview (`.showcase-feature-viz`) simulating 3 concurrent race tracks on identical data.
    - Includes feature tags and prominent CTA button (`.showcase-launch-btn`) directing users to `compare.html`.
    - Eliminates heavy DOM track loops and script loading from `index.html`.
+
+## Decision 023
+Date: 2026-11-09
+Phase: Phase 45 — Restored Hands-On Bubble Sort Demo on Homepage
+
+### Problem
+The user requested restoring the original "GET HANDS-ON: SEE THE SORT. FEEL THE LOGIC." Bubble Sort demo section onto the hero page (`index.html`) at the bottom directly before the footer.
+
+### Options Considered
+1. **Replace the hero page structure**: Replace all comparison references with only the original demo. Rejected because Card 03 (`.compare-card`) and the dedicated laboratory page (`compare.html`) are core requested features.
+2. **Re-add `.home-quick-demo` before `<footer class="home-footer">`**: Place the clean, lightweight, interactive "GET HANDS-ON" Bubble Sort demo (`#try-it`, `.home-quick-demo`) directly before the footer on `index.html`, retaining Card 03 linking to `compare.html`.
+
+### Decision
+Adopt Option 2:
+- Re-added the complete `.home-quick-demo` section to `index.html` anchored at `#try-it`.
+- Restored `#home-demo-bars`, `#home-demo-status`, `#home-demo-run` ("▶ Run Bubble Sort"), and `#home-demo-shuffle` ("↻ Shuffle values") powered by `js/home-demo.js`.
+- Re-added the dedicated `.home-quick-demo` CSS rules in `css/home.css` ensuring full visual fidelity with the reference image and zero horizontal overflow.
