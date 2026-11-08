@@ -1328,6 +1328,31 @@
     animation: fadeInAux 0.22s ease-out;
 }
 
+/* Dedicated Heap Sort Layout Expansion (No Scrolling & Clear Separation from Bars) */
+.viz-area.heap-sort-active {
+    min-height: 570px;
+    transition: min-height 0.25s ease;
+}
+
+.viz-canvas-wrapper.has-heap-sort .viz-code-panel {
+    min-height: 570px;
+}
+
+.viz-auxiliary-panel.heap-tree-mode {
+    top: 48px;
+    left: 18px;
+    right: 18px;
+    max-height: none !important;
+    height: auto !important;
+    overflow: visible !important;
+    overflow-y: visible !important;
+    background: rgba(255, 255, 255, 0.97);
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 10px 18px 10px;
+    box-shadow: 0 4px 18px rgba(34, 77, 149, 0.08);
+}
+
 @keyframes fadeInAux {
     from {
         opacity: 0;
@@ -1349,6 +1374,17 @@
     border-bottom: 1px solid rgba(216, 213, 201, 0.7);
 }
 
+.aux-title-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.aux-icon {
+    font-size: 13px;
+    line-height: 1;
+}
+
 .aux-title {
     font-size: 11px;
     font-weight: 800;
@@ -1358,6 +1394,22 @@
     display: inline-flex;
     align-items: center;
     gap: 5px;
+}
+
+.aux-sub-badge {
+    font-size: 9.5px;
+    font-weight: 700;
+    color: var(--text-muted);
+    background: var(--soft-cream);
+    padding: 1px 6px;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+}
+
+.aux-badges-right {
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .aux-badge {
@@ -1376,33 +1428,35 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
     width: 100%;
+    padding: 4px 0 2px;
 }
 
 .heap-level {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
     width: 100%;
 }
 
 .heap-node {
     position: relative;
-    width: 25px;
-    height: 25px;
+    width: 26px;
+    height: 26px;
     border-radius: 50%;
     background: var(--soft-cream);
     border: 1.5px solid var(--border-color);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 10.5px;
+    font-size: 11px;
     font-weight: 700;
     color: var(--royal-blue);
     transition: all 0.15s ease;
     box-shadow: 0 1px 3px rgba(37, 37, 37, 0.08);
+    flex-shrink: 0;
 }
 
 .heap-node .node-idx {
@@ -1412,7 +1466,12 @@
     font-size: 7.5px;
     color: var(--text-muted);
     font-family: var(--font-mono);
-    font-weight: 600;
+    font-weight: 700;
+    background: #FFFFFF;
+    border-radius: 3px;
+    padding: 0 2px;
+    border: 0.5px solid var(--border-color);
+    line-height: 1;
 }
 
 .heap-node.parent {
@@ -1446,6 +1505,37 @@
     border-color: #27AE60;
     background: #E8F8F0;
     color: #1E8449;
+}
+
+/* Heap Tree / Array Elements Stage Boundary Divider */
+.heap-array-stage-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed rgba(216, 213, 201, 0.8);
+    width: 100%;
+}
+
+.stage-divider-line {
+    flex: 1;
+    height: 1px;
+    background: rgba(216, 213, 201, 0.6);
+}
+
+.stage-divider-pill {
+    font-size: 9.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--royal-blue);
+    background: var(--soft-cream);
+    padding: 2px 10px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    white-space: nowrap;
 }
 
 /* Shell Sort Gap Tracker */
@@ -1804,6 +1894,37 @@
 }
 
 @media (max-width: 860px) {
+    .viz-area.heap-sort-active {
+        min-height: 550px;
+    }
+
+    .viz-auxiliary-panel.heap-tree-mode {
+        top: 42px;
+        left: 8px;
+        right: 8px;
+        padding: 8px 10px;
+    }
+
+    .heap-level {
+        gap: 6px;
+    }
+
+    .heap-node {
+        width: 22px;
+        height: 22px;
+        font-size: 10px;
+    }
+
+    .heap-node .node-idx {
+        font-size: 7px;
+        bottom: -7px;
+    }
+
+    .stage-divider-pill {
+        font-size: 9px;
+        padding: 1px 8px;
+    }
+
     .viz-canvas-wrapper {
         grid-template-columns: 1fr;
     }
@@ -2157,6 +2278,17 @@
         grid-template-columns: 1fr;
     }
 
+    .viz-area.heap-sort-active {
+        min-height: 540px;
+    }
+
+    .viz-auxiliary-panel.heap-tree-mode {
+        top: 40px;
+        left: 6px;
+        right: 6px;
+        padding: 6px 8px;
+    }
+
     .viz-auxiliary-panel {
         top: 48px;
         left: 8px;
@@ -2175,15 +2307,19 @@
         padding: 1px 2px;
     }
 
+    .heap-level {
+        gap: 4px;
+    }
+
     .heap-node {
-        width: 21px;
-        height: 21px;
-        font-size: 9.5px;
+        width: 20px;
+        height: 20px;
+        font-size: 9px;
     }
 
     .heap-node .node-idx {
-        bottom: -7px;
-        font-size: 7px;
+        bottom: -6px;
+        font-size: 6.5px;
     }
 
     .aux-cell {

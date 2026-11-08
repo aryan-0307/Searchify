@@ -265,6 +265,14 @@ if proc_ten.returncode != 0:
     print("[FAIL] Ten sorting algorithms verification failed.")
     sys.exit(1)
 
+# 30. Heap Sort Layout Separation & Zero-Scroll Verification
+print("\n--- 30. Verifying Heap Sort Zero-Scroll & Layout Separation ---")
+proc_heap = subprocess.run([sys.executable, "tests/verify_heap_sort_layout.py"], capture_output=True, text=True, encoding="utf-8")
+print(proc_heap.stdout)
+if proc_heap.returncode != 0:
+    print("[FAIL] Heap Sort layout separation verification failed.")
+    sys.exit(1)
+
 print("\n" + "=" * 60)
 print("ALL VERIFICATIONS COMPLETED SUCCESSFULLY (100% PASS RATE)")
 print("=" * 60)

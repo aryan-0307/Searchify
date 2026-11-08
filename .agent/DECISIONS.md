@@ -175,3 +175,36 @@ Searchify supported only five basic/classic sorting algorithms (Bubble, Selectio
    - Computes dynamic span $\Delta = (max - min) / k$, scatters elements into buckets, sorts each bucket using animated insertion passes, and concatenates.
 9. **Master 10-Algorithm Comparison Matrix**:
    - Embedded below the canvas in the complexity section, comparing all 10 algorithms across Best, Average, Worst, Space, and Stability metrics, dynamically highlighting the active algorithm's row.
+
+## Decision 019
+Date: 2026-11-08
+Phase: Phase 41 — Heap Sort Zero-Scroll & Layout Separation
+
+### Problem
+In the Heap Sort visualizer:
+1. The auxiliary panel had `max-height: 125px; overflow-y: auto;`. The 4-level binary heap tree requires ~175px–195px to display all nodes, triggering an internal vertical scrollbar that forced the user to scroll inside the card to inspect parent/child relationships and heap operations.
+2. In the 460px default canvas, the auxiliary panel extended down to ~228px, while tall array bars (up to 240px tall with labels positioned above them) rose into the same vertical zone, causing the heap tree card and array bars to visually collide and overlap.
+
+### Options Considered
+1. Shrink node sizes down to tiny dots (<14px) and squeeze the tree into <100px.
+   - Degrades legibility, cuts off 2-digit/3-digit node values, and makes parent/child lines and swap states unreadable.
+2. Dynamically expand the visualizer canvas height exclusively for Heap Sort, remove height constraints on the heap tree card (`overflow-y: visible`, `max-height: none`), introduce a clear stage divider, and calibrate usable bar height.
+
+### Decision
+Option 2: Algorithm-scoped canvas expansion with two-tier layout separation and calibrated usable bar height.
+
+### Engineering Details
+1. **Dynamic Algorithm Layout Mode**:
+   - `updateAlgorithmLayoutMode()` in `js/sorting-visualizer.js` toggles `.heap-sort-active` on `#visualization-area` and `.has-heap-sort` on `.viz-canvas-wrapper`.
+   - `.viz-area.heap-sort-active` expands `min-height` to 570px (desktop), 550px (tablet), and 540px (mobile) with smooth `min-height: 0.25s ease` transitions.
+   - Cleanly removed when switching to any other algorithm, restoring default 460px height.
+2. **Unconstrained Heap Tree Card**:
+   - `.viz-auxiliary-panel.heap-tree-mode` sets `max-height: none !important; height: auto !important; overflow: visible !important; overflow-y: visible !important;`.
+   - All 4 levels (root, level 1, level 2, level 3) and up to 15 nodes render with zero scrolling (`scrollHeight <= clientHeight`).
+3. **Dedicated Stage Divider**:
+   - `<div class="heap-array-stage-divider">` provides a distinct visual boundary between the conceptual tree model above and the memory array bars below.
+4. **Calibrated Headroom & Bar Height Capping**:
+   - In `getUsableAreaHeight(areaEl)`:
+     - Desktop: `Math.min(180, Math.max(100, rawHeight - 310))`
+     - Mobile: `Math.min(95, Math.max(65, rawHeight - 340))`
+   - Guarantees clearance of $\ge 35$px desktop and $\ge 20$px mobile (observed: 24.6px to 155.4px) between the tree card bottom and the highest bar label.

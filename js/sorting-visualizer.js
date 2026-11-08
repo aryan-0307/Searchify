@@ -20,10 +20,24 @@
     var el = {};
 
     function getUsableAreaHeight(areaEl) {
-        var rawHeight = (areaEl && areaEl.clientHeight > 120) ? areaEl.clientHeight : 440;
-        var isAuxAlgo = ['heapSort', 'shellSort', 'countingSort', 'radixSort', 'bucketSort'].indexOf(currentAlgorithm) !== -1;
+        var isMobile = (window.innerWidth <= 768);
+        var rawHeight = (areaEl && areaEl.clientHeight > 120) ? areaEl.clientHeight : (isMobile ? 380 : 460);
+
+        if (currentAlgorithm === 'heapSort') {
+            // Dedicated Heap Sort sizing:
+            // Heap Tree card sits at top (height ~180px on desktop, ~150px on mobile).
+            // Generous clearance buffer: 70px-100px.
+            // Max bar height is calibrated to 180px on desktop (95px on mobile).
+            // Guarantees at least 50px-100px+ of clean separation between heap tree card and highest bar label!
+            if (isMobile) {
+                return Math.min(95, Math.max(65, rawHeight - 340));
+            }
+            return Math.min(180, Math.max(100, rawHeight - 310));
+        }
+
+        var isAuxAlgo = ['shellSort', 'countingSort', 'radixSort', 'bucketSort'].indexOf(currentAlgorithm) !== -1;
         var auxReservation = isAuxAlgo ? 110 : 0;
-        if (window.innerWidth <= 768) {
+        if (isMobile) {
             // Mobile viewport clearance:
             // Status pill is at top: 14px; height: ~28px (bottom ~42px).
             // Legend is placed UNDER the visualizer area, so it no longer takes canvas top space.
@@ -37,6 +51,7 @@
     }
 
     function cacheElements() {
+        el.canvasWrapper = document.querySelector('.viz-canvas-wrapper');
         el.vizArea = document.getElementById('visualization-area');
         el.auxPanel = document.getElementById('viz-auxiliary-panel');
         el.algoSelect = document.getElementById('algorithm-select');
@@ -117,9 +132,23 @@
         });
     }
 
+    function updateAlgorithmLayoutMode() {
+        if (!el.vizArea) return;
+        if (currentAlgorithm === 'heapSort') {
+            el.vizArea.classList.add('heap-sort-active');
+            if (el.canvasWrapper) el.canvasWrapper.classList.add('has-heap-sort');
+            if (el.auxPanel) el.auxPanel.classList.add('heap-tree-mode');
+        } else {
+            el.vizArea.classList.remove('heap-sort-active');
+            if (el.canvasWrapper) el.canvasWrapper.classList.remove('has-heap-sort');
+            if (el.auxPanel) el.auxPanel.classList.remove('heap-tree-mode');
+        }
+    }
+
     /* ---------- handlers ---------- */
     function onAlgorithmChange() {
         currentAlgorithm = el.algoSelect.value;
+        updateAlgorithmLayoutMode();
         resetExecution();
         renderComplexity();
         if (currentArray.length) renderBars(currentArray);
@@ -618,23 +647,40 @@
         el.auxPanel.style.display = 'block';
 
         if (aux.type === 'heapTree') {
+            el.auxPanel.classList.add('heap-tree-mode');
+            if (el.vizArea) el.vizArea.classList.add('heap-sort-active');
+            if (el.canvasWrapper) el.canvasWrapper.classList.add('has-heap-sort');
             renderHeapTree(aux, step);
-        } else if (aux.type === 'shellSort') {
-            renderShellAux(aux, step);
-        } else if (aux.type === 'countingSort') {
-            renderCountingAux(aux, step);
-        } else if (aux.type === 'radixSort') {
-            renderRadixAux(aux, step);
-        } else if (aux.type === 'bucketSort') {
-            renderBucketAux(aux, step);
+        } else {
+            el.auxPanel.classList.remove('heap-tree-mode');
+            if (currentAlgorithm !== 'heapSort') {
+                if (el.vizArea) el.vizArea.classList.remove('heap-sort-active');
+                if (el.canvasWrapper) el.canvasWrapper.classList.remove('has-heap-sort');
+            }
+            if (aux.type === 'shellSort') {
+                renderShellAux(aux, step);
+            } else if (aux.type === 'countingSort') {
+                renderCountingAux(aux, step);
+            } else if (aux.type === 'radixSort') {
+                renderRadixAux(aux, step);
+            } else if (aux.type === 'bucketSort') {
+                renderBucketAux(aux, step);
+            }
         }
     }
 
     function renderHeapTree(aux, step) {
         var html = '';
         html += '<div class="aux-header">';
+        html += '<div class="aux-title-group">';
+        html += '<span class="aux-icon">🌳</span>';
         html += '<span class="aux-title">Binary Heap Tree</span>';
-        html += '<span class="aux-badge">Active Heap Size: ' + (aux.heapSize != null ? aux.heapSize : step.array.length) + '</span>';
+        html += '<span class="aux-sub-badge">Hierarchical Model</span>';
+        html += '</div>';
+        html += '<div class="aux-badges-right">';
+        var hSize = (aux.heapSize != null ? aux.heapSize : step.array.length);
+        html += '<span class="aux-badge active-size">Heap Size: ' + hSize + ' / ' + step.array.length + '</span>';
+        html += '</div>';
         html += '</div>';
 
         html += '<div class="heap-tree-wrapper">';
@@ -650,7 +696,7 @@
             var nodeIndices = levels[l].filter(function (idx) { return idx < maxNodes; });
             if (nodeIndices.length === 0) break;
 
-            html += '<div class="heap-level">';
+            html += '<div class="heap-level" data-level="' + l + '">';
             for (var k = 0; k < nodeIndices.length; k++) {
                 var idx = nodeIndices[k];
                 var val = step.array[idx];
@@ -662,14 +708,21 @@
                 if (aux.heapSize != null && idx >= aux.heapSize) cls.push('extracted');
                 if (step.sorted && step.sorted.indexOf(idx) !== -1) cls.push('sorted');
 
-                html += '<div class="' + cls.join(' ') + '" title="Node ' + idx + ': ' + val + '">';
-                html += '<span>' + val + '</span>';
+                html += '<div class="' + cls.join(' ') + '" title="Node index ' + idx + ': value ' + val + '">';
+                html += '<span class="node-val">' + val + '</span>';
                 html += '<span class="node-idx">' + idx + '</span>';
                 html += '</div>';
             }
             html += '</div>';
         }
         html += '</div>';
+
+        html += '<div class="heap-array-stage-divider">';
+        html += '<span class="stage-divider-line"></span>';
+        html += '<span class="stage-divider-pill">Array Elements in Memory (Bars Below)</span>';
+        html += '<span class="stage-divider-line"></span>';
+        html += '</div>';
+
         el.auxPanel.innerHTML = html;
     }
 
@@ -1015,6 +1068,7 @@
     /* ---------- init ---------- */
     function init() {
         cacheElements();
+        updateAlgorithmLayoutMode();
         bindEvents();
         onSpeedChange();
         renderComplexity();

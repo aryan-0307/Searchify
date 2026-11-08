@@ -4,7 +4,35 @@ All notable changes to this project are documented in this file.
 
 ---
 
-## [2026-11-08 — Five New Sorting Algorithms & Auxiliary Visualizations]
+## [2026-11-08 — Heap Sort Zero-Scroll & Layout Separation]
+
+### Added
+- **Unconstrained Zero-Scroll Binary Heap Tree Panel**:
+  - In `css/visualizer.css`, added `.viz-auxiliary-panel.heap-tree-mode`: removes height limits (`max-height: none !important; height: auto !important;`), allows visible overflow (`overflow: visible !important; overflow-y: visible !important;`), and provides clean card styling (`background: rgba(255, 255, 255, 0.97); border: 1.5px solid var(--border-color); border-radius: var(--radius-md); box-shadow: 0 4px 18px rgba(34, 77, 149, 0.08);`).
+  - All 4 levels of the binary heap tree (root, level 1, level 2, level 3) and up to 15 nodes render with zero clipping and zero internal scrollbars.
+- **Dedicated Two-Tier Stage Divider**:
+  - Embedded `<div class="heap-array-stage-divider">` between the Heap Tree hierarchical model and the memory array bars below.
+  - Features horizontal hairline rules (`.stage-divider-line`) and a pill badge (`.stage-divider-pill`) with label *"Array Elements in Memory (Bars Below)"*.
+- **Algorithm-Scoped Dynamic Canvas Height**:
+  - In `js/sorting-visualizer.js`, added `updateAlgorithmLayoutMode()`: adds `.heap-sort-active` to `#visualization-area`, `.has-heap-sort` to `.viz-canvas-wrapper`, and `.heap-tree-mode` to `#viz-auxiliary-panel` when `heapSort` is selected.
+  - Dynamically cleans up all classes upon switching to any of the other 9 sorting algorithms.
+  - In `css/visualizer.css`, added `.viz-area.heap-sort-active` (`min-height: 570px; transition: min-height 0.25s ease;`, 550px on $\le 860$px, 540px on $\le 540$px) and matching min-height for `.viz-canvas-wrapper.has-heap-sort .viz-code-panel`.
+- **Heap-Specific Usable Height & Headroom Calibration**:
+  - In `getUsableAreaHeight(areaEl)` in `js/sorting-visualizer.js`:
+    - On desktop ($>860$px): Bar height is capped to `Math.min(180, Math.max(100, rawHeight - 310))`.
+    - On mobile ($\le 860$px): Bar height is capped to `Math.min(95, Math.max(65, rawHeight - 340))`.
+  - Guarantees generous clearance ($\ge 35$px desktop, $\ge 20$px mobile; actual observed 24.6px to 155.4px) between the tree card bottom and the highest bar label under all array states, step scrubbing, and screen sizes.
+
+### Verified
+- Created automated test `tests/verify_heap_sort_layout.py` testing Desktop (1280x850), iPad (768x900), Galaxy S23 (412x850), and iPhone SE (375x800) in headless Chrome:
+  - Verified `scrollHeight <= clientHeight` (zero scrolling) on `#viz-auxiliary-panel`.
+  - Verified `overflowY === 'visible'`.
+  - Verified 4 tree levels rendered.
+  - Verified stage divider exists and separates tree from bars.
+  - Verified bar clearance over 10 stepping operations (forward & backward).
+  - Verified clean teardown/restoration upon switching to Bubble Sort and back.
+  - Result: **100% PASS RATE across all viewports**.
+- Integrated into `tests/run_all_tests.py` as Stage 30 (**all 30 stages pass 100%**).
 
 ### Added
 - **Five Additional Sorting Algorithms**:

@@ -134,3 +134,18 @@ Tasks:
 - [x] Verify pseudocode synchronization `tests/verify_pseudocode_sync.py` across all 10 algorithms (100% pass)
 - [x] Create end-to-end headless Chrome verification `tests/verify_ten_sorting_algorithms.py` (135 assertions checked, 100% pass)
 - [x] Integrate into `tests/run_all_tests.py` as Stage 29 (all 29 stages pass 100%)
+
+---
+
+## Phase 41 — Heap Sort Zero-Scroll & Layout Separation
+Status: COMPLETE
+
+Tasks:
+- [x] Eliminate internal scrolling inside the Heap Tree card (`overflow-y: visible`, `max-height: none`, `scrollHeight <= clientHeight`).
+- [x] Guarantee all 4 levels (root, level 1, level 2, level 3) and up to 15 nodes render with zero clipping and zero scrollbars.
+- [x] Establish a two-tier canvas layout with a dedicated stage divider (`Array Elements in Memory (Bars Below)`) separating the conceptual heap tree model from the vertical memory bars.
+- [x] Dynamically expand canvas height (`min-height: 570px` on desktop, `550px` on tablet, `540px` on mobile) exclusively when Heap Sort is active via `.heap-sort-active` and `.has-heap-sort` classes.
+- [x] Dynamically cap maximum array bar height in Heap Sort mode (`Math.min(180, Math.max(100, rawHeight - 310))` on desktop, `Math.min(95, Math.max(65, rawHeight - 340))` on mobile) to guarantee generous clearance ($\ge 35$px desktop, $\ge 20$px mobile; actual observed 24.6px to 155.4px) between the tree card bottom and the highest bar label.
+- [x] Ensure switching to other algorithms completely tears down the heap tree classes, restoring default 460px canvas height and default bar scaling with zero regressions.
+- [x] Create automated headless Chrome test (`tests/verify_heap_sort_layout.py`) verifying zero-scroll, 4-level rendering, stage divider, dynamic clearance across 4 viewports, and clean algorithm switching.
+- [x] Integrate into `tests/run_all_tests.py` as Stage 30 (all 30 stages pass 100%).
