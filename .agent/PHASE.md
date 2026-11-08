@@ -166,3 +166,33 @@ Tasks:
 - [x] Update `tests/verify_controls_layout.py` and `tests/verify_mobile_controls_swap.py` to match the new layout structure.
 - [x] Create automated headless Chrome test (`tests/verify_merged_visualizer_controls.py`) verifying DOM order, geometric placement above/below canvas, centering diff $\le 25$px (actual 0px), and interactive functionality.
 - [x] Integrate into `tests/run_all_tests.py` as Stage 31 (all 31 stages pass 100%).
+
+---
+
+## Phase 43 — Multi-Algorithm Sorting Comparison Showcase on Shared Array
+Status: COMPLETE
+
+Tasks:
+- [x] Replace the legacy single-algorithm quick demo on `index.html` with a comprehensive **Multi-Algorithm Sorting Comparison Showcase** (`.home-showcase-section`, anchor `#try-it`).
+- [x] Integrate all 10 sorting algorithms (Bubble Sort, Selection Sort, Insertion Sort, Merge Sort, Quick Sort, Heap Sort, Shell Sort, Counting Sort, Radix Sort, Bucket Sort) into dynamic multi-selection chips (`.showcase-chips-grid`).
+- [x] Implement 5 quick presets:
+  - Top 3 (Popular): Bubble, Merge, Quick
+  - $O(n \log n)$ Trio: Merge, Quick, Heap
+  - $O(n^2)$ Classic: Bubble, Selection, Insertion
+  - Linear Time: Counting, Radix, Bucket
+  - Compare All (10): All 10 sorting algorithms
+- [x] Shared dataset execution:
+  - All selected algorithms run on the EXACT same shared array.
+  - Controls to shuffle array, enter custom arrays, and apply new shared dataset across all cards synchronously.
+- [x] Multi-track synchronized playback engine (`js/multi-sort-showcase.js`):
+  - Uses `window.SortingAlgorithms` step-generator engine directly with zero code duplication.
+  - Synchronized lockstep stepping across all active tracks.
+  - Interactive playback dock: Start/Pause Race, Step Backward, Step Forward, Reset, and Speed slider (1x: 340ms, 2x: 160ms, 3x: 75ms, 4x: 30ms).
+  - Live array bars with state highlights: comparing (`#D93D81`), swapping (`#E67E22`), pivot (`#8E44AD`), sorted (`#27AE60`).
+  - Real-time counters: comparisons, swaps, step count, progress bar, and current operation feedback.
+- [x] Live Race Leaderboard & Comparison Summary:
+  - Automatically records finish order and rankings (`🥇 1st`, `🥈 2nd`, `🥉 3rd`, etc.).
+  - Displays efficiency breakdown comparing steps, comparisons, and swaps across algorithms on identical data.
+- [x] Responsive layout across all viewports (Desktop 1280px, Tablet 768px, Mobile 412px, Mobile 375px) with zero horizontal overflow.
+- [x] Create comprehensive automated headless Chrome verification `tests/verify_multi_sort_showcase.py` (DOM structure, 10 chips, presets, shared array identity, custom input, playback, completion, leaderboard, and zero overflow across 4 viewports).
+- [x] Integrate into master test runner `tests/run_all_tests.py` as Stage 32.

@@ -281,6 +281,14 @@ if proc_merged.returncode != 0:
     print("[FAIL] Merged visualizer controls verification failed.")
     sys.exit(1)
 
+# 32. Multi-Algorithm Sorting Comparison Showcase on Shared Array Verification
+print("\n--- 32. Verifying Multi-Algorithm Sorting Comparison Showcase on Shared Array ---")
+proc_showcase = subprocess.run([sys.executable, "tests/verify_multi_sort_showcase.py"], capture_output=True, text=True, encoding="utf-8")
+print(proc_showcase.stdout)
+if proc_showcase.returncode != 0:
+    print("[FAIL] Multi-algorithm sorting showcase verification failed.")
+    sys.exit(1)
+
 print("\n" + "=" * 60)
 print("ALL VERIFICATIONS COMPLETED SUCCESSFULLY (100% PASS RATE)")
 print("=" * 60)
