@@ -328,7 +328,7 @@ Date: 2026-10-30T23:20:00
 - **Automated Test (`tests/verify_multi_sort_showcase.py`)**:
   - Tested Desktop 1280px, iPad 768px, Galaxy S23 412px, and iPhone SE 375px in headless Chrome:
     - `index.html`: Card 03 (`.compare-card`) with `.compare-mini-viz` present: PASS
-    - `index.html`: Minimalist preview section `#try-it` with feature viz and launch CTA: PASS
+    - `index.html`: Hands-on Bubble Sort quick demo section present: PASS
     - `index.html`: Heavy visualizer grid excluded from hero page: PASS
     - `index.html`: Zero horizontal overflow across all 4 viewports: PASS
     - `compare.html`: All 10 algorithm chips, 5 presets, shared array controls present: PASS

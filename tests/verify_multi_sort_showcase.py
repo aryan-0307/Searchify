@@ -57,14 +57,17 @@ assert 'mini-race-tracks' in html_home, "Missing .mini-race-tracks inside compar
 assert 'href="compare.html"' in html_home, "Missing link to compare.html on index.html"
 print("  [PASS] Card 03 (Comparison) with mini-race visual present in index.html")
 
-# 2. Section #try-it has minimalist showcase preview
+# 2. Hands-on Bubble Sort Demo section #try-it at bottom of hero page
 assert 'id="try-it"' in html_home, "Missing #try-it anchor in index.html"
-assert 'home-showcase-minimal' in html_home, "Missing .home-showcase-minimal class in index.html"
-assert 'showcase-feature-viz' in html_home, "Missing .showcase-feature-viz preview in index.html"
-assert 'showcase-launch-btn' in html_home, "Missing launch CTA button in index.html"
-assert "MULTI-ALGORITHM SHOWCASE" in html_home, "Missing kicker 'MULTI-ALGORITHM SHOWCASE' in index.html"
-assert "Compare N Sorting Algorithms on the Same Array" in html_home, "Missing heading in index.html"
-print("  [PASS] Minimalist preview section #try-it with feature viz and launch CTA present in index.html")
+assert 'home-quick-demo' in html_home, "Missing .home-quick-demo class in index.html"
+assert 'home-demo-bars' in html_home, "Missing #home-demo-bars container in index.html"
+assert 'home-demo-run' in html_home, "Missing #home-demo-run button in index.html"
+assert 'home-demo-shuffle' in html_home, "Missing #home-demo-shuffle button in index.html"
+assert 'home-demo-status' in html_home, "Missing #home-demo-status in index.html"
+assert "GET HANDS-ON" in html_home, "Missing kicker 'GET HANDS-ON' in index.html"
+assert "See the sort. Feel the logic." in html_home, "Missing heading in index.html"
+assert 'js/home-demo.js' in html_home, "Missing js/home-demo.js script in index.html"
+print("  [PASS] Hands-on Bubble Sort quick demo section present at the bottom of hero page")
 
 # 3. Heavy visualizer grid is NOT on index.html
 assert 'id="showcase-grid"' not in html_home, "#showcase-grid should NOT be on index.html (it belongs in compare.html)"

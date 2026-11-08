@@ -4,6 +4,19 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## [2026-11-09 — Restored Hands-On Bubble Sort Demo on Homepage]
+
+### Added
+- **Interactive "GET HANDS-ON" Quick Demo on Homepage (`index.html`)**:
+  - Restored `.home-quick-demo` (`#try-it`) section directly before `<footer class="home-footer">` on the hero landing page.
+  - Interactive Bubble Sort visualization with live DOM bars `#home-demo-bars` rendered on initial dataset `[72, 28, 91, 43, 16, 64, 35, 80]`.
+  - Live status indicator `#home-demo-status` displaying step-by-step progress, comparison pairs, swaps, and completion.
+  - Interactive buttons: `#home-demo-run` ("▶ Run Bubble Sort") and `#home-demo-shuffle` ("↻ Shuffle values").
+  - Linked `js/home-demo.js` on `index.html`.
+  - Re-integrated full CSS styling in `css/home.css` (soft shadow card, Aalto Display heading, horizontal guide lines, active pink highlight, sorted green, and mobile phone responsiveness).
+
+---
+
 ## [2026-11-08 — Minimalist Hero Showcase & Dedicated Comparison Laboratory (`compare.html`)]
 
 ### Added

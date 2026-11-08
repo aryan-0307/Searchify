@@ -222,3 +222,15 @@ Tasks:
   - Update `tests/verify_multi_sort_showcase.py` to test both `index.html` (minimalist hero content, Card 03 with mini-viz, zero overflow, no heavy grid) and `compare.html` (dynamic selection, shared dataset identity, custom input, synchronized playback, leaderboard, zero overflow across 4 viewports).
   - Update `tests/check_console_errors.py` and `tests/verify_semantic_seo.py` to include `compare.html`.
   - Run full 32-stage master verification suite `tests/run_all_tests.py` with 100% pass rate.
+
+---
+
+## Phase 45 — Restored Hands-On Bubble Sort Demo on Homepage
+Status: COMPLETE
+
+Tasks:
+- [x] Re-integrated the interactive "GET HANDS-ON: SEE THE SORT. FEEL THE LOGIC." Bubble Sort demo section (`.home-quick-demo`, `#try-it`) onto `index.html` at the bottom directly before `<footer class="home-footer">`.
+- [x] Restored `#home-demo-bars`, `#home-demo-status`, `#home-demo-run` ("▶ Run Bubble Sort"), and `#home-demo-shuffle` ("↻ Shuffle values") with exact initial dataset `[72, 28, 91, 43, 16, 64, 35, 80]`.
+- [x] Re-linked `js/home-demo.js` on `index.html`.
+- [x] Re-applied authentic Searchify design system styles in `css/home.css` (soft cream/white gradient card, Aalto Display heading, live pulse comparison highlight, sorted green, grid background, and responsive mobile adaptations).
+- [x] Verified full 32-stage automated test suite `tests/run_all_tests.py` passing 100%.

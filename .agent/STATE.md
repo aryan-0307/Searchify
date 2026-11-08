@@ -4,28 +4,22 @@
 Extend Searchify's interactive Sorting Visualizer by implementing five additional sorting algorithms (Heap Sort, Shell Sort, Counting Sort, Radix Sort LSD, and Bucket Sort), while maintaining the existing vanilla HTML/CSS/JS architecture, design system, and full functionality across all 10 sorting algorithms and 2 searching algorithms.
 
 ## Current Phase
-Phase 44 — Minimalist Hero Showcase & Dedicated Comparison Laboratory (`compare.html`)
+Phase 45 — Restored Hands-On Bubble Sort Demo on Homepage
 
 ## Status
 COMPLETE (IMPLEMENTED + VERIFIED)
 
 ## Current Task
-Architectural separation of the Multi-Algorithm Sorting Comparison Showcase:
-1. Minimalist Hero Content (`index.html`):
-   - Added Card 03 (`.compare-card`) to `.home-cards` alongside Searching (`searching.html`) and Sorting (`sorting.html`).
-   - Implemented `<figure class="mini-viz compare-mini-viz">` designed to match `searching-mini-viz` and `sorting-mini-viz`, showcasing animated mini racing tracks (Merge Sort vs Bubble Sort with green sorted bars, rank badges `🥇 1st`, and ops counters).
-   - Lightweight preview section `#try-it` (`.home-showcase-minimal`, `.showcase-feature-viz`) simulating 3 concurrent tracks (Merge Sort, Quick Sort, Bubble Sort) on identical data with live status pills, complexity badges, and prominent launch CTA (`.showcase-launch-btn`).
-   - Heavy visualizer grid `#showcase-grid` and script loops removed from `index.html`.
-2. Dedicated Comparison Laboratory (`compare.html`):
-   - Created full dedicated page hosting the complete interactive comparison experience.
-   - 10 algorithm chips, 5 presets, shared array shuffle/custom inputs, playback controls (play/pause toggle, step navigation, reset, speed slider), simultaneous multi-track canvas `#showcase-grid`, and live finish leaderboard `#showcase-leaderboard`.
-   - Complete semantic SEO landmarks and metadata.
-3. Verification:
-   - Full 32-stage master test suite `tests/run_all_tests.py` passing 100%.
+Restored the interactive "GET HANDS-ON: SEE THE SORT. FEEL THE LOGIC." Bubble Sort demo on `index.html`:
+1. Re-added `.home-quick-demo` section at the bottom of `index.html` directly before `<footer class="home-footer">`.
+2. Restored `#home-demo-bars`, `#home-demo-status`, `#home-demo-run` ("▶ Run Bubble Sort"), and `#home-demo-shuffle` ("↻ Shuffle values") powered by `js/home-demo.js`.
+3. Restored CSS styles in `css/home.css` matching the user reference screenshot with responsive mobile rules.
+4. Maintained Card 03 (`.compare-card`) in `.home-cards` linking to `compare.html`.
+5. Verified all 32 stages of `tests/run_all_tests.py` with 100% pass rate.
 
 ## Last Completed Task
-- **Multi-Algorithm Sorting Comparison Showcase on Shared Array (Phase 43)**:
-  - Implemented the 10-algorithm comparison engine with shared dataset, synchronized playback, and race leaderboard.
+- **Minimalist Hero Showcase & Dedicated Comparison Laboratory (Phase 44)**:
+  - Created `compare.html` and Card 03 in `.home-cards`.
 
 ## Completed Work
 - Created `compare.html` hosting the complete interactive comparison showcase.
