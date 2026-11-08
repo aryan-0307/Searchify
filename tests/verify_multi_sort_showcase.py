@@ -67,11 +67,12 @@ print("  [PASS] Shared dataset controls (shuffle, custom input, apply) present")
 
 # 5. Playback dock
 assert 'id="showcase-play-btn"' in html, "Missing play button in index.html"
+assert 'Start Race' not in html, "'Start Race' text should be removed from the play button in index.html"
 assert 'id="showcase-prev-btn"' in html, "Missing prev button in index.html"
 assert 'id="showcase-next-btn"' in html, "Missing next button in index.html"
 assert 'id="showcase-reset-btn"' in html, "Missing reset button in index.html"
 assert 'id="showcase-speed"' in html, "Missing speed slider in index.html"
-print("  [PASS] Playback dock controls (play, prev, next, reset, speed slider) present")
+print("  [PASS] Playback dock controls (play/pause, prev, next, reset, speed slider) present without 'Start' text")
 
 # 6. Grid and leaderboard
 assert 'id="showcase-grid"' in html, "Missing #showcase-grid in index.html"
@@ -203,6 +204,8 @@ window.addEventListener('load', async () => {{
     }}
 
     const playBtn = doc.getElementById('showcase-play-btn');
+    results.playBtnHasStartText = playBtn ? /Start/i.test(playBtn.textContent) : false;
+    results.playBtnIconBefore = playBtn ? playBtn.textContent.trim() : "";
     if (playBtn) {{
         playBtn.click();
     }}
@@ -279,6 +282,10 @@ window.addEventListener('load', async () => {{
 
         print(f"  Custom Input [50, 20, 80, 10, 40] applied to all: {data['customInputAppliedAll']}")
         assert data["customInputAppliedAll"], "Custom array was not applied synchronously to all cards!"
+
+        print(f"  Play Button: hasStartText={data['playBtnHasStartText']}, iconBefore={data['playBtnIconBefore']}")
+        assert not data["playBtnHasStartText"], "Play button still contains 'Start' text!"
+        assert "▶" in data["playBtnIconBefore"], f"Play button icon expected '▶', got '{data['playBtnIconBefore']}'"
 
         print(f"  Race Execution: finishedCards={data['finishedCardsCount']}, leaderboardVisible={data['leaderboardVisible']}, rows={data['leaderboardRowsCount']}")
         assert data["finishedCardsCount"] > 0, "No cards finished race"

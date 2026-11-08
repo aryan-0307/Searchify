@@ -905,6 +905,41 @@ body {
     border-color: var(--vibrant-pink);
 }
 
+.showcase-btn.btn-play-prominent {
+    width: 44px;
+    height: 34px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    border-radius: 8px;
+    background: var(--royal-blue);
+    color: #FFFFFF;
+    border-color: var(--royal-blue);
+    box-shadow: 0 3px 10px rgba(34, 77, 149, 0.22);
+}
+
+.showcase-btn.btn-play-prominent:hover {
+    background: var(--vibrant-pink);
+    border-color: var(--vibrant-pink);
+    transform: translateY(-1.5px);
+    box-shadow: 0 4px 14px rgba(217, 61, 129, 0.32);
+}
+
+.showcase-btn.btn-play-prominent.is-playing {
+    background: var(--vibrant-pink);
+    border-color: var(--vibrant-pink);
+}
+
+.showcase-btn.btn-play-prominent .play-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    font-size: 14px;
+}
+
 .showcase-btn.btn-secondary {
     background: #FFFFFF;
     color: var(--text-main);

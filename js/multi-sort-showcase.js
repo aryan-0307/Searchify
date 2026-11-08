@@ -602,17 +602,22 @@
 
     function updatePlaybackButtonsUI() {
         if (!dom.playBtn) return;
-        var icon = dom.playBtn.querySelector('.play-icon');
+        var icon = dom.playBtn.querySelector('.play-icon') || dom.playBtn;
         var text = dom.playBtn.querySelector('.play-text');
 
         if (isPlaying) {
             if (icon) icon.textContent = '⏸';
-            if (text) text.textContent = 'Pause Race';
+            if (text) text.textContent = 'Pause';
             dom.playBtn.classList.add('is-playing');
+            dom.playBtn.setAttribute('title', 'Pause');
+            dom.playBtn.setAttribute('aria-label', 'Pause');
         } else {
+            var label = (currentStepIndex > 0 && currentStepIndex < maxStepsAcrossSelected - 1) ? 'Resume' : 'Play';
             if (icon) icon.textContent = '▶';
-            if (text) text.textContent = (currentStepIndex > 0 && currentStepIndex < maxStepsAcrossSelected - 1) ? 'Resume Race' : 'Start Race';
+            if (text) text.textContent = label;
             dom.playBtn.classList.remove('is-playing');
+            dom.playBtn.setAttribute('title', label);
+            dom.playBtn.setAttribute('aria-label', label);
         }
     }
 

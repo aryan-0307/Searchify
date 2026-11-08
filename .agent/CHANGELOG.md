@@ -21,7 +21,8 @@ All notable changes to this project are documented in this file.
   - Includes Shuffle Array button for generating randomized shared datasets and a Custom Array input for testing custom numbers (e.g. `50, 20, 80, 10, 40`) across all active algorithms synchronously.
 - **Synchronized Multi-Track Engine (`js/multi-sort-showcase.js`)**:
   - Modular controller integrating directly with `window.SortingAlgorithms` step-generator engine with zero code duplication.
-  - Multi-track lockstep playback loop with Start/Pause Race, Step Backward, Step Forward, Reset to Start, and a 4-level Speed multiplier slider (1x: 340ms, 2x: 160ms, 3x: 75ms, 4x: 30ms).
+  - Replaced bulky "Start Race" text with a clean, prominent Play / Pause toggle button (`#showcase-play-btn`) rendering `▶` when paused and `⏸` when playing with dynamic `title` and `aria-label` updates (`Play` / `Pause`), aligning perfectly with media transport controls (`◀`, `▶`, `▶`, `Reset`).
+  - Multi-track lockstep playback loop with Play/Pause, Step Backward, Step Forward, Reset to Start, and a 4-level Speed multiplier slider (1x: 340ms, 2x: 160ms, 3x: 75ms, 4x: 30ms).
   - Dynamic algorithm track cards (`.showcase-algo-card`) rendering real-time array bars with color-coded states: comparing (`#D93D81`), swapping (`#E67E22`), pivot (`#8E44AD`), and sorted (`#27AE60`).
   - Real-time statistics counters per algorithm: comparisons, swaps, step count, percentage progress bar, and descriptive operation explanation.
 - **Race Finish Leaderboard & Efficiency Breakdown**:
