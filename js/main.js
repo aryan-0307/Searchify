@@ -64,7 +64,7 @@
             var num = Number(parts[i].trim());
             if (isNaN(num) || !isFinite(num)) return null;
             num = Math.round(num);
-            if (num < 1 || num > 999) return null;
+            if (num < -999 || num > 999) return null;
             result.push(num);
         }
         if (result.length < 2 || result.length > 80) return null;

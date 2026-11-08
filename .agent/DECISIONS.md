@@ -141,3 +141,37 @@ Option 2: Interactive algorithm playground homepage.
 
 ### Consequences
 Delivers an engaging, premium, playful educational experience that communicates the core concepts immediately upon hovering, while preserving 100% of the visualizer pages and algorithm logic intact.
+
+
+## Decision 018
+Date: 2026-11-08
+Phase: Phase 40 — Five New Sorting Algorithms & Auxiliary Visualizations
+
+### Problem
+Searchify supported only five basic/classic sorting algorithms (Bubble, Selection, Insertion, Merge, Quick). The user requested expanding the platform with five additional algorithms: Heap Sort, Shell Sort, Counting Sort, Radix Sort (LSD), and Bucket Sort, including specialized auxiliary structural visualizations (Binary Heap Tree, Gap Sequence Tracker, Counting Arrays, Radix Digit Buckets, Value Range Buckets), full learning features, and a master 10-algorithm comparison matrix table.
+
+### Architecture & Engineering Decisions
+1. **Unified Step Generator Architecture**:
+   - Each new algorithm is implemented in `js/sorting-algorithms.js` and produces standard step objects with `{ array, comparing, swapping, sorted, pivot, counters, explanation, pseudocodeLine, auxiliary }`.
+   - The playback controller in `js/sorting-visualizer.js` consumes these steps deterministically, guaranteeing smooth forward/backward scrubbing, step-by-step navigation, and speed control.
+2. **Negative Integers & Proportional Bar Heights**:
+   - Extended custom array input range from `1 to 999` to `-999 to 999`.
+   - Handled negative values in bar rendering via dynamic range normalization: `((val - minVal) / (maxVal - minVal || 1)) * (areaHeight - 24) + 14`.
+   - Avoids negative CSS heights or collapsed bars; preserves exact visual relative proportions.
+3. **Auxiliary Visualization Container**:
+   - Implemented `#viz-auxiliary-panel` inside `#visualization-area` above the bars.
+   - For auxiliary algorithms, `getUsableAreaHeight` reserves 110px on desktop (70px on mobile) to ensure bars never collide with auxiliary panels.
+   - For classic 5 algorithms, reserved headroom remains 0px, maintaining 100% regression freedom.
+4. **Binary Heap Tree Auxiliary**:
+   - Displays up to 15 nodes across 4 heap levels (1, 2, 4, 8) with parent/child/swapping/extracted/sorted highlights.
+5. **Shell Sort Gap Tracker**:
+   - Tracks classic gap sequences (halving from $n/2$ down to 1), renders interactive gap pills, and highlights stride distance comparisons.
+6. **Counting Sort Asc/Desc Stability**:
+   - Supports negative numbers with minimum value offsets.
+   - In descending order, reverse prefix sums compute counts of elements $\ge c$, mapped via `pos = workingCounts[cIdx] - 1` to guarantee stable placement.
+7. **Radix Sort Negative Handling**:
+   - Uses sign separation: partitions negative and non-negative numbers, sorts negative values by absolute values in reverse order via LSD digit buckets, and prepends them to the sorted non-negative list.
+8. **Bucket Sort Generalization**:
+   - Computes dynamic span $\Delta = (max - min) / k$, scatters elements into buckets, sorts each bucket using animated insertion passes, and concatenates.
+9. **Master 10-Algorithm Comparison Matrix**:
+   - Embedded below the canvas in the complexity section, comparing all 10 algorithms across Best, Average, Worst, Space, and Stability metrics, dynamically highlighting the active algorithm's row.

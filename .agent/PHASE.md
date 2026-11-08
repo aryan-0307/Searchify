@@ -113,3 +113,24 @@ Tasks:
 - [x] Ensure mobile responsiveness (vertical stacking) and reduced motion support
 - [x] Maintain strict constraints: zero modifications to `sorting.html`, `searching.html`, or algorithm engines
 - [x] Create and run automated verification suite (`tests/verify_homepage.py` and master runner) with 100% pass rate
+
+---
+
+## Phase 40 — Five New Sorting Algorithms & Auxiliary Visualizations
+Status: COMPLETE
+
+Tasks:
+- [x] Implement Heap Sort (Build Max/Min Heap, heapify, extract root, Binary Heap Tree auxiliary visualization, parent/child highlights, swaps, $O(n \log n)$ time, $O(1)$ space)
+- [x] Implement Shell Sort (Gap-based insertion sorting, gap sequence tracking, distance stride comparisons, shifts, final pass $gap=1$, gap-dependent complexity, $O(1)$ space)
+- [x] Implement Counting Sort (Min/max range finding, negative integer offset, frequency count array, cumulative prefix sums in asc/desc, stable output construction, duplicate & identical value handling, $O(n+k)$ time & space)
+- [x] Implement Radix Sort LSD (Least Significant Digit passes from ones place upward, 10 digit buckets 0-9, digit place indicators, sign-separation for negative numbers, $O(d(n+k))$ time, $O(n+k)$ space)
+- [x] Implement Bucket Sort (Dynamic range partitioning, scatter elements into buckets, animated insertion sort per bucket, concatenation, negative/decimal support, identical values edge case handling, $O(n+k)$ avg, $O(n^2)$ worst, $O(n+k)$ space)
+- [x] Integrate all 5 algorithms into existing sorting playground (`sorting.html`) with `<select>` selector, live counters, speed/size sliders, asc/desc toggles, and playback controls
+- [x] Implement `#viz-auxiliary-panel` with responsive styling and headroom reservation (110px desktop, 70px mobile)
+- [x] Implement proportional bar heights supporting negative and identical values
+- [x] Implement comprehensive learning features (descriptions, how it works, step-by-step pseudocode, best/avg/worst/space complexities, stability, in-place, when to use, observations, and key differences)
+- [x] Implement Master 10-Algorithm Comparison Matrix Table with dynamic active row highlighting
+- [x] Expand unit test suite `tests/test_algorithms.html` to 644 tests covering all 10 algorithms across 8 test suites (100% pass)
+- [x] Verify pseudocode synchronization `tests/verify_pseudocode_sync.py` across all 10 algorithms (100% pass)
+- [x] Create end-to-end headless Chrome verification `tests/verify_ten_sorting_algorithms.py` (135 assertions checked, 100% pass)
+- [x] Integrate into `tests/run_all_tests.py` as Stage 29 (all 29 stages pass 100%)

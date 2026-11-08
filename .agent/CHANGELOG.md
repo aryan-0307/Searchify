@@ -4,7 +4,38 @@ All notable changes to this project are documented in this file.
 
 ---
 
-## [2026-11-07 — Mobile Visualizer Controls Cluster Swap (Array Controls vs Playback)]
+## [2026-11-08 — Five New Sorting Algorithms & Auxiliary Visualizations]
+
+### Added
+- **Five Additional Sorting Algorithms**:
+  - **Heap Sort**: Build Max-Heap / Min-Heap, sift-down heapify, extract root, and restore heap property for both Ascending and Descending modes ($O(n \log n)$ time, $O(1)$ space).
+  - **Shell Sort**: Diminishing increment insertion sort using classic halving sequence, gap tracking, stride comparisons, and final pass $gap=1$ ($O(n \log n)$ best, gap-dependent worst, $O(1)$ space).
+  - **Counting Sort**: Min/max finding, negative integer offset, frequency count array, cumulative prefix sums in both Ascending and Descending modes, and stable output placement ($O(n+k)$ time and space).
+  - **Radix Sort (LSD)**: Least Significant Digit passes, sign separation for negative numbers, 10 digit buckets (0-9), distribution and collection passes ($O(d(n+k))$ time, $O(n+k)$ space).
+  - **Bucket Sort**: Range partitioning, element scattering, individual bucket sorting using insertion sort, concatenation, and identical values handling ($O(n+k)$ avg, $O(n^2)$ worst, $O(n+k)$ space).
+- **Specialized Auxiliary Visualizations**:
+  - Implemented `#viz-auxiliary-panel` inside `#visualization-area` above the bars with responsive styling.
+  - **Binary Heap Tree**: Displays heap as a multi-level tree (up to 15 nodes, 4 levels) with active parent, child, swapping, extracted, and sorted node highlights.
+  - **Shell Gap Tracker**: Interactive gap sequence pill track and stride comparison pair indicator.
+  - **Counting Sort Arrays**: Real-time Frequency Count Array and Output Array grid with active count/output highlights.
+  - **Radix Digit Buckets**: 10 digit buckets (0-9) displaying item distribution, collection, and pass progress.
+  - **Bucket Sort Grid**: Value range buckets showing bucket ranges, active sorting indicator, and internal bucket items.
+- **Dynamic Proportional Bar Heights**:
+  - Dynamic range normalization supporting negative numbers and identical values: `((val - minVal) / (maxVal - minVal || 1)) * (areaHeight - 24) + 14`.
+  - Guarantees positive heights ($\ge 14$px) without division by zero.
+- **Learning Features & Master Comparison Matrix**:
+  - Full learning metadata for all 10 algorithms: Description, How It Works, When to Use, Properties (Stability, In-Place), Key Observations, and Key Differences.
+  - Complete pseudocode definitions for all 5 new algorithms, 100% synchronized with step trace line highlights.
+  - Master 10-Algorithm Comparison Matrix Table embedded in the complexity section with dynamic active row highlighting.
+- **Negative Integer Custom Input**:
+  - Extended custom array input range from `1 to 999` to `-999 to 999`.
+
+### Verified
+- Expanded unit test runner [tests/test_algorithms.html](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/test_algorithms.html) from 164 to **644 unit tests** covering all 10 algorithms across 8 test suites (random, sorted, reverse, duplicates, negatives, identical values, single-element, empty array) in both Ascending and Descending modes (**100% pass rate**).
+- Verified pseudocode synchronization across all 10 sorting algorithms and 2 searching algorithms in [tests/verify_pseudocode_sync.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_pseudocode_sync.py) (**100% pass rate**).
+- Created end-to-end headless Chrome verification [tests/verify_ten_sorting_algorithms.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/verify_ten_sorting_algorithms.py) verifying DOM selector options, complexity cards, 10-row matrix table, auxiliary panel displays, backward/forward stepping, reset/restart, negative heights, and descending order (**135/135 assertions checked, 100% pass rate**).
+- Verified zero console errors across all pages in [tests/check_console_errors.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/check_console_errors.py).
+- Integrated into master regression suite [tests/run_all_tests.py](file:///c:/Users/aryan/Desktop/Sorting%20and%20Searching/tests/run_all_tests.py) as Stage 29 (**29/29 stages pass 100%**).
 
 ### Changed
 - **Visualizer Controls Ordering on Mobile Viewports**:

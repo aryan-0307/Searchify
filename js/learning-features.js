@@ -12,6 +12,11 @@
     insertionSort: 'Insertion Sort',
     mergeSort: 'Merge Sort',
     quickSort: 'Quick Sort',
+    heapSort: 'Heap Sort',
+    shellSort: 'Shell Sort',
+    countingSort: 'Counting Sort',
+    radixSort: 'Radix Sort',
+    bucketSort: 'Bucket Sort',
     linearSearch: 'Linear Search',
     binarySearch: 'Binary Search'
   };

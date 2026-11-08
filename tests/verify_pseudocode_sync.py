@@ -27,8 +27,19 @@ window.addEventListener('load', () => {
     const SEA = window.SearchingAlgorithms;
     const testArr = [34, 12, 89, 5, 23, 77, 42];
 
-    // 1. Check Sorting Algorithms
-    const sortAlgos = ['bubbleSort', 'selectionSort', 'insertionSort', 'mergeSort', 'quickSort'];
+    // 1. Check Sorting Algorithms (All 10 Algorithms)
+    const sortAlgos = [
+        'bubbleSort',
+        'selectionSort',
+        'insertionSort',
+        'mergeSort',
+        'quickSort',
+        'heapSort',
+        'shellSort',
+        'countingSort',
+        'radixSort',
+        'bucketSort'
+    ];
     sortAlgos.forEach(algo => {
         const pseudocode = SA.pseudocode[algo];
         const steps = SA[algo](testArr, 'asc');
@@ -51,13 +62,13 @@ window.addEventListener('load', () => {
         steps.forEach(s => {
             if (s.comparing && s.comparing.length > 0) {
                 const codeText = pseudocode[s.pseudocodeLine];
-                if (codeText && (codeText.includes('if') || codeText.includes('while') || codeText.includes('Compare') || codeText.includes('≤') || codeText.includes('<') || codeText.includes('>'))) {
+                if (codeText && (codeText.includes('if') || codeText.includes('while') || codeText.includes('Compare') || codeText.includes('≤') || codeText.includes('<') || codeText.includes('>') || codeText.includes('violates') || codeText.includes('count') || codeText.includes('digit') || codeText.includes('bIdx') || codeText.includes('buckets') || codeText.includes('A['))) {
                     hasCompareHighlight = true;
                 }
             }
             if (s.swapping && s.swapping.length > 0) {
                 const codeText = pseudocode[s.pseudocodeLine];
-                if (codeText && (codeText.includes('swap') || codeText.includes('A[') || codeText.includes('='))) {
+                if (codeText && (codeText.includes('swap') || codeText.includes('A[') || codeText.includes('=') || codeText.includes('output') || codeText.includes('buckets'))) {
                     hasSwapOrActionHighlight = true;
                 }
             }

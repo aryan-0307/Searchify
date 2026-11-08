@@ -21,21 +21,24 @@
 
     function getUsableAreaHeight(areaEl) {
         var rawHeight = (areaEl && areaEl.clientHeight > 120) ? areaEl.clientHeight : 440;
+        var isAuxAlgo = ['heapSort', 'shellSort', 'countingSort', 'radixSort', 'bucketSort'].indexOf(currentAlgorithm) !== -1;
+        var auxReservation = isAuxAlgo ? 110 : 0;
         if (window.innerWidth <= 768) {
             // Mobile viewport clearance:
             // Status pill is at top: 14px; height: ~28px (bottom ~42px).
             // Legend is placed UNDER the visualizer area, so it no longer takes canvas top space.
             // Reserved space for status pill (~42px) + buffer (~30px) + label (~22px) + bottom padding (~36px) = 130px.
             // Guarantees highest bar + label stays strictly lower than status pill, with legend under canvas.
-            var reservedSpace = 144;
-            var minH = 110;
+            var reservedSpace = 144 + (isAuxAlgo ? 70 : 0);
+            var minH = 90;
             return Math.max(minH, rawHeight - reservedSpace);
         }
-        return Math.max(200, rawHeight - 116);
+        return Math.max(140, rawHeight - 116 - auxReservation);
     }
 
     function cacheElements() {
         el.vizArea = document.getElementById('visualization-area');
+        el.auxPanel = document.getElementById('viz-auxiliary-panel');
         el.algoSelect = document.getElementById('algorithm-select');
         el.generateBtn = document.getElementById('generate-btn');
         el.customInput = document.getElementById('custom-array');
@@ -138,7 +141,7 @@
         }
         var parsed = SearchifyUtils.parseCustomArray(rawInput);
         if (!parsed) {
-            SearchifyUtils.showNotification('Invalid input. Enter 2–80 comma-separated numbers (1–999).', 'error');
+            SearchifyUtils.showNotification('Invalid input. Enter 2–80 comma-separated numbers (-999 to 999).', 'error');
             return;
         }
         resetExecution();
@@ -475,6 +478,10 @@
         if (el.canvasStatusText) el.canvasStatusText.textContent = 'Ready';
         if (el.canvasStatusPill) el.canvasStatusPill.className = 'canvas-status-pill';
         if (el.completionBanner) el.completionBanner.classList.remove('show');
+        if (el.auxPanel) {
+            el.auxPanel.style.display = 'none';
+            el.auxPanel.innerHTML = '';
+        }
         if (el.vizArea) {
             var launching = el.vizArea.querySelectorAll('.bar-launching');
             for (var li = 0; li < launching.length; li++) launching[li].remove();
@@ -492,8 +499,10 @@
 
         if (!arr || arr.length === 0) return;
 
+        var minVal = Math.min.apply(null, arr);
         var maxVal = Math.max.apply(null, arr);
-        if (maxVal <= 0) maxVal = 1;
+        var range = maxVal - minVal;
+        if (range <= 0) range = 1;
         var areaHeight = getUsableAreaHeight(area);
         var availableWidth = Math.max(300, (area.clientWidth > 100 ? area.clientWidth : 960) - 64);
         var calculatedWidth = Math.floor(availableWidth / arr.length) - 8;
@@ -503,7 +512,10 @@
         for (var i = 0; i < arr.length; i++) {
             var bar = document.createElement('div');
             bar.className = animateDrop ? 'bar drop-in' : 'bar';
-            bar.style.height = Math.max(14, Math.round((arr[i] / maxVal) * areaHeight)) + 'px';
+            var barH = minVal >= 0 ?
+                Math.max(14, Math.round((arr[i] / (maxVal > 0 ? maxVal : 1)) * areaHeight)) :
+                Math.max(14, Math.round(((arr[i] - minVal) / range) * (areaHeight - 24)) + 14);
+            bar.style.height = barH + 'px';
             bar.style.width = barWidth + 'px';
             if (animateDrop) {
                 bar.style.animationDelay = Math.min(0.35, i * 0.02) + 's';
@@ -537,8 +549,10 @@
         for (var i = 0; i < old.length; i++) old[i].remove();
 
         var arr = step.array;
+        var minVal = Math.min.apply(null, arr);
         var maxVal = Math.max.apply(null, arr);
-        if (maxVal <= 0) maxVal = 1;
+        var range = maxVal - minVal;
+        if (range <= 0) range = 1;
         var areaHeight = getUsableAreaHeight(area);
         var availableWidth = Math.max(300, (area.clientWidth > 100 ? area.clientWidth : 960) - 64);
         var calculatedWidth = Math.floor(availableWidth / arr.length) - 8;
@@ -548,7 +562,10 @@
         for (var i = 0; i < arr.length; i++) {
             var bar = document.createElement('div');
             bar.className = 'bar';
-            bar.style.height = Math.max(14, Math.round((arr[i] / maxVal) * areaHeight)) + 'px';
+            var barH = minVal >= 0 ?
+                Math.max(14, Math.round((arr[i] / (maxVal > 0 ? maxVal : 1)) * areaHeight)) :
+                Math.max(14, Math.round(((arr[i] - minVal) / range) * (areaHeight - 24)) + 14);
+            bar.style.height = barH + 'px';
             bar.style.width = barWidth + 'px';
 
             if (step.sorted && step.sorted.indexOf(i) !== -1) {
@@ -579,12 +596,217 @@
             area.appendChild(bar);
         }
 
+        renderAuxiliaryVisualization(step);
         updateExplanationCard(step);
         updateStatusPill(step);
         updateCompletionBanner(step);
         updateCounters(step.counters.comparisons, step.counters.swaps);
         updateStepDisplay(currentStep + 1, steps.length);
         window.dispatchEvent(new CustomEvent('searchify:step', { detail: { algorithm: currentAlgorithm, step: step, currentStep: currentStep, totalSteps: steps.length } }));
+    }
+
+    /* ---------- auxiliary structural visualizations ---------- */
+    function renderAuxiliaryVisualization(step) {
+        if (!el.auxPanel) return;
+        var aux = step.auxiliary;
+        if (!aux) {
+            el.auxPanel.style.display = 'none';
+            el.auxPanel.innerHTML = '';
+            return;
+        }
+
+        el.auxPanel.style.display = 'block';
+
+        if (aux.type === 'heapTree') {
+            renderHeapTree(aux, step);
+        } else if (aux.type === 'shellSort') {
+            renderShellAux(aux, step);
+        } else if (aux.type === 'countingSort') {
+            renderCountingAux(aux, step);
+        } else if (aux.type === 'radixSort') {
+            renderRadixAux(aux, step);
+        } else if (aux.type === 'bucketSort') {
+            renderBucketAux(aux, step);
+        }
+    }
+
+    function renderHeapTree(aux, step) {
+        var html = '';
+        html += '<div class="aux-header">';
+        html += '<span class="aux-title">Binary Heap Tree</span>';
+        html += '<span class="aux-badge">Active Heap Size: ' + (aux.heapSize != null ? aux.heapSize : step.array.length) + '</span>';
+        html += '</div>';
+
+        html += '<div class="heap-tree-wrapper">';
+        var maxNodes = Math.min(step.array.length, 15);
+        var levels = [
+            [0],
+            [1, 2],
+            [3, 4, 5, 6],
+            [7, 8, 9, 10, 11, 12, 13, 14]
+        ];
+
+        for (var l = 0; l < levels.length; l++) {
+            var nodeIndices = levels[l].filter(function (idx) { return idx < maxNodes; });
+            if (nodeIndices.length === 0) break;
+
+            html += '<div class="heap-level">';
+            for (var k = 0; k < nodeIndices.length; k++) {
+                var idx = nodeIndices[k];
+                var val = step.array[idx];
+                var cls = ['heap-node'];
+
+                if (idx === aux.activeParent) cls.push('parent');
+                if (aux.activeChildren && aux.activeChildren.indexOf(idx) !== -1) cls.push('child');
+                if (step.swapping && step.swapping.indexOf(idx) !== -1) cls.push('swapping');
+                if (aux.heapSize != null && idx >= aux.heapSize) cls.push('extracted');
+                if (step.sorted && step.sorted.indexOf(idx) !== -1) cls.push('sorted');
+
+                html += '<div class="' + cls.join(' ') + '" title="Node ' + idx + ': ' + val + '">';
+                html += '<span>' + val + '</span>';
+                html += '<span class="node-idx">' + idx + '</span>';
+                html += '</div>';
+            }
+            html += '</div>';
+        }
+        html += '</div>';
+        el.auxPanel.innerHTML = html;
+    }
+
+    function renderShellAux(aux, step) {
+        var html = '';
+        html += '<div class="aux-header">';
+        html += '<span class="aux-title">Shell Sort Gap Tracker</span>';
+        html += '<span class="aux-badge">Current Gap: ' + aux.gap + '</span>';
+        html += '</div>';
+
+        html += '<div class="shell-tracker">';
+        html += '<div class="gap-sequence-track">';
+        if (aux.gapSequence) {
+            for (var i = 0; i < aux.gapSequence.length; i++) {
+                var g = aux.gapSequence[i];
+                var cls = 'gap-step-pill';
+                if (g === aux.gap) cls += ' active';
+                else if (g > aux.gap) cls += ' done';
+                html += '<span class="' + cls + '">Gap ' + g + '</span>';
+            }
+        }
+        if (aux.isFinalPass) {
+            html += '<span class="gap-final-badge">⚡ Final Pass: Gap 1 (Linear Insertion Sort)</span>';
+        }
+        html += '</div>';
+
+        if (aux.comparedPair && aux.comparedPair.length >= 2) {
+            html += '<div class="gap-pair-info">Comparing pair over stride ' + aux.gap + ': Index ' + aux.comparedPair[0] + ' (' + step.array[aux.comparedPair[0]] + ') ↔ Index ' + aux.comparedPair[1] + ' (' + step.array[aux.comparedPair[1]] + ')</div>';
+        }
+        html += '</div>';
+        el.auxPanel.innerHTML = html;
+    }
+
+    function renderCountingAux(aux, step) {
+        var html = '';
+        html += '<div class="aux-header">';
+        html += '<span class="aux-title">Counting Sort Arrays</span>';
+        html += '<span class="aux-badge">' + (aux.phase === 'count' ? 'Counting Frequencies' : (aux.phase === 'cumulative' ? 'Prefix Sums' : (aux.phase === 'output' ? 'Building Output' : 'Sorted'))) + '</span>';
+        html += '</div>';
+
+        html += '<div class="counting-tracker">';
+
+        // Count Array
+        if (aux.counts && aux.counts.length) {
+            html += '<div class="aux-array-row">';
+            html += '<span class="aux-array-label">Count Array:</span>';
+            var maxDisplay = Math.min(aux.counts.length, 24);
+            for (var c = 0; c < maxDisplay; c++) {
+                var valLabel = (c + (aux.minVal || 0));
+                var cls = 'aux-cell';
+                if (c === aux.activeCountIndex) cls += ' active-count';
+                html += '<div class="' + cls + '">';
+                html += '<span class="cell-header">' + valLabel + '</span>';
+                html += '<span class="cell-value">' + aux.counts[c] + '</span>';
+                html += '</div>';
+            }
+            if (aux.counts.length > maxDisplay) {
+                html += '<span class="aux-cell cell-more">+' + (aux.counts.length - maxDisplay) + '</span>';
+            }
+            html += '</div>';
+        }
+
+        // Output Array
+        if (aux.outputArray && aux.outputArray.length) {
+            html += '<div class="aux-array-row">';
+            html += '<span class="aux-array-label">Output Array:</span>';
+            for (var o = 0; o < aux.outputArray.length; o++) {
+                var outVal = aux.outputArray[o];
+                var cls = 'aux-cell';
+                if (o === aux.activeOutputIndex) cls += ' active-output';
+                html += '<div class="' + cls + '">';
+                html += '<span class="cell-header">' + o + '</span>';
+                html += '<span class="cell-value">' + (outVal != null ? outVal : '-') + '</span>';
+                html += '</div>';
+            }
+            html += '</div>';
+        }
+
+        html += '</div>';
+        el.auxPanel.innerHTML = html;
+    }
+
+    function renderRadixAux(aux, step) {
+        var html = '';
+        html += '<div class="aux-header">';
+        html += '<span class="aux-title">LSD Radix Sort — Digit Buckets</span>';
+        html += '<span class="aux-badge">' + (aux.digitPlace || 'Ones') + ' (Pass ' + (aux.pass || 1) + ' of ' + (aux.totalPasses || 1) + ')</span>';
+        html += '</div>';
+
+        html += '<div class="radix-tracker">';
+        html += '<div class="buckets-grid">';
+        var buckets = aux.buckets || [];
+        for (var b = 0; b < 10; b++) {
+            var bItems = buckets[b] || [];
+            var cls = 'digit-bucket';
+            if (b === aux.activeBucket) cls += ' active-bucket';
+            html += '<div class="' + cls + '">';
+            html += '<span class="bucket-header">[' + b + ']</span>';
+            html += '<div class="bucket-items">';
+            for (var bi = 0; bi < bItems.length; bi++) {
+                html += '<span class="bucket-chip">' + bItems[bi] + '</span>';
+            }
+            html += '</div>';
+            html += '</div>';
+        }
+        html += '</div>';
+        html += '</div>';
+        el.auxPanel.innerHTML = html;
+    }
+
+    function renderBucketAux(aux, step) {
+        var html = '';
+        html += '<div class="aux-header">';
+        html += '<span class="aux-title">Bucket Sort (' + aux.numBuckets + ' Value Buckets)</span>';
+        html += '<span class="aux-badge">' + (aux.phase === 'distribute' ? 'Scattering' : (aux.phase === 'sortBucket' ? 'Sorting Bucket ' + aux.activeBucket : 'Gathering')) + '</span>';
+        html += '</div>';
+
+        html += '<div class="bucket-sort-grid">';
+        var buckets = aux.buckets || [];
+        for (var b = 0; b < aux.numBuckets; b++) {
+            var bItems = buckets[b] || [];
+            var cls = 'range-bucket';
+            if (b === aux.activeBucket) cls += ' active-sorting';
+            html += '<div class="' + cls + '">';
+            html += '<span class="range-bucket-title">Bucket ' + b + '</span>';
+            if (aux.bucketRanges && aux.bucketRanges[b]) {
+                html += '<span class="range-bucket-range">' + aux.bucketRanges[b] + '</span>';
+            }
+            html += '<div class="bucket-items">';
+            for (var bi = 0; bi < bItems.length; bi++) {
+                html += '<span class="bucket-chip">' + bItems[bi] + '</span>';
+            }
+            html += '</div>';
+            html += '</div>';
+        }
+        html += '</div>';
+        el.auxPanel.innerHTML = html;
     }
 
     /* ---------- explanation card ---------- */
@@ -728,6 +950,58 @@
         html += '</div>';
 
         html += '</div>'; // End complexity-details-row
+
+        // How It Works & Learning Differences Row
+        html += '<div class="complexity-details-row" style="margin-top: 16px;">';
+
+        html += '<div class="properties-card" style="flex: 1;">';
+        html += '<div class="card-section-title">⚙️ How It Works</div>';
+        html += '<p style="font-size: 13.5px; line-height: 1.6; color: var(--text-primary); margin-top: 6px;">' + escapeHtml(info.howItWorks || info.description) + '</p>';
+        html += '</div>';
+
+        html += '<div class="when-to-use-card" style="flex: 1;">';
+        html += '<div class="card-section-title">🔍 Key Observations &amp; Differences</div>';
+        html += '<p style="font-size: 13px; line-height: 1.5; color: var(--text-primary); margin-top: 6px;"><strong>Observations:</strong> ' + escapeHtml(info.observations || '') + '</p>';
+        html += '<p style="font-size: 13px; line-height: 1.5; color: var(--text-secondary); margin-top: 6px;"><strong>Key Differences:</strong> ' + escapeHtml(info.keyDifferences || '') + '</p>';
+        html += '</div>';
+
+        html += '</div>';
+
+        // Master 10-Algorithm Comparison Table
+        var tableData = [
+            { id: 'bubbleSort', name: 'Bubble', best: 'O(n) optimized', avg: 'O(n²)', worst: 'O(n²)', space: 'O(1)', stable: 'Yes' },
+            { id: 'selectionSort', name: 'Selection', best: 'O(n²)', avg: 'O(n²)', worst: 'O(n²)', space: 'O(1)', stable: 'No' },
+            { id: 'insertionSort', name: 'Insertion', best: 'O(n)', avg: 'O(n²)', worst: 'O(n²)', space: 'O(1)', stable: 'Yes' },
+            { id: 'mergeSort', name: 'Merge', best: 'O(n log n)', avg: 'O(n log n)', worst: 'O(n log n)', space: 'O(n)', stable: 'Yes' },
+            { id: 'quickSort', name: 'Quick', best: 'O(n log n)', avg: 'O(n log n)', worst: 'O(n²)', space: 'O(log n) average', stable: 'Usually no' },
+            { id: 'heapSort', name: 'Heap', best: 'O(n log n)', avg: 'O(n log n)', worst: 'O(n log n)', space: 'O(1)', stable: 'No' },
+            { id: 'shellSort', name: 'Shell', best: 'Gap-dependent', avg: 'Gap-dependent', worst: 'Gap-dependent', space: 'O(1)', stable: 'No' },
+            { id: 'countingSort', name: 'Counting', best: 'O(n + k)', avg: 'O(n + k)', worst: 'O(n + k)', space: 'O(n + k)', stable: 'Yes, with stable implementation' },
+            { id: 'radixSort', name: 'Radix', best: 'O(d(n + k))', avg: 'O(d(n + k))', worst: 'O(d(n + k))', space: 'O(n + k)', stable: 'Yes, with stable digit sorting' },
+            { id: 'bucketSort', name: 'Bucket', best: 'O(n + k) average under suitable distribution', avg: 'Distribution-dependent', worst: 'O(n²)', space: 'O(n + k)', stable: 'Depends on bucket sorting' }
+        ];
+
+        html += '<div class="comparison-table-wrapper">';
+        html += '<div style="padding: 12px 16px 6px; font-weight: 700; font-size: 14px; color: var(--royal-blue); border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">';
+        html += '<span>📊 Algorithm Comparison Matrix (All 10 Sorting Algorithms)</span>';
+        html += '<span style="font-size: 11px; font-weight: 500; color: var(--text-secondary);">Searchify Comparative Study</span>';
+        html += '</div>';
+        html += '<table class="comparison-table">';
+        html += '<thead><tr><th>Algorithm</th><th>Best</th><th>Average</th><th>Worst</th><th>Space</th><th>Stable</th></tr></thead>';
+        html += '<tbody>';
+        for (var t = 0; t < tableData.length; t++) {
+            var row = tableData[t];
+            var isCurrent = row.id === currentAlgorithm;
+            html += '<tr class="' + (isCurrent ? 'active-algo-row' : '') + '">';
+            html += '<td><strong>' + row.name + (isCurrent ? ' ⭐ (Current)' : '') + '</strong></td>';
+            html += '<td>' + row.best + '</td>';
+            html += '<td>' + row.avg + '</td>';
+            html += '<td>' + row.worst + '</td>';
+            html += '<td>' + row.space + '</td>';
+            html += '<td>' + row.stable + '</td>';
+            html += '</tr>';
+        }
+        html += '</tbody></table></div>';
 
         el.complexity.innerHTML = html;
     }

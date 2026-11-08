@@ -257,6 +257,14 @@ if proc_controls.returncode != 0:
     print("[FAIL] Mobile controls cluster swap verification failed.")
     sys.exit(1)
 
+# 29. Ten Sorting Algorithms Full Integration & Auxiliary Verification
+print("\n--- 29. Verifying All Ten Sorting Algorithms & Auxiliary Structures ---")
+proc_ten = subprocess.run([sys.executable, "tests/verify_ten_sorting_algorithms.py"], capture_output=True, text=True, encoding="utf-8")
+print(proc_ten.stdout)
+if proc_ten.returncode != 0:
+    print("[FAIL] Ten sorting algorithms verification failed.")
+    sys.exit(1)
+
 print("\n" + "=" * 60)
 print("ALL VERIFICATIONS COMPLETED SUCCESSFULLY (100% PASS RATE)")
 print("=" * 60)

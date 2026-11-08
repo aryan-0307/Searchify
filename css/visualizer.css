@@ -1308,6 +1308,457 @@
     margin: 0;
 }
 
+/* === Auxiliary Data Structure Visualizations === */
+.viz-auxiliary-panel {
+    position: absolute;
+    top: 50px;
+    left: 20px;
+    right: 20px;
+    z-index: 9;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 8px 14px;
+    box-shadow: 0 4px 16px rgba(34, 77, 149, 0.08);
+    backdrop-filter: blur(8px);
+    box-sizing: border-box;
+    max-height: 125px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    animation: fadeInAux 0.22s ease-out;
+}
+
+@keyframes fadeInAux {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.aux-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 6px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid rgba(216, 213, 201, 0.7);
+}
+
+.aux-title {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--royal-blue);
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.aux-badge {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--vibrant-pink);
+    background: rgba(217, 61, 129, 0.08);
+    border: 1px solid rgba(217, 61, 129, 0.25);
+    border-radius: 12px;
+    padding: 1px 8px;
+    white-space: nowrap;
+}
+
+/* Heap Tree Visualization */
+.heap-tree-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    width: 100%;
+}
+
+.heap-level {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.heap-node {
+    position: relative;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: var(--soft-cream);
+    border: 1.5px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--royal-blue);
+    transition: all 0.15s ease;
+    box-shadow: 0 1px 3px rgba(37, 37, 37, 0.08);
+}
+
+.heap-node .node-idx {
+    position: absolute;
+    bottom: -8px;
+    right: -4px;
+    font-size: 7.5px;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-weight: 600;
+}
+
+.heap-node.parent {
+    border-color: var(--vibrant-pink);
+    background: rgba(217, 61, 129, 0.12);
+    color: var(--vibrant-pink);
+    box-shadow: 0 0 6px rgba(217, 61, 129, 0.4);
+}
+
+.heap-node.child {
+    border-color: var(--royal-blue);
+    background: rgba(34, 77, 149, 0.15);
+    color: var(--royal-blue);
+    box-shadow: 0 0 6px rgba(34, 77, 149, 0.35);
+}
+
+.heap-node.swapping {
+    border-color: #E67E22;
+    background: #FFF4E5;
+    color: #D35400;
+    transform: scale(1.15);
+}
+
+.heap-node.extracted {
+    opacity: 0.35;
+    filter: grayscale(1);
+    border-style: dashed;
+}
+
+.heap-node.sorted {
+    border-color: #27AE60;
+    background: #E8F8F0;
+    color: #1E8449;
+}
+
+/* Shell Sort Gap Tracker */
+.shell-tracker {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+    width: 100%;
+}
+
+.gap-sequence-track {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.gap-step-pill {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: var(--soft-cream);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    transition: all 0.15s ease;
+}
+
+.gap-step-pill.active {
+    background: var(--royal-blue);
+    color: #FFFFFF;
+    border-color: var(--royal-blue);
+    box-shadow: 0 1px 4px rgba(34, 77, 149, 0.3);
+    transform: scale(1.05);
+}
+
+.gap-step-pill.done {
+    background: #E8F8F0;
+    color: #1E8449;
+    border-color: #A3E4D7;
+    text-decoration: line-through;
+    opacity: 0.75;
+}
+
+.gap-final-badge {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--vibrant-pink);
+    background: #FFF0F6;
+    border: 1px dashed var(--vibrant-pink);
+    border-radius: 10px;
+    padding: 2px 8px;
+}
+
+.gap-pair-info {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-align: center;
+}
+
+/* Counting Sort Arrays */
+.counting-tracker {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 100%;
+}
+
+.aux-array-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+    width: 100%;
+}
+
+.aux-array-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    min-width: 86px;
+    flex-shrink: 0;
+    text-transform: uppercase;
+}
+
+.aux-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 27px;
+    height: 31px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background: var(--soft-cream);
+    font-size: 10px;
+    flex-shrink: 0;
+    transition: all 0.15s ease;
+}
+
+.aux-cell .cell-header {
+    font-size: 8px;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    line-height: 1;
+}
+
+.aux-cell .cell-value {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--royal-blue);
+    line-height: 1.2;
+}
+
+.aux-cell.active-count {
+    background: rgba(217, 61, 129, 0.15);
+    border-color: var(--vibrant-pink);
+    color: var(--vibrant-pink);
+    transform: scale(1.08);
+    box-shadow: 0 0 6px rgba(217, 61, 129, 0.3);
+}
+
+.aux-cell.active-output {
+    background: rgba(39, 174, 96, 0.18);
+    border-color: #27AE60;
+    transform: scale(1.08);
+}
+
+.aux-cell.cell-more {
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--text-muted);
+    padding: 0 4px;
+    justify-content: center;
+}
+
+/* Radix Sort Buckets */
+.radix-tracker {
+    width: 100%;
+}
+
+.buckets-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 4px;
+    width: 100%;
+}
+
+.digit-bucket {
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--soft-cream);
+    padding: 2px 3px;
+    min-height: 46px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.15s ease;
+}
+
+.digit-bucket.active-bucket {
+    border-color: var(--vibrant-pink);
+    background: #FFF0F6;
+    box-shadow: 0 0 6px rgba(217, 61, 129, 0.3);
+}
+
+.bucket-header {
+    font-size: 9px;
+    font-weight: 800;
+    font-family: var(--font-mono);
+    color: var(--royal-blue);
+    margin-bottom: 2px;
+}
+
+.bucket-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    justify-content: center;
+    align-items: flex-start;
+    max-height: 36px;
+    overflow-y: auto;
+    width: 100%;
+}
+
+.bucket-chip {
+    font-size: 9px;
+    font-weight: 700;
+    background: #FFFFFF;
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+    padding: 1px 3px;
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+}
+
+/* Bucket Sort Grid */
+.bucket-sort-grid {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    width: 100%;
+    padding-bottom: 2px;
+}
+
+.range-bucket {
+    flex: 1;
+    min-width: 65px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--soft-cream);
+    padding: 3px 5px;
+    min-height: 46px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.15s ease;
+    flex-shrink: 0;
+}
+
+.range-bucket.active-sorting {
+    border-color: var(--royal-blue);
+    background: rgba(34, 77, 149, 0.08);
+    box-shadow: 0 0 6px rgba(34, 77, 149, 0.3);
+}
+
+.range-bucket-title {
+    font-size: 9px;
+    font-weight: 800;
+    color: var(--royal-blue);
+    text-transform: uppercase;
+}
+
+.range-bucket-range {
+    font-size: 8px;
+    font-family: var(--font-mono);
+    color: var(--text-muted);
+    margin-bottom: 2px;
+}
+
+/* Master Algorithm Comparison Matrix Table */
+.comparison-table-wrapper {
+    margin-top: 24px;
+    background: #FFFFFF;
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-md);
+    overflow-x: auto;
+    box-shadow: var(--shadow-xs);
+}
+
+.comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    text-align: left;
+}
+
+.comparison-table th {
+    background: var(--soft-cream);
+    color: var(--royal-blue);
+    font-weight: 800;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    padding: 10px 14px;
+    border-bottom: 1.5px solid var(--border-color);
+    white-space: nowrap;
+}
+
+.comparison-table td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-primary);
+    font-size: 12.5px;
+}
+
+.comparison-table tr:last-child td {
+    border-bottom: none;
+}
+
+.comparison-table tr:hover td {
+    background: rgba(236, 235, 219, 0.3);
+}
+
+.comparison-table tr.active-algo-row {
+    background: rgba(217, 61, 129, 0.08) !important;
+}
+
+.comparison-table tr.active-algo-row td {
+    font-weight: 700;
+}
+
+.comparison-table tr.active-algo-row td:first-child {
+    color: var(--vibrant-pink);
+    font-weight: 800;
+    position: relative;
+    padding-left: 20px;
+}
+
+.comparison-table tr.active-algo-row td:first-child::before {
+    content: '▶';
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 9px;
+    color: var(--vibrant-pink);
+}
+
 /* === Visualizer Semantic Footer === */
 .viz-footer {
     max-width: 1400px;
@@ -1704,6 +2155,46 @@
 
     .stats-grid {
         grid-template-columns: 1fr;
+    }
+
+    .viz-auxiliary-panel {
+        top: 48px;
+        left: 8px;
+        right: 8px;
+        padding: 6px 8px;
+        max-height: 95px;
+    }
+
+    .buckets-grid {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 3px;
+    }
+
+    .digit-bucket {
+        min-height: 40px;
+        padding: 1px 2px;
+    }
+
+    .heap-node {
+        width: 21px;
+        height: 21px;
+        font-size: 9.5px;
+    }
+
+    .heap-node .node-idx {
+        bottom: -7px;
+        font-size: 7px;
+    }
+
+    .aux-cell {
+        min-width: 24px;
+        height: 28px;
+    }
+
+    .comparison-table th,
+    .comparison-table td {
+        padding: 7px 10px;
+        font-size: 11.5px;
     }
 
     .btn {

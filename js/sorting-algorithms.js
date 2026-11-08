@@ -18,7 +18,7 @@
     /**
      * Build a step object with consistent shape.
      */
-    function makeStep(arr, comparing, swapping, sorted, pivot, explanation, pseudocodeLine, counters) {
+    function makeStep(arr, comparing, swapping, sorted, pivot, explanation, pseudocodeLine, counters, auxiliary) {
         return {
             array: [...arr],
             comparing: [...comparing],
@@ -31,7 +31,8 @@
                 comparisons: counters.comparisons,
                 swaps: counters.swaps,
                 step: counters.step
-            }
+            },
+            auxiliary: auxiliary ? JSON.parse(JSON.stringify(auxiliary)) : null
         };
     }
 
@@ -510,6 +511,750 @@
     }
 
     // ───────────────────────────────────────────────────────────
+    // 6. HEAP SORT
+    // ───────────────────────────────────────────────────────────
+
+    function heapSort(inputArray, order) {
+        const arr = [...inputArray];
+        const n = arr.length;
+        const steps = [];
+        const counters = { comparisons: 0, swaps: 0, step: 0 };
+        const sorted = [];
+
+        if (n <= 1) {
+            counters.step++;
+            steps.push(makeStep(arr, [], [], n === 1 ? [0] : [], [], 'Starting Heap Sort. Array is already sorted.', 0, counters, {
+                type: 'heapTree',
+                heapSize: n,
+                activeParent: null,
+                activeChildren: [],
+                phase: 'done'
+            }));
+            return steps;
+        }
+
+        const isMaxHeap = order === 'asc';
+        const heapTypeName = isMaxHeap ? 'Max-Heap' : 'Min-Heap';
+
+        counters.step++;
+        steps.push(makeStep(arr, [], [], [], [], `Starting Heap Sort. First, build a ${heapTypeName} from the array so the root element is always the ${isMaxHeap ? 'maximum' : 'minimum'}.`, 0, counters, {
+            type: 'heapTree',
+            heapSize: n,
+            activeParent: null,
+            activeChildren: [],
+            phase: 'build'
+        }));
+
+        function heapViolates(childVal, parentVal) {
+            return isMaxHeap ? childVal > parentVal : childVal < parentVal;
+        }
+
+        function heapify(size, i) {
+            let extreme = i;
+            const left = 2 * i + 1;
+            const right = 2 * i + 2;
+            const comparedChildren = [];
+
+            if (left < size) comparedChildren.push(left);
+            if (right < size) comparedChildren.push(right);
+
+            if (comparedChildren.length > 0) {
+                counters.comparisons++;
+                counters.step++;
+                steps.push(makeStep(arr, [i, ...comparedChildren], [], [...sorted], [], `Heapify at node ${i} (${arr[i]}): checking children [${comparedChildren.map(c => `node ${c}: ${arr[c]}`).join(', ')}].`, 8, counters, {
+                    type: 'heapTree',
+                    heapSize: size,
+                    activeParent: i,
+                    activeChildren: comparedChildren,
+                    phase: 'heapify'
+                }));
+            }
+
+            if (left < size) {
+                counters.comparisons++;
+                if (heapViolates(arr[left], arr[extreme])) {
+                    extreme = left;
+                }
+            }
+
+            if (right < size) {
+                counters.comparisons++;
+                if (heapViolates(arr[right], arr[extreme])) {
+                    extreme = right;
+                }
+            }
+
+            if (extreme !== i) {
+                counters.swaps++;
+                const tmp = arr[i];
+                arr[i] = arr[extreme];
+                arr[extreme] = tmp;
+
+                counters.step++;
+                steps.push(makeStep(arr, [], [i, extreme], [...sorted], [], `Swap parent node ${i} (${arr[extreme]}) with child node ${extreme} (${arr[i]}) to maintain ${heapTypeName} invariant.`, 11, counters, {
+                    type: 'heapTree',
+                    heapSize: size,
+                    activeParent: extreme,
+                    activeChildren: [],
+                    phase: 'heapify'
+                }));
+
+                heapify(size, extreme);
+            }
+        }
+
+        // Build Heap (bottom-up from last non-leaf node down to root)
+        counters.step++;
+        steps.push(makeStep(arr, [], [], [], [], `Phase 1: Sift down from index ${Math.floor(n / 2) - 1} down to 0 to construct initial ${heapTypeName}.`, 1, counters, {
+            type: 'heapTree',
+            heapSize: n,
+            activeParent: Math.floor(n / 2) - 1,
+            activeChildren: [],
+            phase: 'build'
+        }));
+
+        for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
+            heapify(n, i);
+        }
+
+        counters.step++;
+        steps.push(makeStep(arr, [], [], [], [0], `${heapTypeName} successfully built! Root element ${arr[0]} is the ${isMaxHeap ? 'largest' : 'smallest'} in the active heap.`, 1, counters, {
+            type: 'heapTree',
+            heapSize: n,
+            activeParent: 0,
+            activeChildren: [],
+            phase: 'built'
+        }));
+
+        // Extract elements one by one from heap
+        for (let i = n - 1; i > 0; i--) {
+            counters.swaps++;
+            const tmp = arr[0];
+            arr[0] = arr[i];
+            arr[i] = tmp;
+            sorted.push(i);
+
+            counters.step++;
+            steps.push(makeStep(arr, [], [0, i], [...sorted], [], `Extract root ${tmp}: swap with element at position ${i}. Element ${tmp} is now locked in its final sorted position.`, 3, counters, {
+                type: 'heapTree',
+                heapSize: i,
+                activeParent: 0,
+                activeChildren: [],
+                extracted: tmp,
+                phase: 'extract'
+            }));
+
+            // Restore heap on reduced size i
+            heapify(i, 0);
+        }
+
+        if (!sorted.includes(0)) sorted.push(0);
+        sorted.sort((a, b) => a - b);
+
+        counters.step++;
+        steps.push(makeStep(arr, [], [], [...sorted], [], 'Heap Sort complete. All elements are in their final positions.', 5, counters, {
+            type: 'heapTree',
+            heapSize: 0,
+            activeParent: null,
+            activeChildren: [],
+            phase: 'done'
+        }));
+
+        return steps;
+    }
+
+    // ───────────────────────────────────────────────────────────
+    // 7. SHELL SORT
+    // ───────────────────────────────────────────────────────────
+
+    function shellSort(inputArray, order) {
+        const arr = [...inputArray];
+        const n = arr.length;
+        const steps = [];
+        const counters = { comparisons: 0, swaps: 0, step: 0 };
+        const sorted = [];
+
+        if (n <= 1) {
+            counters.step++;
+            steps.push(makeStep(arr, [], [], n === 1 ? [0] : [], [], 'Starting Shell Sort. Array is already sorted.', 0, counters, {
+                type: 'shellSort',
+                gap: 1,
+                gapSequence: [1],
+                isFinalPass: true
+            }));
+            return steps;
+        }
+
+        // Build gap sequence: Shell's classic sequence (floor(n/2) down to 1)
+        const gapSeq = [];
+        let g = Math.floor(n / 2);
+        while (g > 0) {
+            gapSeq.push(g);
+            g = Math.floor(g / 2);
+        }
+
+        counters.step++;
+        steps.push(makeStep(arr, [], [], [], [], `Starting Shell Sort. Selected gap sequence: [${gapSeq.join(', ')}]. Gap sorting enables elements to leap over multiple positions at once.`, 0, counters, {
+            type: 'shellSort',
+            gap: gapSeq[0],
+            gapSequence: gapSeq,
+            gapIndex: 0,
+            isFinalPass: gapSeq[0] === 1
+        }));
+
+        for (let gIdx = 0; gIdx < gapSeq.length; gIdx++) {
+            const gap = gapSeq[gIdx];
+            const isFinalPass = (gap === 1);
+
+            counters.step++;
+            steps.push(makeStep(arr, [], [], [...sorted], [], isFinalPass ?
+                'Final pass: gap = 1. Performing insertion sort on the nearly sorted array for fast linear-time completion.' :
+                `Beginning pass with gap = ${gap}. Comparing and sorting sub-arrays of elements spaced ${gap} apart.`,
+                1, counters, {
+                type: 'shellSort',
+                gap: gap,
+                gapSequence: gapSeq,
+                gapIndex: gIdx,
+                isFinalPass: isFinalPass
+            }));
+
+            // Perform gap-based insertion sort
+            for (let i = gap; i < n; i++) {
+                counters.step++;
+                steps.push(makeStep(arr, [i], [], [...sorted], [], `Inspect element ${arr[i]} at index ${i} with gap = ${gap}.`, 2, counters, {
+                    type: 'shellSort',
+                    gap: gap,
+                    gapSequence: gapSeq,
+                    gapIndex: gIdx,
+                    isFinalPass: isFinalPass
+                }));
+
+                for (let j = i; j >= gap; j -= gap) {
+                    counters.comparisons++;
+                    counters.step++;
+                    steps.push(makeStep(arr, [j - gap, j], [], [...sorted], [], `Compare elements separated by gap ${gap}: arr[${j - gap}] (${arr[j - gap]}) and arr[${j}] (${arr[j]}).`, 4, counters, {
+                        type: 'shellSort',
+                        gap: gap,
+                        gapSequence: gapSeq,
+                        gapIndex: gIdx,
+                        isFinalPass: isFinalPass,
+                        comparedPair: [j - gap, j]
+                    }));
+
+                    if (outOfOrder(arr[j - gap], arr[j], order)) {
+                        counters.swaps++;
+                        const tmp = arr[j];
+                        arr[j] = arr[j - gap];
+                        arr[j - gap] = tmp;
+
+                        counters.step++;
+                        steps.push(makeStep(arr, [], [j - gap, j], [...sorted], [], `Since ${arr[j]} ${cmpSymbol(order)} ${arr[j - gap]}, swap elements over gap ${gap}.`, 5, counters, {
+                            type: 'shellSort',
+                            gap: gap,
+                            gapSequence: gapSeq,
+                            gapIndex: gIdx,
+                            isFinalPass: isFinalPass,
+                            comparedPair: [j - gap, j]
+                        }));
+                    } else {
+                        counters.step++;
+                        steps.push(makeStep(arr, [j - gap, j], [], [...sorted], [], `Elements ${arr[j - gap]} ${inOrderSymbol(order)} ${arr[j]} are in correct relative order for gap ${gap}.`, 7, counters, {
+                            type: 'shellSort',
+                            gap: gap,
+                            gapSequence: gapSeq,
+                            gapIndex: gIdx,
+                            isFinalPass: isFinalPass
+                        }));
+                        break;
+                    }
+                }
+            }
+        }
+
+        const allIndices = [];
+        for (let i = 0; i < n; i++) allIndices.push(i);
+
+        counters.step++;
+        steps.push(makeStep(arr, [], [], allIndices, [], 'Shell Sort complete. Array is completely sorted.', 10, counters, {
+            type: 'shellSort',
+            gap: 1,
+            gapSequence: gapSeq,
+            gapIndex: gapSeq.length - 1,
+            isFinalPass: true
+        }));
+
+        return steps;
+    }
+
+    // ───────────────────────────────────────────────────────────
+    // 8. COUNTING SORT
+    // ───────────────────────────────────────────────────────────
+
+    function countingSort(inputArray, order) {
+        const arr = [...inputArray];
+        const n = arr.length;
+        const steps = [];
+        const counters = { comparisons: 0, swaps: 0, step: 0 };
+        const sorted = [];
+
+        if (n <= 1) {
+            counters.step++;
+            steps.push(makeStep(arr, [], [], n === 1 ? [0] : [], [], 'Starting Counting Sort. Array is already sorted.', 0, counters, {
+                type: 'countingSort',
+                phase: 'done',
+                counts: [],
+                outputArray: [...arr]
+            }));
+            return steps;
+        }
+
+        let minVal = arr[0];
+        let maxVal = arr[0];
+        for (let i = 1; i < n; i++) {
+            if (arr[i] < minVal) minVal = arr[i];
+            if (arr[i] > maxVal) maxVal = arr[i];
+        }
+
+        if (minVal === maxVal) {
+            const allIdx = [];
+            for (let i = 0; i < n; i++) allIdx.push(i);
+            counters.step++;
+            steps.push(makeStep(arr, [], [], allIdx, [], `All elements are identical (${minVal}). Array is already sorted.`, 0, counters, {
+                type: 'countingSort',
+                phase: 'done',
+                counts: [n],
+                minVal,
+                maxVal,
+                outputArray: [...arr]
+            }));
+            return steps;
+        }
+
+        const offset = -minVal;
+        const k = maxVal - minVal + 1;
+        const count = new Array(k).fill(0);
+        const output = new Array(n).fill(null);
+
+        counters.step++;
+        steps.push(makeStep(arr, [], [], [], [], `Starting Counting Sort. Min: ${minVal}, Max: ${maxVal}, Range k: ${k}${minVal < 0 ? ` (Negative offset: ${offset})` : ''}. Initializing count array of size ${k}.`, 1, counters, {
+            type: 'countingSort',
+            phase: 'init',
+            minVal,
+            maxVal,
+            offset,
+            counts: [...count],
+            outputArray: [...output]
+        }));
+
+        // 1. Frequency counting
+        for (let i = 0; i < n; i++) {
+            const val = arr[i];
+            const cIdx = val + offset;
+            count[cIdx]++;
+            counters.step++;
+            steps.push(makeStep(arr, [i], [], [], [], `Count frequency of ${val} at index ${i}: increment count[${val}] to ${count[cIdx]}.`, 4, counters, {
+                type: 'countingSort',
+                phase: 'count',
+                minVal,
+                maxVal,
+                offset,
+                activeCountIndex: cIdx,
+                activeValue: val,
+                counts: [...count],
+                outputArray: [...output]
+            }));
+        }
+
+        // 2. Cumulative counts (prefix sums)
+        if (order === 'asc') {
+            for (let c = 1; c < k; c++) {
+                count[c] += count[c - 1];
+                counters.step++;
+                steps.push(makeStep(arr, [], [], [], [], `Cumulative prefix sum: count for value ${c + minVal} becomes ${count[c]} (ending position: ${count[c] - 1}).`, 6, counters, {
+                    type: 'countingSort',
+                    phase: 'cumulative',
+                    minVal,
+                    maxVal,
+                    offset,
+                    activeCountIndex: c,
+                    counts: [...count],
+                    outputArray: [...output]
+                }));
+            }
+        } else {
+            for (let c = k - 2; c >= 0; c--) {
+                count[c] += count[c + 1];
+                counters.step++;
+                steps.push(makeStep(arr, [], [], [], [], `Cumulative descending sum: count for value ${c + minVal} becomes ${count[c]} (ending position: ${count[c] - 1}).`, 6, counters, {
+                    type: 'countingSort',
+                    phase: 'cumulative',
+                    minVal,
+                    maxVal,
+                    offset,
+                    activeCountIndex: c,
+                    counts: [...count],
+                    outputArray: [...output]
+                }));
+            }
+        }
+
+        // 3. Build output array stably from right to left
+        const workingCounts = [...count];
+
+        for (let i = n - 1; i >= 0; i--) {
+            const val = arr[i];
+            const cIdx = val + offset;
+            const pos = workingCounts[cIdx] - 1;
+            output[pos] = val;
+            workingCounts[cIdx]--;
+
+            counters.swaps++;
+            counters.step++;
+            steps.push(makeStep(arr, [], [i], [], [], `Place element ${val} (from index ${i}) into ${order === 'asc' ? 'sorted' : 'descending'} output array at position ${pos}.`, 8, counters, {
+                type: 'countingSort',
+                phase: 'output',
+                minVal,
+                maxVal,
+                offset,
+                activeCountIndex: cIdx,
+                activeOutputIndex: pos,
+                counts: [...workingCounts],
+                outputArray: [...output]
+            }));
+        }
+
+        // 4. Copy sorted output back into original array
+        for (let i = 0; i < n; i++) {
+            arr[i] = output[i];
+            sorted.push(i);
+            counters.step++;
+            steps.push(makeStep(arr, [], [], [...sorted], [], `Copy element ${arr[i]} from output into final array at index ${i}.`, 10, counters, {
+                type: 'countingSort',
+                phase: 'copy',
+                minVal,
+                maxVal,
+                offset,
+                counts: [...workingCounts],
+                outputArray: [...output]
+            }));
+        }
+
+        counters.step++;
+        steps.push(makeStep(arr, [], [], [...sorted], [], 'Counting Sort complete. All elements are sorted in linear O(n + k) time.', 11, counters, {
+            type: 'countingSort',
+            phase: 'done',
+            minVal,
+            maxVal,
+            offset,
+            counts: [...workingCounts],
+            outputArray: [...arr]
+        }));
+
+        return steps;
+    }
+
+    // ───────────────────────────────────────────────────────────
+    // 9. RADIX SORT (LSD)
+    // ───────────────────────────────────────────────────────────
+
+    function radixSort(inputArray, order) {
+        const arr = [...inputArray];
+        const n = arr.length;
+        const steps = [];
+        const counters = { comparisons: 0, swaps: 0, step: 0 };
+        const sorted = [];
+
+        if (n <= 1) {
+            counters.step++;
+            steps.push(makeStep(arr, [], [], n === 1 ? [0] : [], [], 'Starting Radix Sort. Array is already sorted.', 0, counters, {
+                type: 'radixSort',
+                phase: 'done',
+                buckets: [[], [], [], [], [], [], [], [], [], []]
+            }));
+            return steps;
+        }
+
+        const hasNegatives = arr.some(x => x < 0);
+
+        counters.step++;
+        steps.push(makeStep(arr, [], [], [], [], `Starting LSD (Least Significant Digit) Radix Sort. Digit-by-digit stable bucket distribution from ones place upward.${hasNegatives ? ' Negative integers are partitioned by sign and stably sorted.' : ''}`, 0, counters, {
+            type: 'radixSort',
+            phase: 'init',
+            buckets: [[], [], [], [], [], [], [], [], [], []]
+        }));
+
+        function getDigitPlaceName(exp) {
+            if (exp === 1) return 'Ones (10⁰)';
+            if (exp === 10) return 'Tens (10¹)';
+            if (exp === 100) return 'Hundreds (10²)';
+            if (exp === 1000) return 'Thousands (10³)';
+            return `10^${Math.round(Math.log10(exp))} Place`;
+        }
+
+        function sortSubarrayByDigits(subArr) {
+            if (subArr.length <= 1) return subArr;
+            const maxVal = Math.max(...subArr.map(x => Math.abs(x)));
+            const totalPasses = Math.max(1, Math.floor(Math.log10(maxVal || 1)) + 1);
+
+            let current = [...subArr];
+            let pass = 1;
+
+            for (let exp = 1; Math.floor(maxVal / exp) > 0; exp *= 10, pass++) {
+                const placeName = getDigitPlaceName(exp);
+                const buckets = Array.from({ length: 10 }, () => []);
+
+                counters.step++;
+                steps.push(makeStep(arr, [], [], [...sorted], [], `Pass ${pass}/${totalPasses}: Grouping elements by ${placeName} into 10 digit buckets (0–9).`, 2, counters, {
+                    type: 'radixSort',
+                    phase: 'passStart',
+                    exp: exp,
+                    digitPlace: placeName,
+                    pass: pass,
+                    totalPasses: totalPasses,
+                    buckets: buckets.map(b => [...b])
+                }));
+
+                for (let i = 0; i < current.length; i++) {
+                    const val = current[i];
+                    const digit = Math.floor(Math.abs(val) / exp) % 10;
+                    buckets[digit].push(val);
+
+                    counters.swaps++;
+                    counters.step++;
+                    steps.push(makeStep(arr, [i], [], [...sorted], [], `Element ${val}: ${placeName} digit is ${digit} → distribute into Bucket ${digit}.`, 8, counters, {
+                        type: 'radixSort',
+                        phase: 'distribute',
+                        exp: exp,
+                        digitPlace: placeName,
+                        pass: pass,
+                        totalPasses: totalPasses,
+                        activeBucket: digit,
+                        activeItem: val,
+                        activeDigit: digit,
+                        buckets: buckets.map(b => [...b])
+                    }));
+                }
+
+                current = [];
+                for (let b = 0; b < 10; b++) {
+                    for (let item of buckets[b]) {
+                        current.push(item);
+                    }
+                }
+
+                counters.step++;
+                steps.push(makeStep(arr, [], [0], [...sorted], [], `Pass ${pass} complete: Collected elements stably from buckets 0 through 9.`, 9, counters, {
+                    type: 'radixSort',
+                    phase: 'collect',
+                    exp: exp,
+                    digitPlace: placeName,
+                    pass: pass,
+                    totalPasses: totalPasses,
+                    buckets: buckets.map(b => [...b])
+                }));
+            }
+            return current;
+        }
+
+        if (!hasNegatives) {
+            const sortedValues = sortSubarrayByDigits(arr);
+            if (order === 'desc') sortedValues.reverse();
+
+            for (let i = 0; i < n; i++) {
+                arr[i] = sortedValues[i];
+                sorted.push(i);
+            }
+        } else {
+            const negatives = arr.filter(x => x < 0);
+            const positives = arr.filter(x => x >= 0);
+
+            counters.step++;
+            steps.push(makeStep(arr, [], [], [], [], `Partitioning into ${negatives.length} negative and ${positives.length} non-negative numbers for sign-separated digit sorting.`, 1, counters, {
+                type: 'radixSort',
+                phase: 'partition',
+                buckets: [[], [], [], [], [], [], [], [], [], []]
+            }));
+
+            const sortedNegAbs = sortSubarrayByDigits(negatives.map(x => Math.abs(x)));
+            const sortedNegatives = sortedNegAbs.reverse().map(x => -x);
+            const sortedPositives = sortSubarrayByDigits(positives);
+
+            let combined = [...sortedNegatives, ...sortedPositives];
+            if (order === 'desc') combined.reverse();
+
+            for (let i = 0; i < n; i++) {
+                arr[i] = combined[i];
+                sorted.push(i);
+            }
+        }
+
+        counters.step++;
+        steps.push(makeStep(arr, [], [], [...sorted], [], 'Radix Sort complete. All elements stably sorted across all digit places.', 10, counters, {
+            type: 'radixSort',
+            phase: 'done',
+            buckets: [[], [], [], [], [], [], [], [], [], []]
+        }));
+
+        return steps;
+    }
+
+    // ───────────────────────────────────────────────────────────
+    // 10. BUCKET SORT
+    // ───────────────────────────────────────────────────────────
+
+    function bucketSort(inputArray, order) {
+        const arr = [...inputArray];
+        const n = arr.length;
+        const steps = [];
+        const counters = { comparisons: 0, swaps: 0, step: 0 };
+        const sorted = [];
+
+        if (n <= 1) {
+            counters.step++;
+            steps.push(makeStep(arr, [], [], n === 1 ? [0] : [], [], 'Starting Bucket Sort. Array is already sorted.', 0, counters, {
+                type: 'bucketSort',
+                phase: 'done',
+                buckets: []
+            }));
+            return steps;
+        }
+
+        let minVal = arr[0];
+        let maxVal = arr[0];
+        for (let i = 1; i < n; i++) {
+            if (arr[i] < minVal) minVal = arr[i];
+            if (arr[i] > maxVal) maxVal = arr[i];
+        }
+
+        if (minVal === maxVal) {
+            const allIdx = [];
+            for (let i = 0; i < n; i++) allIdx.push(i);
+            counters.step++;
+            steps.push(makeStep(arr, [], [], allIdx, [], `All elements are identical (${minVal}). Array is already sorted.`, 0, counters, {
+                type: 'bucketSort',
+                phase: 'done',
+                buckets: [[...arr]]
+            }));
+            return steps;
+        }
+
+        const k = Math.max(2, Math.min(n, 6));
+        const range = (maxVal - minVal) / k;
+        const buckets = Array.from({ length: k }, () => []);
+
+        const bucketRanges = [];
+        for (let b = 0; b < k; b++) {
+            const low = minVal + b * range;
+            const high = minVal + (b + 1) * range;
+            bucketRanges.push(`${Math.round(low * 10) / 10}–${Math.round(high * 10) / 10}`);
+        }
+
+        counters.step++;
+        steps.push(makeStep(arr, [], [], [], [], `Starting Bucket Sort. Created ${k} buckets covering range [${minVal} to ${maxVal}]. Step 1: Scatter elements into their respective buckets.`, 2, counters, {
+            type: 'bucketSort',
+            phase: 'init',
+            numBuckets: k,
+            bucketRanges: bucketRanges,
+            buckets: buckets.map(b => [...b])
+        }));
+
+        // 1. Distribute elements into buckets
+        for (let i = 0; i < n; i++) {
+            const val = arr[i];
+            let bIdx = Math.floor((val - minVal) / range);
+            if (bIdx >= k) bIdx = k - 1;
+            if (bIdx < 0) bIdx = 0;
+
+            buckets[bIdx].push(val);
+            counters.swaps++;
+            counters.step++;
+            steps.push(makeStep(arr, [i], [], [], [], `Scatter ${val} at index ${i} into Bucket ${bIdx} (range ${bucketRanges[bIdx]}).`, 5, counters, {
+                type: 'bucketSort',
+                phase: 'distribute',
+                numBuckets: k,
+                bucketRanges: bucketRanges,
+                activeBucket: bIdx,
+                activeItem: val,
+                buckets: buckets.map(b => [...b])
+            }));
+        }
+
+        // 2. Sort individual buckets using stable Insertion Sort
+        for (let b = 0; b < k; b++) {
+            const bLen = buckets[b].length;
+            if (bLen > 1) {
+                counters.step++;
+                steps.push(makeStep(arr, [], [], [], [], `Sort Bucket ${b} (${bLen} elements: [${buckets[b].join(', ')}]) using Insertion Sort.`, 7, counters, {
+                    type: 'bucketSort',
+                    phase: 'sortBucket',
+                    numBuckets: k,
+                    bucketRanges: bucketRanges,
+                    activeBucket: b,
+                    buckets: buckets.map(bk => [...bk])
+                }));
+
+                for (let i = 1; i < bLen; i++) {
+                    const key = buckets[b][i];
+                    let j = i - 1;
+                    while (j >= 0 && outOfOrder(buckets[b][j], key, order)) {
+                        counters.comparisons++;
+                        buckets[b][j + 1] = buckets[b][j];
+                        j--;
+                    }
+                    buckets[b][j + 1] = key;
+                }
+
+                counters.step++;
+                steps.push(makeStep(arr, [], [], [], [], `Bucket ${b} sorted: [${buckets[b].join(', ')}].`, 7, counters, {
+                    type: 'bucketSort',
+                    phase: 'sortedBucket',
+                    numBuckets: k,
+                    bucketRanges: bucketRanges,
+                    activeBucket: b,
+                    buckets: buckets.map(bk => [...bk])
+                }));
+            }
+        }
+
+        // 3. Concatenate buckets
+        let writeIdx = 0;
+        const bucketOrder = order === 'asc' ?
+            Array.from({ length: k }, (_, i) => i) :
+            Array.from({ length: k }, (_, i) => k - 1 - i);
+
+        for (let b of bucketOrder) {
+            for (let val of buckets[b]) {
+                arr[writeIdx] = val;
+                sorted.push(writeIdx);
+
+                counters.swaps++;
+                counters.step++;
+                steps.push(makeStep(arr, [], [writeIdx], [...sorted], [], `Gather element ${val} from Bucket ${b} into final array at index ${writeIdx}.`, 8, counters, {
+                    type: 'bucketSort',
+                    phase: 'concatenate',
+                    numBuckets: k,
+                    bucketRanges: bucketRanges,
+                    activeBucket: b,
+                    activeOutputIndex: writeIdx,
+                    buckets: buckets.map(bk => [...bk])
+                }));
+                writeIdx++;
+            }
+        }
+
+        counters.step++;
+        steps.push(makeStep(arr, [], [], [...sorted], [], 'Bucket Sort complete. All buckets concatenated into final sorted array.', 9, counters, {
+            type: 'bucketSort',
+            phase: 'done',
+            numBuckets: k,
+            bucketRanges: bucketRanges,
+            buckets: buckets.map(bk => [...bk])
+        }));
+
+        return steps;
+    }
+
+    // ───────────────────────────────────────────────────────────
     // PSEUDOCODE
     // ───────────────────────────────────────────────────────────
 
@@ -588,6 +1333,75 @@
             '  swap A[i+1] and A[high]',            // 12
             '  return i + 1',                       // 13
             'end procedure'                         // 14
+        ],
+        heapSort: [
+            'procedure heapSort(A, n)',             // 0
+            '  buildHeap(A, n)',                    // 1
+            '  for i = n-1 down to 1',              // 2
+            '    swap A[0] and A[i]',               // 3
+            '    heapify(A, i, 0)',                 // 4
+            '  end for',                            // 5
+            'procedure heapify(A, size, i)',        // 6
+            '  extreme = i, left = 2*i+1, right = 2*i+2', // 7
+            '  if left < size and A[left] violates A[extreme] then extreme = left', // 8
+            '  if right < size and A[right] violates A[extreme] then extreme = right', // 9
+            '  if extreme ≠ i then',                // 10
+            '    swap A[i] and A[extreme]',         // 11
+            '    heapify(A, size, extreme)',        // 12
+            '  end if',                             // 13
+            'end procedure'                         // 14
+        ],
+        shellSort: [
+            'procedure shellSort(A, n)',             // 0
+            '  for gap = floor(n/2) down to 1 by gap/2', // 1
+            '    for i = gap to n-1',               // 2
+            '      temp = A[i], j = i',             // 3
+            '      while j >= gap and A[j-gap] > A[j]', // 4
+            '        swap A[j] and A[j-gap]',       // 5
+            '        j = j - gap',                  // 6
+            '      end while',                      // 7
+            '    end for',                          // 8
+            '  end for',                            // 9
+            'end procedure'                         // 10
+        ],
+        countingSort: [
+            'procedure countingSort(A, n)',          // 0
+            '  find min and max in A; offset = -min',// 1
+            '  count = array of zeros of size (max - min + 1)', // 2
+            '  for i = 0 to n-1',                    // 3
+            '    count[A[i] + offset]++',            // 4
+            '  for c = 1 to count.length-1',         // 5
+            '    count[c] += count[c-1]',            // 6
+            '  for i = n-1 down to 0',               // 7
+            '    output[count[A[i] + offset] - 1] = A[i]', // 8
+            '    count[A[i] + offset]--',            // 9
+            '  copy output into A',                  // 10
+            'end procedure'                          // 11
+        ],
+        radixSort: [
+            'procedure radixSort(A, n)',             // 0
+            '  maxVal = getMaximum(A)',              // 1
+            '  for exp = 1; maxVal / exp > 0; exp *= 10', // 2
+            '    countSortByDigit(A, n, exp)',       // 3
+            'procedure countSortByDigit(A, n, exp)', // 4
+            '  initialize 10 digit buckets (0 to 9)',// 5
+            '  for i = 0 to n-1',                    // 6
+            '    digit = floor(abs(A[i]) / exp) % 10', // 7
+            '    buckets[digit].push(A[i])',         // 8
+            '  A = flatten buckets sequentially',    // 9
+            'end procedure'                          // 10
+        ],
+        bucketSort: [
+            'procedure bucketSort(A, n, k)',         // 0
+            '  find min and max in A',               // 1
+            '  create k empty buckets',              // 2
+            '  for i = 0 to n-1',                    // 3
+            '    bIdx = floor(k * (A[i] - min) / (max - min))', // 4
+            '    buckets[bIdx].push(A[i])',          // 5
+            '  for b = 0 to k-1',                    // 6
+            '    insertionSort(buckets[b])',         // 7
+            '  concatenate sorted buckets into A',   // 8
+            'end procedure'                          // 9
         ]
     };
 
@@ -598,58 +1412,143 @@
     const complexityInfo = {
         bubbleSort: {
             name: 'Bubble Sort',
-            description: 'A simple comparison-based algorithm that repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order. The pass through the list is repeated until the list is sorted. Named because smaller (or larger) elements "bubble" to the top of the list.',
-            best: 'O(n)',
+            description: 'A simple comparison-based algorithm that repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order. Named because smaller elements gradually "bubble" to the top.',
+            howItWorks: 'Iterates repeatedly through the array. In each pass, adjacent pairs (A[j] and A[j+1]) are compared and swapped if unordered. After pass k, the k-th largest element is locked into its final position at the end. An early termination check terminates execution if a pass completes with zero swaps.',
+            best: 'O(n) optimized',
             average: 'O(n²)',
             worst: 'O(n²)',
             space: 'O(1)',
             stable: true,
             inPlace: true,
-            whenToUse: 'Best for small datasets or nearly sorted arrays. Useful for educational purposes to understand basic sorting concepts. Not recommended for large datasets due to quadratic time complexity.'
+            whenToUse: 'Educational demonstrations and checking if an array is already sorted. Not suitable for large production datasets due to quadratic comparison count.',
+            observations: 'Very high number of writes/swaps. Performs O(n²) operations even when partially sorted unless early exit triggers.',
+            keyDifferences: 'Compares only adjacent neighbors (distance = 1). Unlike Shell Sort which compares across large gaps, or Quick/Merge Sort which divide recursively.'
         },
         selectionSort: {
             name: 'Selection Sort',
-            description: 'An in-place comparison sorting algorithm that divides the input into a sorted region (built from left to right) and an unsorted region. It repeatedly selects the smallest (or largest) element from the unsorted region and moves it to the end of the sorted region.',
+            description: 'An in-place comparison sort that divides the array into a sorted prefix and an unsorted suffix. It repeatedly identifies the minimum (or maximum) element from the unsorted suffix and swaps it to the front.',
+            howItWorks: 'Maintains a boundary index i from 0 to n-2. Scans the remaining unsorted subarray from i+1 to n-1 to locate the extreme value. Once found, performs exactly one swap to place it at index i.',
             best: 'O(n²)',
             average: 'O(n²)',
             worst: 'O(n²)',
             space: 'O(1)',
             stable: false,
             inPlace: true,
-            whenToUse: 'Useful when memory writes are expensive, since it performs at most O(n) swaps. Good for small arrays. Not recommended for large datasets due to quadratic time complexity in all cases.'
+            whenToUse: 'When memory write operations are significantly more costly than read operations, as it makes at most O(n) swaps total.',
+            observations: 'Always executes n(n-1)/2 comparisons regardless of initial array ordering. Unstable because distant swaps can leap over identical keys.',
+            keyDifferences: 'Minimizes the total number of swaps to at most n-1, whereas Bubble and Insertion Sort may execute up to O(n²) swaps.'
         },
         insertionSort: {
             name: 'Insertion Sort',
-            description: 'Builds the final sorted array one element at a time by picking each element and inserting it into its correct position among the previously sorted elements. Similar to how most people sort a hand of playing cards.',
+            description: 'Builds the sorted array one item at a time by consuming elements from the unsorted region and inserting them into their correct position within the sorted prefix.',
+            howItWorks: 'Starts with index 0 trivially sorted. For each subsequent element from 1 to n-1, stores the element in a temporary key and shifts greater elements in the sorted prefix one position to the right until the correct insertion slot is cleared.',
             best: 'O(n)',
             average: 'O(n²)',
             worst: 'O(n²)',
             space: 'O(1)',
             stable: true,
             inPlace: true,
-            whenToUse: 'Excellent for small arrays or nearly sorted data. Often used as the base case in hybrid sorting algorithms (e.g., Timsort). Performs well when the array is almost sorted.'
+            whenToUse: 'Small arrays (n ≤ 30) or arrays that are already nearly sorted. Frequently embedded as the base case in hybrid algorithms like Timsort and introsort.',
+            observations: 'Adaptive: runs in O(n) time when input is already sorted. Highly cache-friendly with low constant overhead.',
+            keyDifferences: 'Inserts into an already sorted contiguous prefix. Shell Sort extends this concept by allowing insertions over variable gaps.'
         },
         mergeSort: {
             name: 'Merge Sort',
-            description: 'A divide-and-conquer algorithm that divides the array into halves, recursively sorts each half, and then merges the sorted halves back together. It guarantees O(n log n) performance in all cases but requires additional memory.',
+            description: 'A classic divide-and-conquer algorithm that recursively splits the input array into halves, sorts each half independently, and cleanly merges the two sorted halves into a unified sorted array.',
+            howItWorks: 'Divides the array at midpoint mid = floor((left+right)/2) until subarrays of size 1 are reached. Then uses two pointers to compare the leading elements of both sorted halves, copying the smaller element into an auxiliary buffer before writing back.',
             best: 'O(n log n)',
             average: 'O(n log n)',
             worst: 'O(n log n)',
             space: 'O(n)',
             stable: true,
             inPlace: false,
-            whenToUse: 'Ideal when stable sorting is required and consistent O(n log n) performance is needed. Great for linked lists. Used when worst-case performance matters more than memory usage.'
+            whenToUse: 'When stable sorting with guaranteed O(n log n) worst-case performance is required, or when sorting linked lists or external disk files where sequential access is paramount.',
+            observations: 'Guarantees O(n log n) even on worst-case inputs, but requires O(n) auxiliary memory allocation for array merging.',
+            keyDifferences: 'Requires extra auxiliary memory for buffer merging, unlike Quick Sort, Heap Sort, or Shell Sort which operate in-place.'
         },
         quickSort: {
             name: 'Quick Sort',
-            description: 'A highly efficient divide-and-conquer algorithm that selects a "pivot" element, partitions the array around it (elements smaller than pivot on the left, larger on the right), and recursively sorts the partitions. Average case is very fast in practice.',
+            description: 'A highly optimized divide-and-conquer algorithm that partitions an array around a selected pivot element so that all elements smaller than the pivot precede it and all larger elements follow it.',
+            howItWorks: 'Selects a pivot element (Lomuto partition uses the last element). Scans with index j and maintains pointer i for smaller elements, swapping elements into place. Places pivot at its permanent index i+1, then recursively partitions the left and right subarrays.',
             best: 'O(n log n)',
             average: 'O(n log n)',
             worst: 'O(n²)',
-            space: 'O(log n)',
+            space: 'O(log n) average',
             stable: false,
             inPlace: true,
-            whenToUse: 'The go-to general-purpose sorting algorithm for most applications. Excellent cache performance and low overhead. Worst case can be avoided with randomized pivot selection. Used in most standard library implementations.'
+            whenToUse: 'General-purpose in-memory sorting. Usually the fastest comparison-based sort in practical benchmarks due to cache locality and low constant factors.',
+            observations: 'Degrades to O(n²) if an extreme pivot is repeatedly chosen on already sorted inputs, which is mitigated via median-of-three or randomized pivoting.',
+            keyDifferences: 'Divides work based on element values relative to a pivot, whereas Merge Sort divides work strictly by array index.'
+        },
+        heapSort: {
+            name: 'Heap Sort',
+            description: 'An efficient comparison-based sorting algorithm that converts the array into a Binary Heap data structure, repeatedly extracts the maximum (or minimum) root element, and restores the heap property in logarithmic time.',
+            howItWorks: 'Phase 1: Builds a Max-Heap in O(n) time by calling heapify from index floor(n/2)-1 down to 0. Phase 2: Iteratively swaps the root element (maximum value in heap) with the last element of the unsorted heap portion, shrinks the heap boundary by 1, and calls heapify on root (index 0) to restore the heap property in O(log n) time.',
+            best: 'O(n log n)',
+            average: 'O(n log n)',
+            worst: 'O(n log n)',
+            space: 'O(1)',
+            stable: false,
+            inPlace: true,
+            whenToUse: 'Embedded systems and mission-critical applications where strict O(n log n) upper bound is required without allocating O(n) auxiliary memory (which Merge Sort requires) or risking O(n²) worst cases (which Quick Sort risks).',
+            observations: 'Excellent theoretical guarantees (in-place O(1) auxiliary space and O(n log n) worst-case). Slower in practice than Quick Sort due to poor cache locality from non-contiguous child node lookups (2i+1, 2i+2).',
+            keyDifferences: 'Utilizes an explicit complete binary tree structure mapped onto array indices. Guarantees O(n log n) in-place without recursion stack overhead.'
+        },
+        shellSort: {
+            name: 'Shell Sort',
+            description: 'An ingenious generalization of Insertion Sort that allows the comparison and exchange of elements that are far apart, progressively reducing the gap distance until it reaches 1 for a final insertion pass.',
+            howItWorks: 'Initializes a gap sequence (Shell classic: floor(n/2) down to 1). For each gap, performs gap-interleaved insertion sort where elements at indices j and j-gap are compared and swapped if out of order. Elements take large leaps early on, eliminating major inversions quickly so the final gap = 1 pass runs in near-linear time.',
+            best: 'O(n log n)',
+            average: 'Gap-dependent (~O(n^(4/3)))',
+            worst: 'Gap-dependent (O(n²) for Shell, O(n^(3/2)) for Knuth)',
+            space: 'O(1)',
+            stable: false,
+            inPlace: true,
+            whenToUse: 'Medium-sized arrays where simple code with zero recursion overhead is desired, such as embedded firmware or microcontrollers with limited call-stack depth.',
+            observations: 'Complexity strongly depends on the chosen gap sequence. Shell original sequence (n/2^k) yields O(n²), while Knuth (3k+1)/2 yields O(n^(3/2)) and Tokuda or Sedgewick yield O(n^(4/3)).',
+            keyDifferences: 'Compares distant elements across variable strides (gaps), unlike Insertion Sort which only shifts adjacent elements.'
+        },
+        countingSort: {
+            name: 'Counting Sort',
+            description: 'A non-comparison integer sorting algorithm that operates by counting the distinct frequencies of each value in the input array, computing prefix sums, and directly calculating each element\'s final output index in linear time.',
+            howItWorks: 'Scans array to determine min and max values. Computes negative offset = -min. Allocates a count array of size k = max - min + 1. Counts occurrences of each value. Calculates cumulative prefix sums so each count[v] represents the last output index for value v. Scans input array from right to left, placing elements into output array to preserve stability.',
+            best: 'O(n + k)',
+            average: 'O(n + k)',
+            worst: 'O(n + k)',
+            space: 'O(n + k)',
+            stable: true,
+            inPlace: false,
+            whenToUse: 'When sorting integers within a known, small range k where k = O(n), such as exam grades (0-100), age metrics, or as the stable subroutine inside Radix Sort.',
+            observations: 'Breaks the O(n log n) comparison lower bound by leveraging direct array indexing. Inefficient and impractical if the range k is significantly larger than n (e.g. k = 1,000,000 for n = 10).',
+            keyDifferences: 'Does not compare elements against each other. Determines position via direct numerical indexing into a frequency table.'
+        },
+        radixSort: {
+            name: 'Radix Sort',
+            description: 'A non-comparison sorting algorithm that avoids comparisons by creating and categorizing elements into buckets based on their individual radix (digits). LSD (Least Significant Digit) processes digits from ones to highest place.',
+            howItWorks: 'Determines the maximum absolute value to know total digit passes d. Iterates through digit positions (exp = 1, 10, 100...). In each pass, distributes elements into 10 buckets (0 to 9) according to the digit at the active place value, then collects elements in order. Handles negative integers by separating signs, sorting each partition stably, and recombining.',
+            best: 'O(d(n + k))',
+            average: 'O(d(n + k))',
+            worst: 'O(d(n + k))',
+            space: 'O(n + k)',
+            stable: true,
+            inPlace: false,
+            whenToUse: 'When sorting large collections of integers or fixed-length strings (such as phone numbers, dates, student IDs, or zip codes) where digit length d is small and bounded.',
+            observations: 'Runs in linear time O(n) when d is constant. Highly stable. Requires auxiliary memory for the digit buckets.',
+            keyDifferences: 'Sorts numbers digit-by-digit from right to left using multiple stable bucket passes, rather than comparing whole numbers at once.'
+        },
+        bucketSort: {
+            name: 'Bucket Sort',
+            description: 'A distribution-based algorithm that partitions elements into a finite number of uniformly spaced buckets, sorts each individual bucket using an auxiliary sorting algorithm, and concatenates all buckets in order.',
+            howItWorks: 'Determines the minimum and maximum values across the array. Divides the range into k uniformly spaced buckets. Distributes each element into its corresponding bucket using an arithmetic normalization formula. Sorts each bucket independently using Insertion Sort. Gathers and concatenates elements from all buckets in order.',
+            best: 'O(n + k) average under suitable distribution',
+            average: 'Distribution-dependent (~O(n + k))',
+            worst: 'O(n²)',
+            space: 'O(n + k)',
+            stable: true,
+            inPlace: false,
+            whenToUse: 'When input values are uniformly distributed over a known continuous interval, such as floating-point numbers in [0, 1) or normalized real-world sensor measurements.',
+            observations: 'Performance relies heavily on the distribution of input data. If all elements cluster into a single bucket, complexity degrades to the underlying bucket sort (O(n²)).',
+            keyDifferences: 'Scatters elements across value ranges into separate containers (buckets), then gathers them back, combining distribution and local sorting.'
         }
     };
 
@@ -663,6 +1562,11 @@
         insertionSort: insertionSort,
         mergeSort: mergeSort,
         quickSort: quickSort,
+        heapSort: heapSort,
+        shellSort: shellSort,
+        countingSort: countingSort,
+        radixSort: radixSort,
+        bucketSort: bucketSort,
         pseudocode: pseudocode,
         complexityInfo: complexityInfo
     };
