@@ -149,3 +149,20 @@ Tasks:
 - [x] Ensure switching to other algorithms completely tears down the heap tree classes, restoring default 460px canvas height and default bar scaling with zero regressions.
 - [x] Create automated headless Chrome test (`tests/verify_heap_sort_layout.py`) verifying zero-scroll, 4-level rendering, stage divider, dynamic clearance across 4 viewports, and clean algorithm switching.
 - [x] Integrate into `tests/run_all_tests.py` as Stage 30 (all 30 stages pass 100%).
+
+---
+
+## Phase 42 — Merged Visualizer Controls Layout Split
+Status: COMPLETE
+
+Tasks:
+- [x] Re-architect the visualizer controls layout across `sorting.html` and `searching.html`:
+  - Position Array Configuration (Generate, Custom Input, Apply, Size slider, Target input) exclusively in the top controls toolbar (`<nav class="viz-controls">`) above the visualizer canvas.
+  - Horizontally center the top controls toolbar (`justify-content: center`).
+  - Merge Playback controls (Start/Stop [Play/Pause], Step Prev, Step Next, Reset, Restart) with Speed control (and Sort Order Asc/Desc) into a unified dock cluster (`.merged-playback-cluster`).
+  - Position the merged controls toolbar (`<nav class="viz-controls-bottom">`) immediately below the visualizer canvas (`.viz-canvas-wrapper`) and above the progress indicator.
+  - Horizontally center the bottom controls toolbar (`justify-content: center; margin: 0 auto;`).
+- [x] Refine responsive CSS in `css/visualizer.css` for desktop and mobile viewports ($\le 860$px, 768px, 412px, 375px, 320px) guaranteeing zero horizontal overflow and seamless wrapping.
+- [x] Update `tests/verify_controls_layout.py` and `tests/verify_mobile_controls_swap.py` to match the new layout structure.
+- [x] Create automated headless Chrome test (`tests/verify_merged_visualizer_controls.py`) verifying DOM order, geometric placement above/below canvas, centering diff $\le 25$px (actual 0px), and interactive functionality.
+- [x] Integrate into `tests/run_all_tests.py` as Stage 31 (all 31 stages pass 100%).

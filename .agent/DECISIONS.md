@@ -208,3 +208,27 @@ Option 2: Algorithm-scoped canvas expansion with two-tier layout separation and 
      - Desktop: `Math.min(180, Math.max(100, rawHeight - 310))`
      - Mobile: `Math.min(95, Math.max(65, rawHeight - 340))`
    - Guarantees clearance of $\ge 35$px desktop and $\ge 20$px mobile (observed: 24.6px to 155.4px) between the tree card bottom and the highest bar label.
+
+## Decision 020
+Date: 2026-11-08
+Phase: Phase 42 — Merged Visualizer Controls Layout Split
+
+### Problem
+In the visualizer pages (`sorting.html` and `searching.html`), all controls (Playback, Array Configuration, and Settings) were clustered in a single top toolbar above the canvas. This crowded the top header area and separated the playback actions (play, pause, step, reset, restart) and speed control from the animation display where the user's attention is focused. The user requested:
+1. Merge the start/stop/reset/restart buttons with the speed control button.
+2. Shift this merged controls dock just below the visualizer canvas.
+3. Keep only the generate and applying options above the visualizer canvas.
+4. Ensure both top and bottom control groups are horizontally centered.
+
+### Decision
+Split visualizer controls into a two-tier top/bottom architecture:
+1. **Top Controls (`<nav class="viz-controls">`)**:
+   - Houses only data creation & array configuration: Generate button, Custom Array text input, Apply button, Size slider, and Target input (searching).
+   - Horizontally centered via `justify-content: center` and `margin: 0 auto`.
+2. **Bottom Controls (`<nav class="viz-controls viz-controls-bottom">`)**:
+   - Positioned immediately below `.viz-canvas-wrapper` and above `.progress-section`.
+   - Merges Playback transport (`#play-btn`, `#prev-btn`, `#next-btn`), Reset/Restart (`#reset-btn`, `#restart-btn`), Speed slider (`#speed-slider`, `#speed-value`), and Sort order (`#asc-btn`, `#desc-btn` in sorting) into a unified dock card (`.merged-playback-cluster`).
+   - Horizontally centered via `justify-content: center` and `margin: 0 auto`.
+3. **Responsive Execution**:
+   - Desktop: Single elegant horizontal row above and below canvas.
+   - Mobile ($\le 860$px): Clean vertical wrapping with centered items, stacked transport and reset groups, and zero horizontal overflow. All interactive IDs and event bindings preserved 100%.

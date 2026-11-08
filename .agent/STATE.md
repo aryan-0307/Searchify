@@ -4,36 +4,36 @@
 Extend Searchify's interactive Sorting Visualizer by implementing five additional sorting algorithms (Heap Sort, Shell Sort, Counting Sort, Radix Sort LSD, and Bucket Sort), while maintaining the existing vanilla HTML/CSS/JS architecture, design system, and full functionality across all 10 sorting algorithms and 2 searching algorithms.
 
 ## Current Phase
-Phase 41 — Heap Sort Zero-Scroll & Layout Separation
+Phase 42 — Merged Visualizer Controls Layout Split
 
 ## Status
 COMPLETE (IMPLEMENTED + VERIFIED)
 
 ## Current Task
-Resolved the Heap Sort visualizer layout to guarantee:
-1. Zero vertical scrollbar on the Binary Heap Tree operation panel (`max-height: none !important; overflow-y: visible !important;`). All 4 levels and up to 15 nodes render with full visibility.
-2. Complete layout separation between the Binary Heap Tree model and the vertical array bars in memory.
-3. Embedded visual stage divider (`Array Elements in Memory (Bars Below)`).
-4. Algorithm-scoped dynamic canvas expansion (`min-height: 570px` desktop, `550px` tablet, `540px` mobile) via `.heap-sort-active` class.
-5. Calibrated bar height capping (`Math.min(180, ...)` desktop, `Math.min(95, ...)` mobile) ensuring $\ge 35$px desktop / $\ge 20$px mobile clearance (actual: 24.6px–155.4px) from the highest bar label to the tree card bottom.
-6. Clean switching back to other 9 sorting algorithms with zero layout shifts or regressions.
+Split and merged visualizer controls layout across `sorting.html` and `searching.html`:
+1. Top Toolbar (`<nav class="viz-controls">`): Houses only Array Configuration (Generate button, Custom Array text input, Apply button, Size slider, and Target input in search). Centered horizontally (`justify-content: center`).
+2. Bottom Toolbar (`<nav class="viz-controls-bottom">`): Placed immediately below the visualizer canvas (`.viz-canvas-wrapper`) and above the progress section. Merges Playback transport (`#play-btn`, `#prev-btn`, `#next-btn`), Reset/Restart (`#reset-btn`, `#restart-btn`), Speed control slider (`#speed-slider`, `#speed-value`), and Sort order toggle (`#asc-btn`, `#desc-btn` in sorting) into a unified dock card (`.merged-playback-cluster`). Centered horizontally (`justify-content: center; margin: 0 auto;`).
+3. Responsive design ensures zero horizontal overflow across all mobile screens (320px to 860px) and desktop screens (861px to 1440px).
+4. All interactive functionalities (playback, scrubbing, speed slider, array resizing, custom array apply) verified with 100% pass rate.
 
 ## Last Completed Task
-- **Five New Sorting Algorithms & Auxiliary Visualizations (Phase 40)**:
-  - Implemented Heap Sort, Shell Sort, Counting Sort, Radix Sort LSD, Bucket Sort, auxiliary panels, and master 10-algorithm comparison matrix.
+- **Heap Sort Zero-Scroll & Layout Separation (Phase 41)**:
+  - Eliminated internal scrolling on the Binary Heap Tree card and established two-tier visual separation from array bars.
 
 ## Completed Work
-- Dynamic layout mode switching in `js/sorting-visualizer.js` (`updateAlgorithmLayoutMode`).
-- Headroom and usable height calibration in `getUsableAreaHeight` in `js/sorting-visualizer.js`.
-- Binary heap tree stage divider in `renderHeapTree` in `js/sorting-visualizer.js`.
-- Responsive layout rules in `css/visualizer.css` (`.heap-sort-active`, `.heap-tree-mode`, `.heap-array-stage-divider`).
-- Built automated test `tests/verify_heap_sort_layout.py` across 4 screen sizes (all passed).
-- Integrated into master regression runner `tests/run_all_tests.py` as Stage 30 (all 30 stages passed 100%).
+- Re-architected DOM structure in `sorting.html` and `searching.html`.
+- Updated responsive styling in `css/visualizer.css`.
+- Updated test suites `tests/verify_controls_layout.py` and `tests/verify_mobile_controls_swap.py`.
+- Created automated test `tests/verify_merged_visualizer_controls.py` across 4 viewports (all passed 100%).
+- Integrated into master regression runner `tests/run_all_tests.py` as Stage 31 (all 31 stages passed 100%).
 
 ## Files Modified
-- `js/sorting-visualizer.js`
+- `sorting.html`
+- `searching.html`
 - `css/visualizer.css`
-- `tests/verify_heap_sort_layout.py`
+- `tests/verify_controls_layout.py`
+- `tests/verify_mobile_controls_swap.py`
+- `tests/verify_merged_visualizer_controls.py`
 - `tests/run_all_tests.py`
 - `.agent/STATE.md`
 - `.agent/CHANGELOG.md`
@@ -42,12 +42,16 @@ Resolved the Heap Sort visualizer layout to guarantee:
 - `.agent/VERIFICATION.md`
 
 ## Tests
-- Heap Sort Layout & Zero-Scroll verification (`tests/verify_heap_sort_layout.py`): **PASS (100% across Desktop, iPad, Galaxy S23, iPhone SE)**
+- Merged Visualizer Controls verification (`tests/verify_merged_visualizer_controls.py`): **PASS (100% across Desktop, iPad, Galaxy S23, iPhone SE)**
+- Controls Layout verification (`tests/verify_controls_layout.py`): **PASS (100%)**
+- Mobile Controls Swap verification (`tests/verify_mobile_controls_swap.py`): **PASS (22/22 viewports and pages)**
+- Mobile Stacking verification (`tests/verify_mobile_visualizer_layout.py`): **PASS (100%)**
+- Semantic HTML & SEO verification (`tests/verify_semantic_seo.py`): **PASS (100%)**
 - 644 algorithm unit tests (`tests/test_algorithms.html`): **PASS (644/644)**
 - Pseudocode synchronization (`tests/verify_pseudocode_sync.py`): **PASS (100% across all 10 sorting & 2 searching algorithms)**
 - Ten sorting algorithms E2E verification (`tests/verify_ten_sorting_algorithms.py`): **PASS (135/135 assertions checked)**
 - Zero JavaScript console errors: **PASS**
-- Full master test suite (`tests/run_all_tests.py`): **PASS (30/30 stages pass 100%)**
+- Full master test suite (`tests/run_all_tests.py`): **PASS (31/31 stages pass 100%)**
 
 ## Build Status
 - Ready (Zero build step required; pure client-side vanilla web app).
@@ -66,4 +70,4 @@ Resolved the Heap Sort visualizer layout to guarantee:
 - Project runs locally by opening `index.html` in any browser or serving via `python -m http.server`.
 
 ## Last Updated
-2026-11-08T10:45:00+05:30
+2026-11-08T11:30:00+05:30

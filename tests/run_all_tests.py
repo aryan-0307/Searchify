@@ -273,6 +273,14 @@ if proc_heap.returncode != 0:
     print("[FAIL] Heap Sort layout separation verification failed.")
     sys.exit(1)
 
+# 31. Merged Visualizer Controls (Top Array, Bottom Playback + Speed) Verification
+print("\n--- 31. Verifying Merged Visualizer Controls Layout ---")
+proc_merged = subprocess.run([sys.executable, "tests/verify_merged_visualizer_controls.py"], capture_output=True, text=True, encoding="utf-8")
+print(proc_merged.stdout)
+if proc_merged.returncode != 0:
+    print("[FAIL] Merged visualizer controls verification failed.")
+    sys.exit(1)
+
 print("\n" + "=" * 60)
 print("ALL VERIFICATIONS COMPLETED SUCCESSFULLY (100% PASS RATE)")
 print("=" * 60)

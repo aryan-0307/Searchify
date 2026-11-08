@@ -1,15 +1,11 @@
 """
 tests/verify_mobile_controls_swap.py
-Automated verification for toolbar controls order:
-1. On mobile viewports (<= 860px):
-   - .array-cluster appears BEFORE .playback-cluster (arrayRect.top < playbackRect.top).
-   - .playback-cluster appears BEFORE .settings-cluster (playbackRect.top < settingsRect.top).
-   - CSS order is: .array-cluster (1), .playback-cluster (2), .settings-cluster (3).
-2. On desktop viewports (> 860px):
-   - Desktop layout is preserved: .playback-cluster is on the left, .array-cluster in the center, .settings-cluster on the right.
-   - playbackRect.left < arrayRect.left < settingsRect.left.
-   - CSS order remains default (0).
-3. Verified across mobile (320px to 860px) and desktop (861px to 1280px) on sorting.html and searching.html.
+Automated verification for visualizer controls placement across all viewports:
+1. Across all viewports (320px to 1280px):
+   - .array-cluster (Generate, Apply, Size) is strictly ABOVE the visualizer canvas.
+   - .playback-cluster (merged Playback & Speed) is strictly BELOW the visualizer canvas.
+   - Both clusters are horizontally centered.
+2. Verified across 11 device viewports (320px to 1280px) on sorting.html and searching.html.
 """
 
 import subprocess
@@ -38,7 +34,7 @@ pages = ["sorting.html", "searching.html"]
 
 all_passed = True
 print("=" * 70)
-print("VERIFYING CONTROLS CLUSTER SWAP (ARRAY vs PLAYBACK) ON MOBILE")
+print("VERIFYING CONTROLS POSITIONING & CENTERING ACROSS ALL VIEWPORTS")
 print("=" * 70)
 
 harness_template = """<!DOCTYPE html>
@@ -49,119 +45,83 @@ harness_template = """<!DOCTYPE html>
 <div id="results"></div>
 <script>
 window.addEventListener('load', async () => {{
-    await new Promise(r => setTimeout(r, 600));
+    await new Promise(r => setTimeout(r, 400));
     const frame = document.getElementById('frame');
-    const doc = frame.contentDocument;
     const win = frame.contentWindow;
+    const doc = frame.contentDocument;
 
     const playbackCluster = doc.querySelector('.playback-cluster');
     const arrayCluster = doc.querySelector('.array-cluster');
-    const settingsCluster = doc.querySelector('.settings-cluster');
+    const canvas = doc.querySelector('.viz-canvas-wrapper');
 
     const issues = [];
     const checks = [];
 
-    if (!playbackCluster || !arrayCluster || !settingsCluster) {{
-        issues.push('Could not find all 3 control clusters (.playback-cluster, .array-cluster, .settings-cluster)');
+    if (!playbackCluster || !arrayCluster || !canvas) {{
+        issues.push('Could not find .playback-cluster, .array-cluster, or .viz-canvas-wrapper');
     }} else {{
         const playRect = playbackCluster.getBoundingClientRect();
         const arrRect = arrayCluster.getBoundingClientRect();
-        const setRect = settingsCluster.getBoundingClientRect();
+        const canvasRect = canvas.getBoundingClientRect();
 
-        const playStyle = win.getComputedStyle(playbackCluster);
-        const arrStyle = win.getComputedStyle(arrayCluster);
-        const setStyle = win.getComputedStyle(settingsCluster);
+        const vpWidth = doc.documentElement.clientWidth;
+        const scrollWidth = doc.documentElement.scrollWidth;
 
-        const isMobile = {is_mobile};
-
-        if (isMobile) {{
-            // Mobile: Array cluster must appear ABOVE playback cluster
-            if (arrRect.top >= playRect.top) {{
-                issues.push(`Mobile swap failed: Array cluster top (${{arrRect.top.toFixed(1)}}) is NOT above Playback cluster top (${{playRect.top.toFixed(1)}})`);
-            }} else {{
-                checks.push(`Array cluster (top=${{arrRect.top.toFixed(1)}}) is strictly above Playback cluster (top=${{playRect.top.toFixed(1)}})`);
-            }}
-
-            if (playRect.top >= setRect.top) {{
-                issues.push(`Mobile order failed: Playback cluster top (${{playRect.top.toFixed(1)}}) is NOT above Settings cluster top (${{setRect.top.toFixed(1)}})`);
-            }} else {{
-                checks.push(`Playback cluster (top=${{playRect.top.toFixed(1)}}) is strictly above Settings cluster (top=${{setRect.top.toFixed(1)}})`);
-            }}
-
-            // Check CSS order properties
-            if (arrStyle.order !== '1') {{
-                issues.push(`Array cluster CSS order should be '1', got '${{arrStyle.order}}'`);
-            }}
-            if (playStyle.order !== '2') {{
-                issues.push(`Playback cluster CSS order should be '2', got '${{playStyle.order}}'`);
-            }}
-            if (setStyle.order !== '3') {{
-                issues.push(`Settings cluster CSS order should be '3', got '${{setStyle.order}}'`);
-            }}
-            if (arrStyle.order === '1' && playStyle.order === '2' && setStyle.order === '3') {{
-                checks.push("CSS flex orders match expected (array:1, playback:2, settings:3)");
-            }}
+        // 1. Array cluster is ABOVE canvas
+        if (arrRect.bottom > canvasRect.top + 5) {{
+            issues.push(`Array cluster bottom (${{arrRect.bottom.toFixed(1)}}) is NOT above canvas top (${{canvasRect.top.toFixed(1)}})`);
         }} else {{
-            // Desktop: Playback precedes Array, Array precedes Settings
-            // When items are on the same row, left should be strictly less.
-            // When items wrap onto subsequent rows, earlier item has lower top.
-            const sameRowPlayArr = Math.abs(playRect.top - arrRect.top) < 15;
-            if (sameRowPlayArr) {{
-                if (playRect.left >= arrRect.left) {{
-                    issues.push(`Desktop same-row: Playback left (${{playRect.left.toFixed(1)}}) should be to the left of Array left (${{arrRect.left.toFixed(1)}})`);
-                }} else {{
-                    checks.push(`Desktop same-row: Playback is to the left of Array`);
-                }}
-            }} else {{
-                if (playRect.top >= arrRect.top) {{
-                    issues.push(`Desktop wrapped: Playback top (${{playRect.top.toFixed(1)}}) should be above Array top (${{arrRect.top.toFixed(1)}})`);
-                }} else {{
-                    checks.push(`Desktop wrapped: Playback (row 1, top=${{playRect.top.toFixed(1)}}) precedes Array (row 2, top=${{arrRect.top.toFixed(1)}})`);
-                }}
-            }}
+            checks.push(`Array cluster (bottom=${{arrRect.bottom.toFixed(1)}}) is strictly above canvas (top=${{canvasRect.top.toFixed(1)}})`);
+        }}
 
-            const sameRowArrSet = Math.abs(arrRect.top - setRect.top) < 15;
-            if (sameRowArrSet) {{
-                if (arrRect.left >= setRect.left) {{
-                    issues.push(`Desktop same-row: Array left (${{arrRect.left.toFixed(1)}}) should be to the left of Settings left (${{setRect.left.toFixed(1)}})`);
-                }} else {{
-                    checks.push(`Desktop same-row: Array is to the left of Settings`);
-                }}
-            }} else {{
-                if (arrRect.top >= setRect.top) {{
-                    issues.push(`Desktop wrapped: Array top (${{arrRect.top.toFixed(1)}}) should be above Settings top (${{setRect.top.toFixed(1)}})`);
-                }} else {{
-                    checks.push(`Desktop wrapped: Array (top=${{arrRect.top.toFixed(1)}}) precedes Settings (top=${{setRect.top.toFixed(1)}})`);
-                }}
-            }}
+        // 2. Playback cluster is BELOW canvas
+        if (playRect.top < canvasRect.bottom - 5) {{
+            issues.push(`Playback cluster top (${{playRect.top.toFixed(1)}}) is NOT below canvas bottom (${{canvasRect.bottom.toFixed(1)}})`);
+        }} else {{
+            checks.push(`Playback cluster (top=${{playRect.top.toFixed(1)}}) is strictly below canvas (bottom=${{canvasRect.bottom.toFixed(1)}})`);
+        }}
 
-            if (playStyle.order !== '0' || arrStyle.order !== '0' || setStyle.order !== '0') {{
-                issues.push(`Desktop CSS orders should be default '0', got play=${{playStyle.order}}, arr=${{arrStyle.order}}, set=${{setStyle.order}}`);
-            }} else {{
-                checks.push("Desktop CSS orders default to '0' (DOM order)");
-            }}
+        // 3. Array cluster is centered
+        const arrCenter = arrRect.left + arrRect.width / 2;
+        const arrCenterDiff = Math.abs(arrCenter - vpWidth / 2);
+        if (arrCenterDiff > 25) {{
+            issues.push(`Array cluster is off-center by ${{arrCenterDiff.toFixed(1)}}px (center=${{arrCenter.toFixed(1)}}, vpCenter=${{(vpWidth/2).toFixed(1)}})`);
+        }} else {{
+            checks.push(`Array cluster is centered (diff=${{arrCenterDiff.toFixed(1)}}px)`);
+        }}
+
+        // 4. Playback cluster is centered
+        const playCenter = playRect.left + playRect.width / 2;
+        const playCenterDiff = Math.abs(playCenter - vpWidth / 2);
+        if (playCenterDiff > 25) {{
+            issues.push(`Playback cluster is off-center by ${{playCenterDiff.toFixed(1)}}px (center=${{playCenter.toFixed(1)}}, vpCenter=${{(vpWidth/2).toFixed(1)}})`);
+        }} else {{
+            checks.push(`Playback cluster is centered (diff=${{playCenterDiff.toFixed(1)}}px)`);
+        }}
+
+        // 5. Zero horizontal overflow
+        if (scrollWidth > vpWidth + 2) {{
+            issues.push(`Horizontal overflow detected: scrollWidth=${{scrollWidth}}, vpWidth=${{vpWidth}}`);
+        }} else {{
+            checks.push(`Zero horizontal overflow (scrollWidth=${{scrollWidth}} <= vpWidth=${{vpWidth}})`);
         }}
     }}
 
     document.getElementById('results').textContent = JSON.stringify({{
-        page: '{page}',
-        viewport: '{name}',
-        width: {w},
-        height: {h},
-        isMobile: {is_mobile},
         passed: issues.length === 0,
-        checks: checks,
-        issues: issues
+        issues: issues,
+        checks: checks
     }});
 }});
 </script>
 </body>
-</html>
-"""
+</html>"""
 
-chrome_path = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
-if not os.path.exists(chrome_path):
-    chrome_path = r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"
+CHROME_PATH = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
+if not os.path.exists(CHROME_PATH):
+    alt_path = os.path.expanduser(r"~\AppData\Local\Google\Chrome\Application\chrome.exe")
+    if os.path.exists(alt_path):
+        CHROME_PATH = alt_path
 
 harness_file = os.path.join(os.path.dirname(__file__), "harness_controls_swap_test.html")
 
@@ -169,65 +129,51 @@ total_tests = 0
 passed_tests = 0
 
 for page in pages:
-    print(f"\n--- Testing Page: {page} ---")
-    for w, h, name, is_mobile in viewports:
+    print(f"\n--- Testing {page} across viewports ---")
+    for w, h, name, is_mob in viewports:
         total_tests += 1
-        harness_content = harness_template.format(
-            page=page,
-            w=w,
-            h=h,
-            name=name,
-            is_mobile="true" if is_mobile else "false"
-        )
         with open(harness_file, "w", encoding="utf-8") as f:
-            f.write(harness_content)
+            f.write(harness_template.format(page=page, w=w, h=h))
 
-        file_url = "file:///" + os.path.abspath(harness_file).replace("\\", "/")
         cmd = [
-            chrome_path,
+            CHROME_PATH,
             "--headless=new",
-            "--disable-gpu",
             "--no-sandbox",
+            "--disable-gpu",
             "--allow-file-access-from-files",
-            f"--window-size={w+60},{h+120}",
-            "--virtual-time-budget=2000",
+            f"--window-size={w + 40},{h + 80}",
+            "--virtual-time-budget=4000",
             "--dump-dom",
-            file_url
+            f"file:///{os.path.abspath(harness_file).replace(os.sep, '/')}"
         ]
 
-        try:
-            res = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="ignore", timeout=20)
-            dom = res.stdout
-            match = re.search(r'<div id="results">(\{.*?\})</div>', dom, re.DOTALL)
-            if match:
-                data = json.loads(match.group(1))
-                if data["passed"]:
-                    passed_tests += 1
-                    mode_label = "[MOBILE]" if is_mobile else "[DESKTOP]"
-                    print(f"  [PASS] {mode_label} {name}: {data['checks'][0]}")
-                else:
-                    all_passed = False
-                    print(f"  [FAIL] {name}:")
-                    for iss in data["issues"]:
-                        print(f"         - {iss}")
-            else:
-                all_passed = False
-                print(f"  [FAIL] {name}: Could not extract test results from Chrome output")
-        except Exception as e:
+        res = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="ignore")
+        m = re.search(r'<div id="results">(\{.*?\})</div>', res.stdout, re.DOTALL)
+
+        if not m:
+            print(f"  [FAIL] {name} ({page}): Could not extract test results JSON")
             all_passed = False
-            print(f"  [ERROR] {name}: {e}")
+            continue
+
+        data = json.loads(m.group(1))
+        if data["passed"]:
+            passed_tests += 1
+            print(f"  [PASS] {name}: Array above canvas, Playback below canvas, both centered, 0 overflow")
+        else:
+            all_passed = False
+            print(f"  [FAIL] {name}:")
+            for iss in data["issues"]:
+                print(f"         - {iss}")
 
 if os.path.exists(harness_file):
-    try:
-        os.remove(harness_file)
-    except:
-        pass
+    os.remove(harness_file)
 
 print("\n" + "=" * 70)
 if all_passed:
-    print(f"ALL CONTROLS SWAP TESTS PASSED ({passed_tests}/{total_tests})")
-    print("Mobile swapped positions verified (Array cluster first, Playback cluster second). Desktop untouched.")
+    print(f"ALL CONTROLS POSITIONING TESTS PASSED ({passed_tests}/{total_tests})")
+    print("Array cluster above visualizer, Merged Playback cluster below visualizer, both centered!")
+    print("=" * 70)
 else:
-    print(f"SOME TESTS FAILED ({passed_tests}/{total_tests} passed)")
+    print(f"SOME TESTS FAILED ({passed_tests}/{total_tests})")
+    print("=" * 70)
     sys.exit(1)
-

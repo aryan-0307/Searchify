@@ -262,7 +262,41 @@ Date: 2026-10-30T23:20:00
        - Clearance: 149.4px to 155.4px (exceeds 20px threshold)
   - Result: `ALL HEAP SORT LAYOUT VERIFICATIONS PASSED (100% PASS RATE)!`
 - **Master Regression Suite (`tests/run_all_tests.py`)**:
-  - Result: `ALL VERIFICATIONS COMPLETED SUCCESSFULLY (100% PASS RATE - 30/30 STAGES)`
+  - Result: `ALL VERIFICATIONS COMPLETED SUCCESSFULLY (100% PASS RATE - 31/31 STAGES)`
+
+---
+
+## 31. Merged Visualizer Controls Layout Verification
+
+### 1. Specification & Scope
+- **Top Controls Toolbar (Above Canvas)**:
+  - `<nav class="viz-controls">` positioned strictly before `.viz-canvas-wrapper`.
+  - Exclusively houses Array Configuration (`#generate-btn`, `#custom-array`, `#apply-custom-btn`, `#array-size`, `#size-value`, and `#target-input` on searching).
+  - Playback buttons (`#play-btn`, `#prev-btn`, `#next-btn`, `#reset-btn`, `#restart-btn`) and speed controls are excluded from the top bar.
+  - Centered horizontally across all viewports (`justify-content: center; margin: 0 auto;`).
+- **Bottom Controls Toolbar (Below Canvas)**:
+  - `<nav class="viz-controls-bottom">` positioned immediately after `.viz-canvas-wrapper` and before `.progress-section`.
+  - Merges Playback transport, Reset/Restart, Speed slider, and Sort order into `.merged-playback-cluster`.
+  - Centered horizontally across all viewports (`justify-content: center; margin: 0 auto;`).
+- **Geometric Verification**:
+  - `topRect.bottom <= canvasRect.top` (Top nav above canvas).
+  - `bottomRect.top >= canvasRect.bottom` (Bottom nav below canvas).
+  - Both top and bottom cluster center deviation from viewport center is within margin $\le 25$px (actual: $0$px).
+  - Zero horizontal overflow across all viewports from 320px to 1280px.
+
+### 2. Automated Test Execution Evidence
+- **Automated Test (`tests/verify_merged_visualizer_controls.py`)**:
+  - Tested Desktop 1280px, iPad 768px, Galaxy S23 412px, iPhone SE 375px across `sorting.html` and `searching.html` in headless Chrome.
+  - Output: `ALL MERGED VISUALIZER CONTROLS TESTS PASSED (100% PASS RATE)!`
+- **Controls Layout Test (`tests/verify_controls_layout.py`)**:
+  - Output: `ALL VISUALIZER CONTROLS LAYOUT VERIFICATIONS PASSED (100%)`
+- **Mobile Controls Swap Test (`tests/verify_mobile_controls_swap.py`)**:
+  - Tested 22 configurations (11 viewports $\times$ 2 pages).
+  - Output: `ALL CONTROLS POSITIONING TESTS PASSED (22/22)`
+- **Mobile Visualizer Stacking Test (`tests/verify_mobile_visualizer_layout.py`)**:
+  - Output: `ALL MOBILE VISUALIZER LAYOUT VERIFICATIONS PASSED (100%)`
+- **Master Regression Suite (`tests/run_all_tests.py`)**:
+  - Output: `ALL VERIFICATIONS COMPLETED SUCCESSFULLY (100% PASS RATE - 31/31 STAGES)`
 
 ---
 

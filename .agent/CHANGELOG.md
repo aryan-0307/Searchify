@@ -4,7 +4,34 @@ All notable changes to this project are documented in this file.
 
 ---
 
-## [2026-11-08 — Heap Sort Zero-Scroll & Layout Separation]
+## [2026-11-08 — Merged Visualizer Controls Layout Split]
+
+### Changed
+- **Visualizer Controls Layout Restructuring (`sorting.html` & `searching.html`)**:
+  - **Top Controls Toolbar (Above Visualizer Canvas)**:
+    - `<nav class="viz-controls">` now exclusively houses the Array configuration controls: `Generate` button, `Custom Array` text input, `Apply` button, `Size` slider, and `Target` input (searching).
+    - Playback buttons and speed controls have been removed from the top toolbar.
+    - Centered horizontally across all viewports (`justify-content: center; margin: 0 auto;`).
+  - **Bottom Controls Toolbar (Just Below Visualizer Canvas)**:
+    - Added `<nav class="viz-controls viz-controls-bottom">` immediately below `<section class="viz-canvas-wrapper">` and above `.progress-section`.
+    - Merged Playback controls (Start/Stop [Play/Pause `btn-play-prominent`], Step Prev, Step Next, Reset, Restart) and Speed control slider (`Speed: 1x` to `6x`) into a unified cockpit cluster (`.merged-playback-cluster`).
+    - In `sorting.html`, also includes the Sort Order toggle (`Asc` / `Desc`).
+    - Styled as an elevated soft-cream dock card with subtle borders, gentle box shadow, and elegant inline divider.
+    - Centered horizontally across all viewports (`justify-content: center; margin: 0 auto;`).
+- **Responsive Stacking & Mobile Behavior**:
+  - In `css/visualizer.css`:
+    - Desktop ($>860$px): Top and bottom controls render as sleek, single horizontal bars, perfectly centered on the page.
+    - Mobile ($\le 860$px): Both clusters wrap gracefully without horizontal overflow (`overflow-x: hidden`). Transport buttons, Reset/Restart, and Speed slider stack neatly with balanced spacing while remaining centered.
+
+### Verified
+- Created automated test `tests/verify_merged_visualizer_controls.py` testing Desktop (1280px), iPad (768px), Galaxy S23 (412px), and iPhone SE (375px) in headless Chrome:
+  - Verified DOM sequence: Top Array Nav $\to$ Visualizer Canvas $\to$ Bottom Merged Nav $\to$ Progress Section.
+  - Verified geometric placement: Top nav strictly above canvas, Bottom nav strictly below canvas.
+  - Verified horizontal centering: $0\text{px}$ deviation from viewport center.
+  - Verified interactive controls: Play/pause, step scrubbing, speed slider, generate, custom array apply.
+  - Result: **100% PASS RATE across all viewports**.
+- Updated `tests/verify_controls_layout.py` and `tests/verify_mobile_controls_swap.py` to match the new layout architecture (**100% pass rate**).
+- Integrated into master regression suite `tests/run_all_tests.py` as Stage 31 (**31/31 stages pass 100%**).
 
 ### Added
 - **Unconstrained Zero-Scroll Binary Heap Tree Panel**:
