@@ -4,22 +4,26 @@
 Extend Searchify's interactive Sorting Visualizer by implementing five additional sorting algorithms (Heap Sort, Shell Sort, Counting Sort, Radix Sort LSD, and Bucket Sort), while maintaining the existing vanilla HTML/CSS/JS architecture, design system, and full functionality across all 10 sorting algorithms and 2 searching algorithms.
 
 ## Current Phase
-Phase 45 — Restored Hands-On Bubble Sort Demo on Homepage
+Phase 46 — Spacing Refinement Between Navbar and Multi-Algorithm Showcase (`compare.html`)
 
 ## Status
 COMPLETE (IMPLEMENTED + VERIFIED)
 
 ## Current Task
-Restored the interactive "GET HANDS-ON: SEE THE SORT. FEEL THE LOGIC." Bubble Sort demo on `index.html`:
-1. Re-added `.home-quick-demo` section at the bottom of `index.html` directly before `<footer class="home-footer">`.
-2. Restored `#home-demo-bars`, `#home-demo-status`, `#home-demo-run` ("▶ Run Bubble Sort"), and `#home-demo-shuffle` ("↻ Shuffle values") powered by `js/home-demo.js`.
-3. Restored CSS styles in `css/home.css` matching the user reference screenshot with responsive mobile rules.
-4. Maintained Card 03 (`.compare-card`) in `.home-cards` linking to `compare.html`.
-5. Verified all 32 stages of `tests/run_all_tests.py` with 100% pass rate.
+Spacing refinement on `compare.html`:
+1. Root cause: On `compare.html`, `<main class="home-container compare-container">` had `padding-top: 0` from `.home-container` base rules, placing `.home-showcase-section` flush against `.home-nav` (0px gap).
+2. Solution: Added responsive padding-top rules targeting `.compare-container` and `.compare-page-body .home-container`:
+   - Desktop (>900px): `36px` gap
+   - Tablet (<=900px): `26px` gap
+   - Mobile (<=680px): `20px` gap
+   - Small Mobile (<=540px): `16px` gap
+3. Automated Testing:
+   - Added automated headless Chrome assertion in `tests/verify_multi_sort_showcase.py` measuring `#home-nav` and `#try-it` bounding rects and asserting gap >= 15px across all 4 viewports.
+   - Verified 100% pass across all 32 stages of `tests/run_all_tests.py`.
 
 ## Last Completed Task
-- **Minimalist Hero Showcase & Dedicated Comparison Laboratory (Phase 44)**:
-  - Created `compare.html` and Card 03 in `.home-cards`.
+- **Phase 45**: Restored Hands-On Bubble Sort Demo on Homepage.
+- **Phase 46**: Spacing Refinement Between Navbar and Multi-Algorithm Showcase on `compare.html`.
 
 ## Completed Work
 - Created `compare.html` hosting the complete interactive comparison showcase.

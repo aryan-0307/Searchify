@@ -4,6 +4,20 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## [2026-11-09 — Spacing Refinement Between Navbar and Multi-Algorithm Showcase (`compare.html`)]
+
+### Added
+- **Responsive Breathing Room on `compare.html`**:
+  - Implemented `.compare-page-body .home-container, .compare-container` spacing rules in `css/home.css`.
+  - Added 36px vertical clearance on desktop ($>900$px) between `.home-nav` and `.home-showcase-section`.
+  - Added 26px clearance on tablets ($\le 900$px).
+  - Added 20px clearance on mobile devices ($\le 680$px).
+  - Added 16px clearance on small mobile screens ($\le 540$px).
+- **Automated Regression Protection**:
+  - Enhanced `tests/verify_multi_sort_showcase.py` in Headless Chrome across all 4 viewports (Desktop 1280px, iPad 768px, Galaxy S23 412px, iPhone SE 375px) to measure the exact bounding client rects of `#home-nav` and `#try-it` and assert minimum gap $\ge 15$px.
+
+---
+
 ## [2026-11-09 — Restored Hands-On Bubble Sort Demo on Homepage]
 
 ### Added
