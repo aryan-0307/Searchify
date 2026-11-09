@@ -1,0 +1,26 @@
+{
+  "name": "searchify",
+  "version": "1.0.0",
+  "description": "Searchify is an interactive DSA laboratory. Explore searching and sorting algorithms through live animations, hands-on controls, and clear step-by-step explanations.",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aryan-0307/Searchify.git"
+  },
+  "keywords": [
+    "algorithms",
+    "data-structures",
+    "dsa",
+    "visualizer",
+    "sorting",
+    "searching"
+  ],
+  "author": "Searchify",
+  "license": "MIT",
+  "dependencies": {
+    "@vercel/speed-insights": "^1.1.0"
+  }
+}
