@@ -328,6 +328,7 @@ Date: 2026-10-30T23:20:00
 - **Automated Test (`tests/verify_multi_sort_showcase.py`)**:
   - Tested Desktop 1280px, iPad 768px, Galaxy S23 412px, and iPhone SE 375px in headless Chrome:
     - `index.html`: Card 03 (`.compare-card`) with `.compare-mini-viz` present: PASS
+    - `index.html`: Minimalist preview section `#try-it` with feature viz and launch CTA: PASS
     - `index.html`: Hands-on Bubble Sort quick demo section present: PASS
     - `index.html`: Heavy visualizer grid excluded from hero page: PASS
     - `index.html`: Zero horizontal overflow across all 4 viewports: PASS
@@ -349,6 +350,17 @@ Date: 2026-10-30T23:20:00
   - Output: `ALL PAGES LOADED CLEANLY WITH ZERO JS RUNTIME ERRORS!`
 - **Master Regression Suite (`tests/run_all_tests.py`)**:
   - Output: `ALL VERIFICATIONS COMPLETED SUCCESSFULLY (100% PASS RATE - 32/32 STAGES)`
+
+### 3. Spacing Refinement Verification (Phase 46)
+- **Automated Viewport Gap Measurement (`tests/verify_multi_sort_showcase.py`)**:
+  - Measured exact bounding client rectangles of `#home-nav` and `#try-it` on `compare.html`:
+    - Desktop 1280px: `GAP = 36px` ($\ge 15$px required) — PASS
+    - iPad 768px: `GAP = 26px` ($\ge 15$px required) — PASS
+    - Galaxy S23 412px: `GAP = 16px` ($\ge 15$px required) — PASS
+    - iPhone SE 375px: `GAP = 16px` ($\ge 15$px required) — PASS
+  - Output: `Navbar Gap: 36px (PASSED >= 15px)` on Desktop, `26px` on iPad, `16px` on Galaxy S23, `16px` on iPhone SE.
+  - Zero horizontal overflow across all viewports.
+  - 100% pass across all 32 stages of `tests/run_all_tests.py`.
 
 ---
 

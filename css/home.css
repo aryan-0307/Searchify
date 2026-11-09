@@ -3272,6 +3272,36 @@ body {
         }
     }
 
+    /* =========================================
+       Dedicated Comparison Showcase Spacing
+       Creates elegant breathing room between the sticky navbar and showcase container
+       ========================================= */
+    .compare-page-body .home-container,
+    .compare-container {
+        padding-top: 36px !important;
+    }
+
+    @media (max-width: 900px) {
+        .compare-page-body .home-container,
+        .compare-container {
+            padding-top: 26px !important;
+        }
+    }
+
+    @media (max-width: 680px) {
+        .compare-page-body .home-container,
+        .compare-container {
+            padding-top: 20px !important;
+        }
+    }
+
+    @media (max-width: 540px) {
+        .compare-page-body .home-container,
+        .compare-container {
+            padding-top: 16px !important;
+        }
+    }
+
     @media(prefers-reduced-motion:reduce) {
 
         .hero-live-dot,

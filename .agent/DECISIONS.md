@@ -306,3 +306,24 @@ Adopt Option 2:
 - Re-added the complete `.home-quick-demo` section to `index.html` anchored at `#try-it`.
 - Restored `#home-demo-bars`, `#home-demo-status`, `#home-demo-run` ("▶ Run Bubble Sort"), and `#home-demo-shuffle` ("↻ Shuffle values") powered by `js/home-demo.js`.
 - Re-added the dedicated `.home-quick-demo` CSS rules in `css/home.css` ensuring full visual fidelity with the reference image and zero horizontal overflow.
+
+## Decision 024
+Date: 2026-11-09
+Phase: Phase 46 — Spacing Refinement Between Navbar and Multi-Algorithm Showcase (`compare.html`)
+
+### Problem
+On `compare.html`, the top sticky navigation bar (`.home-nav`) was directly flush against the white showcase container card (`.home-showcase-section`), with literally 0px vertical clearance, creating a visually cramped boundary.
+
+### Options Considered
+1. **Global container top padding**: Add top padding directly to `.home-container`. Rejected because it would alter `index.html` where `.home-hero` already manages vertical spacing.
+2. **Page-scoped container top padding**: Use `.compare-container` and `.compare-page-body .home-container` to inject responsive top spacing specifically on `compare.html`:
+   - Desktop ($>900$px): `36px` gap
+   - Tablet ($\le 900$px): `26px` gap
+   - Mobile ($\le 680$px): `20px` gap
+   - Small Mobile ($\le 540$px): `16px` gap
+
+### Decision
+Adopt Option 2:
+- Added `.compare-page-body .home-container, .compare-container` rules in `css/home.css` with responsive breakpoints.
+- Guaranteed zero horizontal overflow across all viewports.
+- Enhanced `tests/verify_multi_sort_showcase.py` to assert $\ge 15$px clearance across desktop, tablet, and mobile in headless Chrome.

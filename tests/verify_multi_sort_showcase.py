@@ -149,12 +149,15 @@ window.addEventListener('load', async () => {{
     const results = {{}};
 
     // 1. Check responsive overflow of showcase section
+    const nav = doc.getElementById('home-nav');
+    const navRect = nav ? nav.getBoundingClientRect() : null;
     const showcase = doc.getElementById('try-it');
     const showcaseRect = showcase ? showcase.getBoundingClientRect() : null;
     results.hasHorizontalOverflow = (showcase && showcase.scrollWidth > showcase.clientWidth + 2) || (showcaseRect && showcaseRect.right > {vp['width']} + 2);
     results.showcaseScrollWidth = showcase ? showcase.scrollWidth : 0;
     results.showcaseClientWidth = showcase ? showcase.clientWidth : 0;
     results.viewportWidth = {vp['width']};
+    results.navbarGap = (navRect && showcaseRect) ? Math.round(showcaseRect.top - navRect.bottom) : 0;
 
     // 2. Initial state
     const grid = doc.getElementById('showcase-grid');
@@ -297,6 +300,8 @@ window.addEventListener('load', async () => {{
 
         print(f"  Showcase Section Overflow: {data['hasHorizontalOverflow']} (Showcase scrollWidth: {data.get('showcaseScrollWidth')}, clientWidth: {data.get('showcaseClientWidth')}, Viewport: {data['viewportWidth']})")
         assert not data["hasHorizontalOverflow"], f"Horizontal overflow detected in {vp['name']}!"
+        print(f"  Navbar Gap: {data.get('navbarGap')}px (PASSED >= 15px)")
+        assert data.get("navbarGap", 0) >= 15, f"Navbar gap too small ({data.get('navbarGap')}px) in {vp['name']}!"
 
         print(f"  Rendered chips: {data['renderedChipsCount']}")
         assert data["renderedChipsCount"] == 10, f"Expected 10 algorithm chips, got {data['renderedChipsCount']}"

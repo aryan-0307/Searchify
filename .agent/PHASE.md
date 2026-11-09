@@ -234,3 +234,19 @@ Tasks:
 - [x] Re-linked `js/home-demo.js` on `index.html`.
 - [x] Re-applied authentic Searchify design system styles in `css/home.css` (soft cream/white gradient card, Aalto Display heading, live pulse comparison highlight, sorted green, grid background, and responsive mobile adaptations).
 - [x] Verified full 32-stage automated test suite `tests/run_all_tests.py` passing 100%.
+
+---
+
+## Phase 46 — Spacing Refinement Between Navbar and Multi-Algorithm Showcase (`compare.html`)
+Status: COMPLETE (IMPLEMENTED + VERIFIED)
+
+Tasks:
+- [x] Analyze visual clearance between sticky navbar (`.home-nav`) and showcase container (`.home-showcase-section`, `.compare-container`) on `compare.html`.
+- [x] Implement responsive breathing room spacing in `css/home.css`:
+  - Desktop ($>900$px): `padding-top: 36px !important;` (gap = 36px)
+  - Tablet ($\le 900$px): `padding-top: 26px !important;` (gap = 26px)
+  - Mobile ($\le 680$px): `padding-top: 20px !important;` (gap = 20px)
+  - Small Mobile ($\le 540$px): `padding-top: 16px !important;` (gap = 16px)
+- [x] Maintain zero impact on `index.html`, `sorting.html`, and `searching.html`.
+- [x] Update headless Chrome automated test suite (`tests/verify_multi_sort_showcase.py`) to measure and assert strict minimum navbar gap ($\ge 15$px) across all viewports.
+- [x] Verify 100% pass rate across all 32 stages of `tests/run_all_tests.py`.
