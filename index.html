@@ -34,16 +34,29 @@
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="shortcut icon" href="favicon.ico">
+
+    <!-- Anti-FOUT (Flash of Unstyled Text) Shield -->
+    <script>
+        (function() {
+            if (document.fonts && document.fonts.status !== 'loaded') {
+                document.documentElement.classList.add('wf-loading');
+                Promise.race([
+                    document.fonts.ready,
+                    new Promise(function(r) { setTimeout(r, 250); })
+                ]).then(function() {
+                    document.documentElement.classList.remove('wf-loading');
+                });
+            }
+        })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap"
-        rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://db.onlinewebfonts.com" crossorigin>
+    <link rel="preload" href="https://db.onlinewebfonts.com/t/f6ec291f284d1c8ba5a1706ba94e4a9d.woff2" as="font" type="font/woff2" crossorigin>
     <link href="https://db.onlinewebfonts.com/c/f6ec291f284d1c8ba5a1706ba94e4a9d?family=Aalto+Display-Personal-use"
         rel="stylesheet" type="text/css">
     <link
-        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700;800&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400;500;600;700;800&display=block"
         rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/home.css">
