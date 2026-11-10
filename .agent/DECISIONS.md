@@ -327,3 +327,25 @@ Adopt Option 2:
 - Added `.compare-page-body .home-container, .compare-container` rules in `css/home.css` with responsive breakpoints.
 - Guaranteed zero horizontal overflow across all viewports.
 - Enhanced `tests/verify_multi_sort_showcase.py` to assert $\ge 15$px clearance across desktop, tablet, and mobile in headless Chrome.
+
+## Decision 025
+Date: 2026-11-10
+Phase: Phase 47 — Elimination of Initial Font Flash / FOUT (Flash of Unstyled Text)
+
+### Problem
+When loading the site for the first time or on cold cache, users noticed that text was initially rendered in default system fonts (such as Arial, Segoe UI, or Times New Roman) for a brief instant before suddenly snapping into custom web typography (`Aalto Display` and Google Fonts). This Flash of Unstyled Text (FOUT) caused a jarring visual reflow and disrupted the visual identity of Searchify.
+
+### Options Considered
+1. **Rely solely on system fonts**: Discard web fonts and use system fonts only. Rejected because Searchify's signature branding relies on `Aalto Display` for display headings and `Inter` / `Bricolage Grotesque` for clean UI components.
+2. **`font-display: swap` only**: Default modern web font behavior. Rejected because `swap` explicitly tells the browser to immediately show fallback fonts with a 0-second block period, guaranteeing a visible font swap whenever font download takes more than a few milliseconds.
+3. **Comprehensive Anti-FOUT Strategy**:
+   - Change `font-display: swap` to `font-display: block` across all `@font-face` definitions and Google Fonts URL queries, giving the browser a short block period to render text invisibly while web fonts download.
+   - Add `<link rel="preconnect">` and `<link rel="preload">` in `<head>` so font assets begin downloading concurrently during initial HTML parsing rather than waiting for CSS parsing and style matching.
+   - Implement a lightweight, inline fail-safe script in `<head>` that applies `.wf-loading { visibility: hidden; }` until `document.fonts.ready` resolves, with an automatic 250ms race fallback so text is never permanently blocked on poor connections.
+
+### Decision
+Adopt Option 3:
+- Configured `font-display: block` in `css/style.css` and all HTML Google Font links.
+- Added preconnect and `.woff2` font preload tags in `index.html`, `compare.html`, `sorting.html`, and `searching.html`.
+- Implemented the inline anti-FOUT flash shield script in `<head>` across all pages with a 250ms maximum timeout guarantee.
+- Validated that text renders seamlessly without font flicker and all 32 verification stages pass 100%.

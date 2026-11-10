@@ -1,7 +1,6 @@
 /* ============================================
    AlgoViz — Global Styles (Playground Edition)
    ============================================ */
-
 :root {
     /* Pantone-inspired Palette */
     --warm-ivory: #F5F3ED;
@@ -95,7 +94,7 @@
         url('https://db.onlinewebfonts.com/t/f6ec291f284d1c8ba5a1706ba94e4a9d.ttf') format('truetype');
     font-weight: 400 900;
     font-style: normal;
-    font-display: swap;
+    font-display: block;
 }
 
 @font-face {
@@ -107,7 +106,12 @@
         url('https://db.onlinewebfonts.com/t/f6ec291f284d1c8ba5a1706ba94e4a9d.ttf') format('truetype');
     font-weight: 400 900;
     font-style: normal;
-    font-display: swap;
+    font-display: block;
+}
+
+/* === Anti-FOUT (Flash of Unstyled Text) Shield === */
+.wf-loading {
+    visibility: hidden;
 }
 
 /* === Reset === */

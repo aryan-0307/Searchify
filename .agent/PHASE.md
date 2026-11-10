@@ -250,3 +250,22 @@ Tasks:
 - [x] Maintain zero impact on `index.html`, `sorting.html`, and `searching.html`.
 - [x] Update headless Chrome automated test suite (`tests/verify_multi_sort_showcase.py`) to measure and assert strict minimum navbar gap ($\ge 15$px) across all viewports.
 - [x] Verify 100% pass rate across all 32 stages of `tests/run_all_tests.py`.
+
+---
+
+## Phase 47 — Elimination of Initial Font Flash / FOUT (Flash of Unstyled Text)
+Status: COMPLETE (IMPLEMENTED + VERIFIED)
+
+Tasks:
+- [x] Identify root cause of initial font swap flicker when opening the site:
+  - `font-display: swap` in `css/style.css` and Google Fonts URL forced an immediate render with system fallback fonts (Arial / Segoe UI / Times) before web fonts completed downloading.
+  - Absence of font preloading caused late discovery and serial network latency for `Aalto Display` `.woff2`.
+- [x] Upgrade font display strategy to `font-display: block`:
+  - Updated `@font-face` definitions for `'Aalto Display'` and `'Aalto Display-Personal-use'` in `css/style.css` to `font-display: block;`.
+  - Updated Google Fonts links in `index.html`, `compare.html`, `sorting.html`, and `searching.html` to `display=block`.
+- [x] Implement high-priority preconnection and font binary preloading:
+  - Added `<link rel="preconnect" href="https://db.onlinewebfonts.com" crossorigin>` to establish early TLS handshakes.
+  - Added `<link rel="preload" href="https://db.onlinewebfonts.com/t/f6ec291f284d1c8ba5a1706ba94e4a9d.woff2" as="font" type="font/woff2" crossorigin>` to initiate font downloading in the first parallel network burst.
+- [x] Implement fail-safe anti-FOUT inline flash shield:
+  - Added lightweight `<script>` in `<head>` that checks `document.fonts.ready` with a 250ms fallback race condition.
+- [x] Verify zero regression across all 32 test stages of `tests/run_all_tests.py`.

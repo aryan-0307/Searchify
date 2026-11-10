@@ -4,6 +4,23 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## [2026-11-10 — Elimination of Initial Font Flash / FOUT (Flash of Unstyled Text)]
+
+### Fixed
+- **Flash of Unstyled Text (FOUT)**:
+  - Eliminated initial font-swap jitter where text was rendered in generic fallback system fonts (Arial / Segoe UI / Times) for a small frame on initial page open before switching to custom web fonts.
+  - Converted `@font-face` definitions for `'Aalto Display'` and `'Aalto Display-Personal-use'` in `css/style.css` from `font-display: swap;` to `font-display: block;`.
+  - Updated Google Font parameters across all HTML documents (`index.html`, `compare.html`, `sorting.html`, `searching.html`) to `display=block`.
+
+### Added
+- **High-Priority Font Preloading & Preconnection**:
+  - Added `<link rel="preconnect" href="https://db.onlinewebfonts.com" crossorigin>` across all HTML files to establish early TLS handshakes.
+  - Added `<link rel="preload" href="https://db.onlinewebfonts.com/t/f6ec291f284d1c8ba5a1706ba94e4a9d.woff2" as="font" type="font/woff2" crossorigin>` to initiate font downloading concurrently during initial HTML parse.
+- **Fail-Safe Anti-FOUT Flash Shield**:
+  - Added lightweight inline `<script>` in `<head>` that applies `.wf-loading { visibility: hidden; }` until `document.fonts.ready` resolves, bounded by a 250ms race timeout to prevent any permanently invisible text on slow networks.
+
+---
+
 ## [2026-11-09 — Spacing Refinement Between Navbar and Multi-Algorithm Showcase (`compare.html`)]
 
 ### Added

@@ -4,26 +4,31 @@
 Extend Searchify's interactive Sorting Visualizer by implementing five additional sorting algorithms (Heap Sort, Shell Sort, Counting Sort, Radix Sort LSD, and Bucket Sort), while maintaining the existing vanilla HTML/CSS/JS architecture, design system, and full functionality across all 10 sorting algorithms and 2 searching algorithms.
 
 ## Current Phase
-Phase 46 — Spacing Refinement Between Navbar and Multi-Algorithm Showcase (`compare.html`)
+Phase 47 — Elimination of Initial Font Flash / FOUT (Flash of Unstyled Text)
 
 ## Status
 COMPLETE (IMPLEMENTED + VERIFIED)
 
 ## Current Task
-Spacing refinement on `compare.html`:
-1. Root cause: On `compare.html`, `<main class="home-container compare-container">` had `padding-top: 0` from `.home-container` base rules, placing `.home-showcase-section` flush against `.home-nav` (0px gap).
-2. Solution: Added responsive padding-top rules targeting `.compare-container` and `.compare-page-body .home-container`:
-   - Desktop (>900px): `36px` gap
-   - Tablet (<=900px): `26px` gap
-   - Mobile (<=680px): `20px` gap
-   - Small Mobile (<=540px): `16px` gap
-3. Automated Testing:
-   - Added automated headless Chrome assertion in `tests/verify_multi_sort_showcase.py` measuring `#home-nav` and `#try-it` bounding rects and asserting gap >= 15px across all 4 viewports.
-   - Verified 100% pass across all 32 stages of `tests/run_all_tests.py`.
+Elimination of Initial Font Flash (FOUT) across the entire site:
+1. Root cause:
+   - Initial site visit was rendering typography in generic fallback system fonts (Arial / Segoe UI / Times) for a small frame before swapping into custom web fonts (`Aalto Display` and Google Fonts), causing noticeable visual reflow and text flicker.
+   - `font-display: swap` in `@font-face` and Google Font URLs instructs the browser to immediately render fallbacks with 0s block period.
+   - Font binaries (`.woff2`) were discovered late during CSS parsing due to lack of `<link rel="preload">`.
+   - External font host `db.onlinewebfonts.com` was missing `<link rel="preconnect">`.
+2. Solution:
+   - Upgraded font display strategy to `font-display: block;` in `css/style.css` and Google Font query parameters across all pages (`index.html`, `compare.html`, `sorting.html`, `searching.html`).
+   - Added high-priority preconnection `<link rel="preconnect" href="https://db.onlinewebfonts.com" crossorigin>`.
+   - Added parallel font preloading `<link rel="preload" href="https://db.onlinewebfonts.com/t/f6ec291f284d1c8ba5a1706ba94e4a9d.woff2" as="font" type="font/woff2" crossorigin>`.
+   - Added lightweight inline anti-FOUT flash shield in `<head>` applying `.wf-loading { visibility: hidden; }` until `document.fonts.ready` resolves (with 250ms race fallback timeout).
+3. Automated Testing & Verification:
+   - Verified that font display is set to `block` and preloads exist on all pages.
+   - Headless Chrome tests confirmed zero FOUT, zero console errors, zero layout shifts.
+   - Verified 100% pass rate across all 32 stages of `tests/run_all_tests.py` (644/644 unit tests pass).
 
 ## Last Completed Task
-- **Phase 45**: Restored Hands-On Bubble Sort Demo on Homepage.
 - **Phase 46**: Spacing Refinement Between Navbar and Multi-Algorithm Showcase on `compare.html`.
+- **Phase 47**: Elimination of Initial Font Flash / FOUT (Flash of Unstyled Text).
 
 ## Completed Work
 - Created `compare.html` hosting the complete interactive comparison showcase.
