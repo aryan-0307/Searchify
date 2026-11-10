@@ -10,6 +10,7 @@
     background-color: var(--bg-primary);
 }
 
+
 /* === Refined Header with Subtitle (Sticky Top Navbar) === */
 .viz-header {
     position: sticky;
@@ -258,6 +259,7 @@
 }
 
 @media (min-width: 1320px) {
+
     .viz-controls,
     .viz-controls-top,
     .viz-controls-bottom {
@@ -274,6 +276,7 @@
 }
 
 @media (max-width: 1319px) and (min-width: 861px) {
+
     .viz-controls,
     .viz-controls-top,
     .viz-controls-bottom {
@@ -1432,6 +1435,7 @@
         opacity: 0;
         transform: translateY(-6px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);

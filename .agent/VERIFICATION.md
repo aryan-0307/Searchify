@@ -362,6 +362,39 @@ Date: 2026-10-30T23:20:00
   - Zero horizontal overflow across all viewports.
   - 100% pass across all 32 stages of `tests/run_all_tests.py`.
 
+### 4. Bricolage Grotesque Headings & Global Typography Fix (Phase 48)
+- **Computed Font Probe via Headless Chrome (`scratch/probe_fonts.py`)**:
+  - Measured live computed styles across all key DOM elements:
+    - `index.html`:
+      - `body` -> `font-family: "Bricolage Grotesque", ...` (weight: 500)
+      - `.hero-copy h1` -> `font-family: "Bricolage Grotesque", "Aalto Display", ...` (weight: 800)
+      - `.home-brand-logo` -> `font-family: "Bricolage Grotesque", "Aalto Display", ...` (weight: 800)
+      - `.card-title` -> `font-family: "Bricolage Grotesque", "Aalto Display", ...` (weight: 700)
+      - `.brand-mark` -> `font-family: "Bricolage Grotesque", "Aalto Display", ...` (weight: 800)
+      - `.section-heading h2` -> `font-family: "Bricolage Grotesque", "Aalto Display", ...` (weight: 800)
+      - `.home-demo-heading h2` -> `font-family: "Bricolage Grotesque", "Aalto Display", ...` (weight: 800)
+      - `.footer-brand` -> `font-family: "Bricolage Grotesque", "Aalto Display", ...` (weight: 800)
+      - `.hero-description` -> `font-family: "Bricolage Grotesque", ...` (weight: 500)
+      - `.nav-cta` -> `font-family: "Bricolage Grotesque", ...` (weight: 700)
+    - `sorting.html`:
+      - `body` -> `font-family: "Bricolage Grotesque", ...` (weight: 500)
+      - `.viz-title` -> `font-family: "Bricolage Grotesque", "Aalto Display", ...` (weight: 700)
+      - `.complexity-algo-name` -> `font-family: "Bricolage Grotesque", "Aalto Display", ...` (weight: 800)
+    - `searching.html`:
+      - `body` -> `font-family: "Bricolage Grotesque", ...` (weight: 500)
+      - `.viz-title` -> `font-family: "Bricolage Grotesque", "Aalto Display", ...` (weight: 700)
+      - `.complexity-algo-name` -> `font-family: "Bricolage Grotesque", "Aalto Display", ...` (weight: 800)
+    - `compare.html`:
+      - `body` -> `font-family: "Bricolage Grotesque", ...` (weight: 500)
+- **Regression Suite Evidence**:
+  - `tests/verify_font_family.py`: `ALL AALTO DISPLAY FONT VERIFICATIONS PASSED (100%)`
+  - `tests/verify_searchify_size_and_weight.py`: `ALL SEARCHIFY FONT SIZE & PRIMARY FONT WEIGHT CHECKS PASSED (100%)`
+  - `tests/verify_space_physics_and_spacing.py`: `ALL AALTO DISPLAY LETTER-SPACING & SPACE PHYSICS TESTS PASSED (100%)`
+  - `tests/verify_homepage.py`: `HOMEPAGE TRANSFORMATION VERIFICATION COMPLETED (100% PASS)`
+  - `tests/verify_header_title_centering.py`: `ALL HEADER TITLE CENTERING VERIFICATIONS PASSED (100%)`
+  - `tests/verify_multi_sort_showcase.py`: `ALL MULTI-ALGORITHM SHOWCASE VERIFICATIONS PASSED (100%)`
+  - `tests/run_all_tests.py`: `ALL VERIFICATIONS COMPLETED SUCCESSFULLY (100% PASS RATE - 32/32 STAGES)`
+
 ---
 
 ## Known Limitations
