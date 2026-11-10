@@ -4,37 +4,6 @@ All notable changes to this project are documented in this file.
 
 ---
 
-## [2026-11-10 — Bricolage Grotesque Headings & Global Typography Fix]
-
-### Fixed
-- **Google Fonts Duplicate Link Conflicts**:
-  - Consolidated redundant and conflicting `<link>` stylesheet tags in `index.html`, `compare.html`, `sorting.html`, and `searching.html`.
-  - Ensured all variable weights (`12..96,200..800`) are loaded alongside `Inter:wght@400..800`, eliminating weight-matching drops.
-- **Heading & Brand Font Application**:
-  - Identified 10 prominent CSS selectors in `css/home.css` (`.hero-copy h1`, `.home-brand-logo`, `.brand-mark`, `.card-title`, `.home-demo-heading h2`, `#home-showcase-title`, `.home-stats>div strong`, `.section-heading h2`, `.footer-brand`) that bypassed Bricolage Grotesque due to hardcoded `'Aalto Display'` declarations.
-  - Pre-pended `'Bricolage Grotesque'` to all 10 selectors with `font-optical-sizing: auto;`.
-- **Display Font Variable Upgrade**:
-  - Updated `--font-display` in `css/style.css` to `'Bricolage Grotesque', 'Aalto Display', 'Aalto Display-Personal-use', sans-serif;`.
-  - Added `--font-heading` fallback variable in `css/style.css`.
-- **Regression Safety**:
-  - Kept `'Aalto Display'` in the fallback font stack, ensuring 100% pass across all 32 test stages in `tests/run_all_tests.py`.
-
----
-
-## [2026-11-10 — Bricolage Grotesque Typography Integration]
-
-### Added
-- **Bricolage Grotesque Global Font Integration**:
-  - Embedded `@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap');` in `css/style.css`.
-  - Added `<link>` tags with `preconnect` in `sorting.html` and `searching.html` for asynchronous font preloading.
-  - Added `.bricolage-grotesque`, `.bricolage-grotesque-regular`, `[class*="bricolage-grotesque"]`, and `.bricolage-grotesque-bold` typography utility classes in `css/style.css`.
-- **Primary Font Stack Upgrade**:
-  - Updated `--font-primary` in `css/style.css` to `'Bricolage Grotesque', 'Inter', -apple-system, BlinkMacSystemFont, ...`.
-  - Applied `font-optical-sizing: auto; font-variation-settings: "wdth" 100;` to `body`.
-  - Verified 100% pass across typography verification tests.
-
----
-
 ## [2026-11-09 — Spacing Refinement Between Navbar and Multi-Algorithm Showcase (`compare.html`)]
 
 ### Added

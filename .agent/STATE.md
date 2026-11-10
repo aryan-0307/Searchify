@@ -4,50 +4,52 @@
 Extend Searchify's interactive Sorting Visualizer by implementing five additional sorting algorithms (Heap Sort, Shell Sort, Counting Sort, Radix Sort LSD, and Bucket Sort), while maintaining the existing vanilla HTML/CSS/JS architecture, design system, and full functionality across all 10 sorting algorithms and 2 searching algorithms.
 
 ## Current Phase
-Phase 48 — Bricolage Grotesque Headings & Global Typography Fix
+Phase 46 — Spacing Refinement Between Navbar and Multi-Algorithm Showcase (`compare.html`)
 
 ## Status
 COMPLETE (IMPLEMENTED + VERIFIED)
 
 ## Current Task
-Bricolage Grotesque Headings & Global Typography Fix:
-1. Consolidated Google Fonts `<link>` tags across `index.html`, `compare.html`, `sorting.html`, and `searching.html` to eliminate conflicting weight definitions and load variable `opsz,wght@12..96,200..800` alongside `Inter:wght@400..800`.
-2. Updated `--font-display` in `css/style.css` to `'Bricolage Grotesque', 'Aalto Display', 'Aalto Display-Personal-use', sans-serif;` and added `--font-heading`.
-3. In `css/home.css`, updated all 10 heading/brand selectors (`.hero-copy h1`, `.home-brand-logo`, `.brand-mark`, `.card-title`, `.home-demo-heading h2`, `#home-showcase-title`, `.home-stats>div strong`, `.section-heading h2`, `.footer-brand`) to prepend `'Bricolage Grotesque'` with `font-optical-sizing: auto;`.
-4. Verified via headless Chrome probe that all headings, brand marks, and titles compute and render with `Bricolage Grotesque`.
-5. Verified 100% pass rate across all 32 stages of `tests/run_all_tests.py`.
+Spacing refinement on `compare.html`:
+1. Root cause: On `compare.html`, `<main class="home-container compare-container">` had `padding-top: 0` from `.home-container` base rules, placing `.home-showcase-section` flush against `.home-nav` (0px gap).
+2. Solution: Added responsive padding-top rules targeting `.compare-container` and `.compare-page-body .home-container`:
+   - Desktop (>900px): `36px` gap
+   - Tablet (<=900px): `26px` gap
+   - Mobile (<=680px): `20px` gap
+   - Small Mobile (<=540px): `16px` gap
+3. Automated Testing:
+   - Added automated headless Chrome assertion in `tests/verify_multi_sort_showcase.py` measuring `#home-nav` and `#try-it` bounding rects and asserting gap >= 15px across all 4 viewports.
+   - Verified 100% pass across all 32 stages of `tests/run_all_tests.py`.
 
 ## Last Completed Task
-- **Phase 47**: Bricolage Grotesque Typography Integration (Base & Utilities).
-- **Phase 48**: Bricolage Grotesque Headings & Global Typography Fix.
+- **Phase 45**: Restored Hands-On Bubble Sort Demo on Homepage.
+- **Phase 46**: Spacing Refinement Between Navbar and Multi-Algorithm Showcase on `compare.html`.
 
 ## Completed Work
-- Consolidated Google Fonts stylesheet `<link>` tags across all 4 HTML pages.
-- Updated `--font-primary`, `--font-display`, and `--font-heading` variables in `css/style.css`.
-- Pre-pended `'Bricolage Grotesque'` to all 10 heading and brand selectors in `css/home.css`.
-- Preserved fallback compatibility with `'Aalto Display'` ensuring regression suite stability.
-- Verified 100% pass across all 32 test stages in `tests/run_all_tests.py`.
+- Created `compare.html` hosting the complete interactive comparison showcase.
+- Integrated Card 03 (`.compare-card`) and `.compare-mini-viz` into `index.html`.
+- Updated `index.html` showcase section to `.home-showcase-minimal` with `.showcase-feature-viz` and launch CTA.
+- Added responsive styling and animations in `css/home.css`.
+- Updated `tests/verify_multi_sort_showcase.py`, `tests/check_console_errors.py`, and `tests/verify_semantic_seo.py`.
+- Verified 100% pass rate across all 32 stages of `tests/run_all_tests.py`.
 
 ## Files Modified
 - `index.html`
-- `compare.html`
-- `sorting.html`
-- `searching.html`
-- `css/style.css`
+- `compare.html` (created)
 - `css/home.css`
+- `tests/verify_multi_sort_showcase.py`
+- `tests/check_console_errors.py`
+- `tests/verify_semantic_seo.py`
 - `.agent/STATE.md`
 - `.agent/CHANGELOG.md`
+- `.agent/PHASE.md`
 - `.agent/DECISIONS.md`
 - `.agent/VERIFICATION.md`
 
 ## Tests
-- Font family probe (`scratch/probe_fonts.py`): **PASS (All elements resolve to "Bricolage Grotesque")**
-- Aalto Display font verification (`tests/verify_font_family.py`): **PASS (100% across index, sorting, searching)**
-- Searchify font size and weight (`tests/verify_searchify_size_and_weight.py`): **PASS (100% across all pages)**
-- Space physics and letter spacing (`tests/verify_space_physics_and_spacing.py`): **PASS (100%)**
-- Homepage verification (`tests/verify_homepage.py`): **PASS (100%)**
-- Header title centering (`tests/verify_header_title_centering.py`): **PASS (100%)**
-- Multi-algorithm showcase (`tests/verify_multi_sort_showcase.py`): **PASS (100% across 4 viewports)**
+- Multi-Algorithm Sorting Comparison Showcase verification (`tests/verify_multi_sort_showcase.py`): **PASS (100% across index.html and compare.html for Desktop, iPad, Galaxy S23, iPhone SE)**
+- Semantic HTML & SEO verification (`tests/verify_semantic_seo.py`): **PASS (100% across index, sorting, searching, compare)**
+- Zero JavaScript console errors (`tests/check_console_errors.py`): **PASS (100% across all 5 pages)**
 - Full master test suite (`tests/run_all_tests.py`): **PASS (32/32 stages pass 100%)**
 
 ## Build Status

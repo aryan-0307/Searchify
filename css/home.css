@@ -49,12 +49,11 @@ body {
 }
 
 .home-brand-logo {
-    font-family: 'Bricolage Grotesque', 'Aalto Display', 'Aalto Display-Personal-use', sans-serif;
+    font-family: 'Aalto Display', 'Aalto Display-Personal-use', sans-serif;
     font-weight: 800;
     font-size: 25px;
     color: var(--royal-blue);
     letter-spacing: 0.025em;
-    font-optical-sizing: auto;
 }
 
 .home-brand-dot {
@@ -146,14 +145,13 @@ body {
 }
 
 .card-title {
-    font-family: 'Bricolage Grotesque', 'Aalto Display', 'Aalto Display-Personal-use', sans-serif;
+    font-family: 'Aalto Display', 'Aalto Display-Personal-use', sans-serif;
     font-size: 32px;
     font-weight: 700;
     color: var(--royal-blue);
     letter-spacing: 0.025em;
     line-height: 1.1;
     transition: color 0.25s ease;
-    font-optical-sizing: auto;
 }
 
 .card-algo-tag {
@@ -747,14 +745,12 @@ body {
     }
 
     .home-demo-heading h2 {
-        font-family: 'Bricolage Grotesque', 'Aalto Display', 'Aalto Display-Personal-use', sans-serif;
-        font-size: 26px;
-        font-weight: 800;
+        font: 800 26px 'Aalto Display', 'Aalto Display-Personal-use', sans-serif;
+        font-family: 'Aalto Display', 'Aalto Display-Personal-use', sans-serif;
         color: var(--royal-blue);
         letter-spacing: 0.03em;
         margin: 2px 0 6px;
         line-height: 1.25;
-        font-optical-sizing: auto;
     }
 
     .home-demo-heading p {
@@ -916,14 +912,12 @@ body {
 
     #home-showcase-title,
     .home-demo-heading h2 {
-        font-family: 'Bricolage Grotesque', 'Aalto Display', 'Aalto Display-Personal-use', sans-serif;
-        font-size: 26px;
-        font-weight: 800;
+        font: 800 26px 'Aalto Display', 'Aalto Display-Personal-use', sans-serif;
+        font-family: 'Aalto Display', 'Aalto Display-Personal-use', sans-serif;
         color: var(--royal-blue);
         letter-spacing: 0.03em;
         margin: 2px 0 6px;
         line-height: 1.25;
-        font-optical-sizing: auto;
     }
 
     .home-showcase-subtitle {
@@ -2121,10 +2115,7 @@ body {
         border-radius: 12px;
         background: var(--royal-blue);
         color: #fff;
-        font-family: 'Bricolage Grotesque', 'Aalto Display', 'Aalto Display-Personal-use', sans-serif;
-        font-weight: 800;
-        font-size: 20px;
-        font-optical-sizing: auto;
+        font: 800 20px 'Aalto Display', 'Aalto Display-Personal-use', sans-serif;
         letter-spacing: 0.02em;
         box-shadow: 0 4px 12px rgba(34, 77, 149, .2);
         flex-shrink: 0;
@@ -2181,8 +2172,7 @@ body {
         letter-spacing: 0.025em;
         color: var(--royal-blue);
         font-weight: 800;
-        font-family: 'Bricolage Grotesque', 'Aalto Display', 'Aalto Display-Personal-use', sans-serif;
-        font-optical-sizing: auto;
+        font-family: 'Aalto Display', 'Aalto Display-Personal-use', sans-serif;
         transition: color 0.2s ease;
     }
 
@@ -2297,14 +2287,10 @@ body {
     }
 
     .hero-copy h1 {
-        font-family: 'Bricolage Grotesque', 'Aalto Display', 'Aalto Display-Personal-use', sans-serif;
-        font-weight: 800;
-        font-size: clamp(43px, 5.4vw, 70px);
-        line-height: 1.08;
+        font: 800 clamp(43px, 5.4vw, 70px)/1.08 'Aalto Display', 'Aalto Display-Personal-use', sans-serif;
         letter-spacing: 0.035em;
         color: #20283A;
         margin: 22px 0 18px;
-        font-optical-sizing: auto;
     }
 
     /* === Zero-Gravity Space Physics Floating Typography === */
@@ -2836,12 +2822,9 @@ body {
     }
 
     .home-stats>div strong {
-        font-family: 'Bricolage Grotesque', 'Aalto Display', 'Aalto Display-Personal-use', sans-serif;
-        font-weight: 800;
-        font-size: 25px;
+        font: 800 25px 'Aalto Display', 'Aalto Display-Personal-use', sans-serif;
         letter-spacing: 0.025em;
-        color: var(--royal-blue);
-        font-optical-sizing: auto;
+        color: var(--royal-blue)
     }
 
     .home-stats>div span {
@@ -2874,14 +2857,10 @@ body {
     }
 
     .section-heading h2 {
-        font-family: 'Bricolage Grotesque', 'Aalto Display', 'Aalto Display-Personal-use', sans-serif;
-        font-weight: 800;
-        font-size: clamp(27px, 3vw, 38px);
-        line-height: 1.15;
+        font: 800 clamp(27px, 3vw, 38px)/1.15 'Aalto Display', 'Aalto Display-Personal-use', sans-serif;
         letter-spacing: 0.03em;
         color: #252B3A;
-        margin: 8px 0 0;
-        font-optical-sizing: auto;
+        margin: 8px 0 0
     }
 
     .section-heading h2 span {
@@ -3010,13 +2989,10 @@ body {
     }
 
     .footer-brand {
-        font-family: 'Bricolage Grotesque', 'Aalto Display', 'Aalto Display-Personal-use', sans-serif;
-        font-weight: 800;
-        font-size: 25px;
+        font: 800 25px 'Aalto Display', 'Aalto Display-Personal-use', sans-serif;
         letter-spacing: 0.025em;
         color: var(--royal-blue);
-        text-decoration: none;
-        font-optical-sizing: auto;
+        text-decoration: none
     }
 
     .footer-brand span {
