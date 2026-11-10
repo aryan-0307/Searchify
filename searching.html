@@ -37,13 +37,13 @@
 
     <!-- Anti-FOUT (Flash of Unstyled Text) Shield -->
     <script>
-        (function() {
+        (function () {
             if (document.fonts && document.fonts.status !== 'loaded') {
                 document.documentElement.classList.add('wf-loading');
                 Promise.race([
                     document.fonts.ready,
-                    new Promise(function(r) { setTimeout(r, 250); })
-                ]).then(function() {
+                    new Promise(function (r) { setTimeout(r, 250); })
+                ]).then(function () {
                     document.documentElement.classList.remove('wf-loading');
                 });
             }
@@ -52,7 +52,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://db.onlinewebfonts.com" crossorigin>
-    <link rel="preload" href="https://db.onlinewebfonts.com/t/f6ec291f284d1c8ba5a1706ba94e4a9d.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://db.onlinewebfonts.com/t/f6ec291f284d1c8ba5a1706ba94e4a9d.woff2" as="font"
+        type="font/woff2" crossorigin>
     <link href="https://db.onlinewebfonts.com/c/f6ec291f284d1c8ba5a1706ba94e4a9d?family=Aalto+Display-Personal-use"
         rel="stylesheet" type="text/css">
     <link
@@ -131,14 +132,14 @@
 
                 <!-- Color Legend (Cell State / Array Status Conditions) -->
                 <aside class="color-legend" aria-label="Cell state color legend">
-                    <span class="legend-item"><span class="legend-dot"
-                            style="background: var(--color-default)"></span> Default</span>
-                    <span class="legend-item"><span class="legend-dot"
-                            style="background: var(--color-current)"></span> Current</span>
-                    <span class="legend-item"><span class="legend-dot"
-                            style="background: var(--color-checked)"></span> Checked</span>
-                    <span class="legend-item"><span class="legend-dot"
-                            style="background: var(--color-found)"></span> Found</span>
+                    <span class="legend-item"><span class="legend-dot" style="background: var(--color-default)"></span>
+                        Default</span>
+                    <span class="legend-item"><span class="legend-dot" style="background: var(--color-current)"></span>
+                        Current</span>
+                    <span class="legend-item"><span class="legend-dot" style="background: var(--color-checked)"></span>
+                        Checked</span>
+                    <span class="legend-item"><span class="legend-dot" style="background: var(--color-found)"></span>
+                        Found</span>
                 </aside>
 
                 <!-- Right: 20% Live Code (Trace) Demonstration Area -->
@@ -171,13 +172,14 @@
 
             <!-- Merged Playback & Speed Controls (Just Below the Visualizer Canvas) -->
             <nav class="viz-controls viz-controls-bottom" aria-label="Playback and animation settings">
-                <section class="controls-cluster playback-cluster merged-playback-cluster" aria-label="Playback and animation controls">
+                <section class="controls-cluster playback-cluster merged-playback-cluster"
+                    aria-label="Playback and animation controls">
                     <!-- Playback Transport Buttons (Prev, Play/Pause [Start/Stop], Next) -->
                     <div class="playback-btn-group transport-group">
                         <button id="prev-btn" class="btn btn-icon" title="Previous Step (Left Arrow)"
                             aria-label="Previous step">&#9664;</button>
-                        <button id="play-btn" class="btn btn-icon btn-play btn-play-prominent" title="Play / Pause (Space)"
-                            aria-label="Play">&#9654;</button>
+                        <button id="play-btn" class="btn btn-icon btn-play btn-play-prominent"
+                            title="Play / Pause (Space)" aria-label="Play">&#9654;</button>
                         <button id="next-btn" class="btn btn-icon" title="Next Step (Right Arrow)"
                             aria-label="Next step">&#9654;</button>
                     </div>
@@ -194,7 +196,8 @@
                     <div class="settings-cluster-inline settings-cluster" aria-label="Animation settings">
                         <div class="control-item speed-control-item">
                             <label for="speed-slider">Speed: <span id="speed-value">1x</span></label>
-                            <input type="range" id="speed-slider" min="1" max="6" value="1" aria-label="Animation speed">
+                            <input type="range" id="speed-slider" min="1" max="6" value="1"
+                                aria-label="Animation speed">
                         </div>
                     </div>
                 </section>
