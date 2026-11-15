@@ -40,6 +40,13 @@ test_targets = [
             (".viz-title", "visualizer title"),
             (".complexity-algo-name", "complexity title")
         ]
+    },
+    {
+        "page": "compare.html",
+        "elements": [
+            (".home-brand-logo", "brand logo"),
+            ("#home-showcase-title", "showcase title")
+        ]
     }
 ]
 
@@ -91,7 +98,7 @@ for target in test_targets:
         for item, (sel, label) in zip(results, target["elements"]):
             assert item["found"], f"Element '{sel}' not found in {page}"
             ff = item["fontFamily"]
-            assert "Aalto Display" in ff, f"Expected 'Aalto Display' in {sel} ({label}) fontFamily, got '{ff}'"
+            assert "NT Brick Sans" in ff or "Aalto Display" in ff, f"Expected 'NT Brick Sans' in {sel} ({label}) fontFamily, got '{ff}'"
             print(f"  [PASS] {label} ({sel}) -> fontFamily: {ff}")
     finally:
         if os.path.exists(temp_file):

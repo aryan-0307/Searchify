@@ -64,7 +64,8 @@
     /* Fonts */
     --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     --font-primary-weight: 500;
-    --font-display: 'Aalto Display', 'Aalto Display-Personal-use', sans-serif;
+    --font-display: 'NT Brick Sans', 'Brick Sans', 'Aalto Display', 'Aalto Display-Personal-use', sans-serif;
+    --font-heading: 'NT Brick Sans', 'Brick Sans', 'Aalto Display', 'Aalto Display-Personal-use', sans-serif;
     --letter-spacing-display: 0.03em;
     --font-mono: 'Consolas', 'Monaco', 'Courier New', monospace;
     --font-handwritten: 'Kalam', 'Caveat', cursive;
@@ -82,6 +83,33 @@
     --shadow-pink: 0 6px 20px rgba(217, 61, 129, 0.22);
     --transition-fast: 0.15s ease;
     --transition: 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* === NT Brick Sans (Pixelated Sans Serif by Nurrontype) Webfont Declarations === */
+@font-face {
+    font-family: 'NT Brick Sans';
+    src: local('NT Brick Sans'),
+        local('NT Brick Sans Regular'),
+        local('Brick Sans'),
+        url('../fonts/NTBrickSans.woff2') format('woff2'),
+        url('../fonts/NTBrickSans.woff') format('woff'),
+        url('../fonts/NTBrickSans.ttf') format('truetype');
+    font-weight: 400 900;
+    font-style: normal;
+    font-display: block;
+}
+
+@font-face {
+    font-family: 'Brick Sans';
+    src: local('NT Brick Sans'),
+        local('NT Brick Sans Regular'),
+        local('Brick Sans'),
+        url('../fonts/NTBrickSans.woff2') format('woff2'),
+        url('../fonts/NTBrickSans.woff') format('woff'),
+        url('../fonts/NTBrickSans.ttf') format('truetype');
+    font-weight: 400 900;
+    font-style: normal;
+    font-display: block;
 }
 
 /* === Aalto Display Webfont Declarations === */

@@ -269,3 +269,28 @@ Tasks:
 - [x] Implement fail-safe anti-FOUT inline flash shield:
   - Added lightweight `<script>` in `<head>` that checks `document.fonts.ready` with a 250ms fallback race condition.
 - [x] Verify zero regression across all 32 test stages of `tests/run_all_tests.py`.
+
+---
+
+## Phase 48 — NT Brick Sans Pixelated Font Integration & Proportional Site-Wide Sizing
+Status: COMPLETE (IMPLEMENTED + VERIFIED)
+
+Tasks:
+- [x] Download authentic `NT Brick Sans` (Pixelated Sans Serif by Nurrontype) and compile optimized local webfont assets:
+  - `fonts/NTBrickSans.ttf` (96 KB)
+  - `fonts/NTBrickSans.woff` (30 KB)
+  - `fonts/NTBrickSans.woff2` (21 KB)
+- [x] Define local `@font-face` webfont declarations for `'NT Brick Sans'` and `'Brick Sans'` in `css/style.css` with `font-display: block;`.
+- [x] Preload `fonts/NTBrickSans.woff2` across all pages (`index.html`, `compare.html`, `sorting.html`, `searching.html`) for instantaneous zero-latency local rendering.
+- [x] Update `--font-display` and `--font-heading` tokens and all heading rules in `css/home.css` and `css/visualizer.css`.
+- [x] Relatively reduce display font sizes across the site to balance the wider, chunkier pixel proportions:
+  - `.hero-copy h1`: Reduced desktop clamp from `clamp(43px, 5.4vw, 70px)` down to `clamp(24px, 2.7vw, 37px)/1.15`, eliminating 6-line wrapping and restoring clean 3-line layout.
+  - `.hero-copy h1` responsive: Reduced tablet clamp from `59px` down to `clamp(22px, 5.5vw, 32px)` and small mobile from `50px` down to `clamp(18px, 5vw, 24px)`.
+  - `.card-title`: Reduced from `32px` to `24px` (and responsive `26px` to `20px`).
+  - `.section-heading h2`: Reduced from `clamp(27px, 3vw, 38px)` to `clamp(19px, 2.1vw, 26px)/1.2`.
+  - `#home-showcase-title` and `.home-demo-heading h2`: Reduced from `26px` to `21px`.
+  - `.home-stats>div strong`: Reduced from `25px` to `20px`.
+  - `.mini-viz-label`: Reduced from `20px` to `16px`.
+  - `.viz-title`: Reduced from `19px` to `16px`.
+  - `.complexity-algo-name`: Reduced from `24px` to `18px`.
+- [x] Run full 32-stage verification suite (`tests/run_all_tests.py`), confirming 100% pass rate.

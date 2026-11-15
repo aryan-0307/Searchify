@@ -4,6 +4,33 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## [2026-11-15 — NT Brick Sans Pixelated Font Integration & Proportional Site-Wide Sizing]
+
+### Added
+- **NT Brick Sans Webfont Assets**:
+  - Integrated authentic `NT Brick Sans` (Pixelated Sans Serif by Nurrontype) into `fonts/`:
+    - `fonts/NTBrickSans.woff2` (21 KB high-performance compressed webfont)
+    - `fonts/NTBrickSans.woff` (30 KB)
+    - `fonts/NTBrickSans.ttf` (96 KB)
+  - Configured `@font-face` blocks for `'NT Brick Sans'` and `'Brick Sans'` with `font-display: block;`.
+  - Added parallel local font preloading `<link rel="preload" href="fonts/NTBrickSans.woff2" as="font" type="font/woff2" crossorigin>` across all HTML files (`index.html`, `compare.html`, `sorting.html`, `searching.html`).
+
+### Changed
+- **Proportional Display Typography Sizing**:
+  - Balanced typography sizes across the site to account for NT Brick Sans's wider, blockier pixel anatomy:
+    - Hero Title (`.hero-copy h1`): Reduced desktop clamp from `clamp(43px, 5.4vw, 70px)` to `clamp(24px, 2.7vw, 37px)/1.15`, preventing 6-line wrapping and restoring clean 3-line floating orbital composition.
+    - Responsive Hero Title: Reduced tablet clamp to `clamp(22px, 5.5vw, 32px)` and small mobile to `clamp(18px, 5vw, 24px)`.
+    - Card Titles (`.card-title`): Reduced from `32px` to `24px` (responsive `20px`).
+    - Section Headings (`.section-heading h2`): Reduced from `clamp(27px, 3vw, 38px)` to `clamp(19px, 2.1vw, 26px)/1.2`.
+    - Comparison Showcase Title (`#home-showcase-title`) & Demo Title (`.home-demo-heading h2`): Reduced from `26px` to `21px`.
+    - Stats Numbers (`.home-stats>div strong`): Reduced from `25px` to `20px`.
+    - Mini-Viz Badges (`.mini-viz-label`): Reduced from `20px` to `16px`.
+    - Visualizer Page Title (`.viz-title`): Reduced from `19px` to `16px`.
+    - Visualizer Complexity Algorithm Name (`.complexity-algo-name`): Reduced from `24px` to `18px`.
+  - Preserved all body text, button, mono, and non-display font sizes exactly as designed.
+
+---
+
 ## [2026-11-10 — Elimination of Initial Font Flash / FOUT (Flash of Unstyled Text)]
 
 ### Fixed
