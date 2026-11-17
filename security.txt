@@ -1,0 +1,11 @@
+# Searchify Security Disclosure Policy
+# RFC 9116 compliant security information for Searchify (https://searchify.aryandixit.space)
+# Canonical URL: https://searchify.aryandixit.space/.well-known/security.txt
+
+Contact: mailto:security@aryandixit.space
+Contact: https://github.com/aryan-0307/Searchify/security/advisories
+Expires: 2027-12-31T23:59:59.000Z
+Preferred-Languages: en
+Canonical: https://searchify.aryandixit.space/.well-known/security.txt
+Policy: https://github.com/aryan-0307/Searchify/security/policy
+Acknowledgments: https://github.com/aryan-0307/Searchify/blob/main/README.md

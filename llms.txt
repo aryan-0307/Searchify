@@ -1,0 +1,49 @@
+# Searchify
+
+> Searchify (https://searchify.aryandixit.space) is an interactive, browser-based Data Structures and Algorithms (DSA) playground created by Aryan Dixit. It allows students, engineers, and educators to explore, visualize, and benchmark sorting and searching algorithms in real time on custom and randomized datasets with synchronized pseudocode tracking and audio-synthesized comparisons.
+
+## Core Features & Architecture
+
+- **100% Client-Side**: Built purely with Vanilla HTML5, modern CSS3, and ES6+ JavaScript. No frameworks (React, Vue, etc.), no backend, and zero database dependencies.
+- **Privacy-First**: No user tracking, no analytics cookies, no accounts. All execution occurs in browser memory (RAM).
+- **Audio Synthesis**: Uses native Web Audio API oscillators to generate real-time pitch feedback during array comparisons and swaps.
+- **Adaptive Performance**: Dynamic delay calculations with step navigation (Step Forward, Step Backward, Pause, Play, Reset) and speed scaling (0.5x to 4x).
+- **Responsive Design**: Custom hand-crafted CSS grid and flex layouts optimized across all viewports (Mobile 320px–430px, Tablet 768px, Desktop 1280px+).
+
+## Supported Algorithms
+
+### Sorting Visualizer (`/sorting`)
+1. **Bubble Sort**: O(n²) time, O(1) space. Repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order.
+2. **Selection Sort**: O(n²) time, O(1) space. Finds minimum element from the unsorted subarray and places it at the beginning.
+3. **Insertion Sort**: O(n²) time, O(1) space. Builds the final sorted array one item at a time by inserting each into its proper location.
+4. **Merge Sort**: O(n log n) time, O(n) space. Divide-and-conquer algorithm that divides array into halves, sorts them, and merges them.
+5. **Quick Sort**: O(n log n) average time, O(log n) space. Picks a pivot element and partitions the array around the pivot.
+6. **Heap Sort**: O(n log n) time, O(1) space. Builds a max-heap from input data and repeatedly extracts maximum element. Includes a synchronized binary heap tree view.
+7. **Shell Sort**: O(n^(4/3)) time, O(1) space. Generalized insertion sort that compares elements separated by a shrinking gap sequence.
+8. **Counting Sort**: O(n + k) time, O(k) space. Non-comparison integer sorting algorithm that counts occurrences of each distinct key.
+9. **Radix Sort (LSD)**: O(d · (n + k)) time, O(n + k) space. Non-comparison algorithm that sorts numbers digit-by-digit starting from least significant digit.
+10. **Bucket Sort**: O(n + k) time, O(n + k) space. Distributes elements into discrete buckets, sorts individual buckets, and concatenates results.
+
+### Searching Visualizer (`/searching`)
+1. **Linear Search**: O(n) time, O(1) space. Sequentially checks each element in the array until a match is found or the search ends.
+2. **Binary Search**: O(log n) time, O(1) space. Fast search algorithm on sorted data that repeatedly halves the search interval using low, mid, and high pointers.
+
+### Multi-Algorithm Comparison Laboratory (`/compare`)
+- Enables simultaneous multi-track racing of any subset of the 10 sorting algorithms on identical shared datasets.
+- Includes real-time finish leaderboard with rankings, comparison counts, array access counters, and execution duration.
+
+## Public URLs & Sitemap
+
+- Homepage: `https://searchify.aryandixit.space/`
+- Sorting Visualizer: `https://searchify.aryandixit.space/sorting`
+- Searching Visualizer: `https://searchify.aryandixit.space/searching`
+- Multi-Algorithm Compare: `https://searchify.aryandixit.space/compare`
+- Privacy Policy: `https://searchify.aryandixit.space/privacy`
+- Terms of Service: `https://searchify.aryandixit.space/terms`
+- Security Policy: `https://searchify.aryandixit.space/.well-known/security.txt`
+
+## Author & Source Code
+
+- **Author**: Aryan Dixit (https://github.com/aryan-0307)
+- **Repository**: https://github.com/aryan-0307/Searchify
+- **License**: MIT Open-Source License

@@ -1956,6 +1956,12 @@
     text-decoration: underline;
 }
 
+.viz-footer-sep {
+    margin: 0 4px 0 8px;
+    color: var(--border-color);
+    user-select: none;
+}
+
 /* === Responsive Layout === */
 @media (max-width: 1040px) {
     .complexity-cards-grid {

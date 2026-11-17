@@ -4,6 +4,40 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## [2026-11-17 — Production Enhancements: Security, Privacy, Terms, 404, SEO & PWA]
+
+### Added
+- **Security Disclosure Information (`/.well-known/security.txt` & `/security.txt`)**:
+  - RFC 9116 compliant security policy with `Contact`, `Expires`, `Preferred-Languages`, `Canonical`, `Policy`, and `Acknowledgments`.
+- **Privacy Policy Page (`/privacy`, `privacy.html`)**:
+  - Complete, transparent privacy disclosure: 100% client-side execution, zero tracking cookies, zero backend servers, and zero personal data collection.
+  - Full HTML5 semantic markup, Searchify styling, responsive layout, and zero horizontal overflow across all viewports.
+- **Terms of Service Page (`/terms`, `terms.html`)**:
+  - Open-source MIT terms, educational usage permissions, disclaimers, and contact details.
+- **Custom Animated 404 Error Page (`/404`, `404.html`)**:
+  - Interactive Binary Search simulation demonstrating route search failure (returned -1).
+  - Web Audio API sound synthesis, replay controls, status badges, and prominent navigation shortcuts.
+  - Zero horizontal overflow across Desktop (1280px), Tablet (768px), Galaxy S23 (412px), and iPhone SE (375px).
+- **Search Engine Crawling Rules (`/robots.txt`)**:
+  - Directives allowing indexing of public content and linking `https://searchify.aryandixit.space/sitemap.xml`.
+- **XML Sitemap (`/sitemap.xml`)**:
+  - Standard XML sitemap indexing all 6 public pages (`/`, `/sorting`, `/searching`, `/compare`, `/privacy`, `/terms`) while excluding error and non-public files.
+- **AI Context Overview (`/llms.txt`)**:
+  - High-density markdown overview documenting Searchify's client-side architecture, 10 sorting algorithms, 2 searching algorithms, complexities, and public routes.
+- **PWA Webmanifest & Icons (`/site.webmanifest`, `favicon-512x512.png`)**:
+  - Web App Manifest configured with app name, theme color `#224D95`, background color `#F5F3ED`, and complete icon sets.
+  - Generated high-resolution 512x512 PNG icon (`favicon-512x512.png`) from SVG.
+- **Site-Wide Footer Links**:
+  - Added Privacy Policy and Terms of Service links in `.home-footer` on `index.html`, `compare.html`, `privacy.html`, `terms.html`, `404.html` and in `.viz-footer` on `sorting.html` and `searching.html`.
+- **Hosting & Routing Configurations (`vercel.json`, `_redirects`)**:
+  - `cleanUrls: true` for clean URL routing.
+  - Explicit rewrites for `/privacy` (200), `/terms` (200), `/404` (404), and unknown routes (404).
+  - Production security headers (`X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: strict-origin-when-cross-origin`) and long-term asset caching.
+- **Automated Verification Suite (Stage 33)**:
+  - Created `tests/verify_production_enhancements.py` and integrated it as Stage 33 into `tests/run_all_tests.py`, passing with 100% success rate.
+
+---
+
 ## [2026-11-15 — NT Brick Sans Pixelated Font Integration & Proportional Site-Wide Sizing]
 
 ### Added

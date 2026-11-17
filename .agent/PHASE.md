@@ -294,3 +294,42 @@ Tasks:
   - `.viz-title`: Reduced from `19px` to `16px`.
   - `.complexity-algo-name`: Reduced from `24px` to `18px`.
 - [x] Run full 32-stage verification suite (`tests/run_all_tests.py`), confirming 100% pass rate.
+
+---
+
+## Phase 49 — Production Enhancements: Security, Privacy, Terms, 404, SEO & PWA
+Status: COMPLETE (IMPLEMENTED + VERIFIED)
+
+Tasks:
+- [x] Add `/.well-known/security.txt` and `/security.txt`:
+  - RFC 9116 compliant security disclosure information with `Contact`, `Expires`, `Preferred-Languages`, `Canonical`, `Policy`, and `Acknowledgments`.
+- [x] Create `/privacy` (`privacy.html`):
+  - Comprehensive, honest Privacy Policy reflecting Searchify's 100% client-side, zero-tracking architecture.
+  - Full semantic HTML5 structure (`header`, `nav`, `main`, `article`, `section`, `footer`) and SEO metadata.
+  - Responsive design with zero horizontal overflow across Desktop (1280px), Tablet (768px), Galaxy S23 (412px), and iPhone SE (375px).
+- [x] Create `/terms` (`terms.html`):
+  - Clear Terms of Service outlining permitted educational use, open-source MIT license, disclaimers, and contact details.
+  - Matches Searchify styling, color palette, and typography.
+- [x] Create `/404` (`404.html`):
+  - Custom animated 404 page featuring an interactive Binary Search simulation illustrating route search failure (returning -1).
+  - Web Audio API tone synthesis, replay controls, status badges, and prominent navigation CTAs back to `/`, `/sorting`, `/searching`, and `/compare`.
+  - Zero horizontal overflow across all viewports.
+- [x] Create `/robots.txt`:
+  - Search engine crawler directives allowing public indexing and referencing `https://searchify.aryandixit.space/sitemap.xml`.
+- [x] Create `/sitemap.xml`:
+  - Valid XML sitemap indexing all public pages (`/`, `/sorting`, `/searching`, `/compare`, `/privacy`, `/terms`) while excluding non-public and error pages.
+- [x] Create `/llms.txt`:
+  - High-density AI-readable context file documenting site capabilities, 10 sorting algorithms, 2 searching algorithms, complexities, architecture, and canonical routes.
+- [x] Create `/site.webmanifest` & PWA Icons:
+  - Valid JSON manifest configured with name, short_name, theme_color, background_color, and multi-size icon references.
+  - Generated crisp 512x512 PWA icon (`favicon-512x512.png`) from SVG.
+- [x] Add Privacy and Terms links across all site footers:
+  - Updated `.home-footer` on `index.html` and `compare.html`.
+  - Updated `.viz-footer` on `sorting.html` and `searching.html`.
+  - Added `.footer-links` and responsive styles in `css/home.css` and `css/visualizer.css`.
+- [x] Configure routing and hosting redirects:
+  - `vercel.json`: Clean URLs, route rewrites for `/privacy` (200), `/terms` (200), `/404` (404), security headers (`nosniff`, `DENY`, `strict-origin`), cache control, and catch-all 404 handler.
+  - `_redirects`: Netlify and Cloudflare Pages rules for `/privacy` (200), `/terms` (200), `/404` (404), `/*` (404).
+- [x] Test and verify all enhancements:
+  - Created automated test suite `tests/verify_production_enhancements.py` integrated as Stage 33 into `tests/run_all_tests.py`.
+  - 100% pass rate across all 33 verification stages.
