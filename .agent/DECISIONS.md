@@ -349,3 +349,24 @@ Adopt Option 3:
 - Added preconnect and `.woff2` font preload tags in `index.html`, `compare.html`, `sorting.html`, and `searching.html`.
 - Implemented the inline anti-FOUT flash shield script in `<head>` across all pages with a 250ms maximum timeout guarantee.
 - Validated that text renders seamlessly without font flicker and all 32 verification stages pass 100%.
+
+## Decision 026
+Date: 2026-11-15
+Phase: Phase 48 — NT Brick Sans Pixelated Font Integration & Proportional Site-Wide Sizing
+
+### Problem
+The user requested replacing the display font with the attached image font (`NT Brick Sans` / Brick Sans by Nurrontype). Upon applying the font, because `NT Brick Sans` has significantly wider, blockier, and bolder glyph anatomy than condensed display fonts, elements like `.hero-copy h1` wrapped into 6 giant lines on desktop, dominating the viewport. The user requested reducing the font size on the hero page and relatively across the overall site, applying only to the display font.
+
+### Options Considered
+1. **Reduce font-size globally via root font-size**: Reduce `html { font-size: 14px; }`. Rejected because this would shrink body text, inputs, buttons, and code snippets, violating the constraint to modify "only the font mentioned in the image".
+2. **Targeted proportional reduction of display font rules**:
+   - Keep body text (`Inter`), controls, and mono fonts untouched.
+   - Reduce display font (`NT Brick Sans`) rules proportionally by ~25%–45% across all headings, titles, and stats.
+   - Adjust desktop hero title clamp from `clamp(43px, 5.4vw, 70px)` down to `clamp(24px, 2.7vw, 37px)/1.15`, allowing "Algorithms make / more sense when / you see them move." to render as 3 clean, balanced floating lines without wrapping into 6 lines.
+
+### Decision
+Adopt Option 2:
+- Retained authentic local webfont assets `fonts/NTBrickSans.woff2` (21 KB), `.woff`, and `.ttf`.
+- Applied targeted proportional font-size reductions across `css/home.css` and `css/visualizer.css`.
+- Preserved brand logo minimum sizes (`>= 24px`) required by regression test suites.
+- Confirmed zero horizontal overflow, balanced typography, and 100% pass across all 32 test stages.

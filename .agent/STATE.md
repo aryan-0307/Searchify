@@ -4,31 +4,35 @@
 Extend Searchify's interactive Sorting Visualizer by implementing five additional sorting algorithms (Heap Sort, Shell Sort, Counting Sort, Radix Sort LSD, and Bucket Sort), while maintaining the existing vanilla HTML/CSS/JS architecture, design system, and full functionality across all 10 sorting algorithms and 2 searching algorithms.
 
 ## Current Phase
-Phase 47 — Elimination of Initial Font Flash / FOUT (Flash of Unstyled Text)
+Phase 48 — NT Brick Sans Pixelated Font Integration & Proportional Site-Wide Sizing
 
 ## Status
 COMPLETE (IMPLEMENTED + VERIFIED)
 
 ## Current Task
-Elimination of Initial Font Flash (FOUT) across the entire site:
-1. Root cause:
-   - Initial site visit was rendering typography in generic fallback system fonts (Arial / Segoe UI / Times) for a small frame before swapping into custom web fonts (`Aalto Display` and Google Fonts), causing noticeable visual reflow and text flicker.
-   - `font-display: swap` in `@font-face` and Google Font URLs instructs the browser to immediately render fallbacks with 0s block period.
-   - Font binaries (`.woff2`) were discovered late during CSS parsing due to lack of `<link rel="preload">`.
-   - External font host `db.onlinewebfonts.com` was missing `<link rel="preconnect">`.
-2. Solution:
-   - Upgraded font display strategy to `font-display: block;` in `css/style.css` and Google Font query parameters across all pages (`index.html`, `compare.html`, `sorting.html`, `searching.html`).
-   - Added high-priority preconnection `<link rel="preconnect" href="https://db.onlinewebfonts.com" crossorigin>`.
-   - Added parallel font preloading `<link rel="preload" href="https://db.onlinewebfonts.com/t/f6ec291f284d1c8ba5a1706ba94e4a9d.woff2" as="font" type="font/woff2" crossorigin>`.
-   - Added lightweight inline anti-FOUT flash shield in `<head>` applying `.wf-loading { visibility: hidden; }` until `document.fonts.ready` resolves (with 250ms race fallback timeout).
-3. Automated Testing & Verification:
-   - Verified that font display is set to `block` and preloads exist on all pages.
-   - Headless Chrome tests confirmed zero FOUT, zero console errors, zero layout shifts.
-   - Verified 100% pass rate across all 32 stages of `tests/run_all_tests.py` (644/644 unit tests pass).
+Integration of NT Brick Sans (Pixelated Sans Serif by Nurrontype) & Proportional Font Size Tuning:
+1. Font Integration:
+   - Acquired authentic `NT Brick Sans` (copyright Nurrontype) and compiled local webfont formats: `fonts/NTBrickSans.ttf`, `fonts/NTBrickSans.woff`, and `fonts/NTBrickSans.woff2` (21 KB).
+   - Declared local `@font-face` blocks for `'NT Brick Sans'` and `'Brick Sans'` in `css/style.css` with `font-display: block;`.
+   - Added high-priority local font preload `<link rel="preload" href="fonts/NTBrickSans.woff2" as="font" type="font/woff2" crossorigin>` across `index.html`, `compare.html`, `sorting.html`, and `searching.html`.
+   - Updated `--font-display` and `--font-heading` CSS custom properties in `css/style.css`.
+2. Proportional Sizing Refinement:
+   - Due to the wide, bold pixel grid of NT Brick Sans, original sizes caused unwanted line wraps (e.g. hero title breaking into 6 lines).
+   - `.hero-copy h1`: Reduced desktop clamp from `clamp(43px, 5.4vw, 70px)` to `clamp(24px, 2.7vw, 37px)/1.15`, perfectly restoring the intended 3-line floating orbital composition.
+   - Responsive hero title: Reduced tablet clamp to `clamp(22px, 5.5vw, 32px)` and mobile to `clamp(18px, 5vw, 24px)`.
+   - `.card-title`: Reduced from `32px` to `24px`.
+   - `.section-heading h2`: Reduced from `clamp(27px, 3vw, 38px)` to `clamp(19px, 2.1vw, 26px)/1.2`.
+   - `#home-showcase-title` & `.home-demo-heading h2`: Reduced from `26px` to `21px`.
+   - `.home-stats>div strong`: Reduced from `25px` to `20px`.
+   - `.mini-viz-label`: Reduced from `20px` to `16px`.
+   - `.viz-title`: Reduced from `19px` to `16px`.
+   - `.complexity-algo-name`: Reduced from `24px` to `18px`.
+3. Automated Testing:
+   - Verified 100% pass across all 32 stages of `tests/run_all_tests.py` (644/644 unit tests, DOM markers, font families, zero horizontal overflow across 4 viewports).
 
 ## Last Completed Task
-- **Phase 46**: Spacing Refinement Between Navbar and Multi-Algorithm Showcase on `compare.html`.
 - **Phase 47**: Elimination of Initial Font Flash / FOUT (Flash of Unstyled Text).
+- **Phase 48**: NT Brick Sans Pixelated Font Integration & Proportional Site-Wide Sizing.
 
 ## Completed Work
 - Created `compare.html` hosting the complete interactive comparison showcase.
