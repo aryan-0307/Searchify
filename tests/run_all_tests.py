@@ -289,6 +289,14 @@ if proc_showcase.returncode != 0:
     print("[FAIL] Multi-algorithm sorting showcase verification failed.")
     sys.exit(1)
 
+# 33. Production Enhancements (Security, Privacy, Terms, 404, Robots, Sitemap, LLMs.txt, PWA Webmanifest, Favicon) Verification
+print("\n--- 33. Verifying Searchify Production Enhancements ---")
+proc_prod = subprocess.run([sys.executable, "tests/verify_production_enhancements.py"], capture_output=True, text=True, encoding="utf-8")
+print(proc_prod.stdout)
+if proc_prod.returncode != 0:
+    print("[FAIL] Production enhancements verification failed.")
+    sys.exit(1)
+
 print("\n" + "=" * 60)
 print("ALL VERIFICATIONS COMPLETED SUCCESSFULLY (100% PASS RATE)")
 print("=" * 60)

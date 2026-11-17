@@ -1,0 +1,5 @@
+# Netlify & Cloudflare Pages Redirects & Rewrites
+/privacy       /privacy.html       200
+/terms         /terms.html         200
+/404           /404.html           404
+/*             /404.html           404

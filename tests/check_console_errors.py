@@ -1,7 +1,16 @@
 import subprocess
 import sys
 
-pages = ["index.html", "sorting.html", "searching.html", "compare.html", "tests/test_algorithms.html"]
+pages = [
+    "index.html",
+    "sorting.html",
+    "searching.html",
+    "compare.html",
+    "privacy.html",
+    "terms.html",
+    "404.html",
+    "tests/test_algorithms.html"
+]
 has_error = False
 
 for page in pages:

@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /tests/
+Disallow: /.agent/
+
+Sitemap: https://searchify.aryandixit.space/sitemap.xml
+Host: https://searchify.aryandixit.space

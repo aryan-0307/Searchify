@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Searchify — Privacy Policy | DSA Playground</title>
+    <meta name="description"
+        content="Searchify Privacy Policy: Learn how Searchify protects your privacy with 100% client-side execution, zero tracking cookies, and no personal data collection.">
+    <meta name="keywords"
+        content="Searchify privacy policy, algorithm visualizer privacy, client side DSA privacy, no tracking, open source">
+    <meta name="author" content="Aryan Dixit">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://searchify.aryandixit.space/privacy">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://searchify.aryandixit.space/privacy">
+    <meta property="og:title" content="Searchify — Privacy Policy | DSA Playground">
+    <meta property="og:description"
+        content="Searchify runs 100% client-side inside your browser with zero tracking cookies and zero backend servers.">
+    <meta property="og:image" content="https://searchify.aryandixit.space/favicon-192x192.png">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Searchify — Privacy Policy">
+    <meta name="twitter:description"
+        content="Searchify runs 100% client-side inside your browser with zero tracking cookies and zero backend servers.">
+    <meta name="twitter:image" content="https://searchify.aryandixit.space/favicon-192x192.png">
+
+    <!-- Favicon & PWA Icons -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="manifest" href="site.webmanifest">
+    <meta name="theme-color" content="#224D95">
+
+    <!-- Anti-FOUT (Flash of Unstyled Text) Shield -->
+    <script>
+        (function () {
+            if (document.fonts && document.fonts.status !== 'loaded') {
+                document.documentElement.classList.add('wf-loading');
+                Promise.race([
+                    document.fonts.ready,
+                    new Promise(function (r) { setTimeout(r, 250); })
+                ]).then(function () {
+                    document.documentElement.classList.remove('wf-loading');
+                });
+            }
+        })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://db.onlinewebfonts.com" crossorigin>
+    <link rel="preload" href="fonts/NTBrickSans.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://db.onlinewebfonts.com/t/f6ec291f284d1c8ba5a1706ba94e4a9d.woff2" as="font"
+        type="font/woff2" crossorigin>
+    <link href="https://db.onlinewebfonts.com/c/f6ec291f284d1c8ba5a1706ba94e4a9d?family=Aalto+Display-Personal-use"
+        rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700;800&display=block"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/home.css">
+</head>
+
+<body class="searchify-home legal-page-body">
+    <!-- Sticky Searchify Navigation -->
+    <header class="home-nav no-transition" id="home-nav" role="banner">
+        <div class="home-nav-inner">
+            <a class="home-brand" id="home-brand" href="index.html" aria-label="Searchify home">
+                <span class="brand-mark" aria-hidden="true">S</span>
+                <span class="home-brand-text">
+                    <span class="home-brand-logo">Searchify</span>
+                    <span class="home-brand-tag">DSA playground</span>
+                </span>
+            </a>
+            <nav class="home-nav-links" aria-label="Main navigation">
+                <a href="searching.html" class="nav-link-item">Searching</a>
+                <a href="sorting.html" class="nav-link-item">Sorting</a>
+                <a href="compare.html" class="nav-link-item">Compare</a>
+                <a class="nav-cta" href="index.html">← Back to Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="home-container legal-container" id="main-content" role="main">
+        <article class="legal-card" aria-labelledby="policy-heading">
+            <header class="legal-header">
+                <span class="section-kicker">✳ TRANSPARENCY &amp; TRUST</span>
+                <h1 id="policy-heading" class="legal-title">PRIVACY POLICY</h1>
+                <p class="legal-subtitle">Effective Date: November 2026 • Version 1.0</p>
+                <div class="legal-summary-pill" role="note">
+                    <span class="pill-dot" aria-hidden="true"></span>
+                    <span><strong>TL;DR:</strong> Searchify is 100% client-side. We do not track you, do not use tracking cookies, and your algorithm data never leaves your browser.</span>
+                </div>
+            </header>
+
+            <section class="legal-section">
+                <h2>1. Core Architecture &amp; Client-Side Operation</h2>
+                <p>
+                    <strong>Searchify</strong> (<a href="https://searchify.aryandixit.space">https://searchify.aryandixit.space</a>) is an interactive, browser-based Data Structures and Algorithms playground designed and built by <strong>Aryan Dixit</strong>.
+                </p>
+                <p>
+                    All sorting visualizers (Bubble, Selection, Insertion, Merge, Quick, Heap, Shell, Counting, Radix, Bucket), searching visualizers (Linear, Binary), and the Multi-Algorithm Showcase execute entirely inside your local web browser engine via Vanilla JavaScript. No array values, search keys, sorting steps, or benchmark results are ever transmitted to or stored on any server.
+                </p>
+            </section>
+
+            <section class="legal-section">
+                <h2>2. Information We Do NOT Collect</h2>
+                <p>We respect your privacy by practicing absolute data minimization. Specifically:</p>
+                <ul>
+                    <li><strong>No User Accounts:</strong> You do not need to register, sign in, or provide any email address or password to use Searchify.</li>
+                    <li><strong>No Analytics or Tracking Cookies:</strong> Searchify does not use Google Analytics, Meta Pixel, tracking beacons, or third-party advertising cookies.</li>
+                    <li><strong>No Personal Identifiers:</strong> We do not log names, IP addresses tied to user profiles, physical locations, or payment details.</li>
+                </ul>
+            </section>
+
+            <section class="legal-section">
+                <h2>3. Local Browser Storage</h2>
+                <p>
+                    Searchify may utilize your browser’s standard <code>localStorage</code> or session memory solely to save your local UI preferences across refreshes (such as sound toggle state, audio volume, or preferred algorithm speed). This data resides exclusively on your device and can be cleared at any time through your browser settings.
+                </p>
+            </section>
+
+            <section class="legal-section">
+                <h2>4. Third-Party CDNs &amp; Asset Delivery</h2>
+                <p>
+                    To deliver high-performance typography and styling, Searchify requests font files from external content delivery networks (CDNs):
+                </p>
+                <ul>
+                    <li><strong>Google Fonts:</strong> Provides the <em>Bricolage Grotesque</em> and <em>Inter</em> font families. When your browser fetches font files, standard HTTP request headers (including IP address and user-agent) are handled by Google's font delivery servers in accordance with Google's Privacy Policy.</li>
+                    <li><strong>OnlineWebFonts:</strong> Delivers the <em>Aalto Display</em> font file.</li>
+                </ul>
+            </section>
+
+            <section class="legal-section">
+                <h2>5. Web Hosting &amp; Infrastructure Server Logs</h2>
+                <p>
+                    Searchify is hosted statically on modern edge networks (such as Vercel / GitHub Pages). Like all web servers on the internet, the hosting infrastructure may record standard, temporary HTTP connection logs (such as requesting IP address, requested path, timestamp, and user agent) for server diagnostics, DDoS defense, and infrastructure security.
+                </p>
+            </section>
+
+            <section class="legal-section">
+                <h2>6. Open Source Verification</h2>
+                <p>
+                    Searchify is completely open source under the MIT License. You can inspect the entire codebase, all JavaScript algorithms, CSS styles, and deployment files directly in our public GitHub repository at <a href="https://github.com/aryan-0307/Searchify" target="_blank" rel="noopener noreferrer">github.com/aryan-0307/Searchify</a>.
+                </p>
+            </section>
+
+            <section class="legal-section">
+                <h2>7. Contact &amp; Responsible Disclosure</h2>
+                <p>
+                    If you have any questions or feedback regarding this Privacy Policy, you may contact the maintainer:
+                </p>
+                <div class="legal-contact-box">
+                    <p><strong>Maintainer:</strong> Aryan Dixit</p>
+                    <p><strong>Email:</strong> <a href="mailto:privacy@aryandixit.space">privacy@aryandixit.space</a></p>
+                    <p><strong>GitHub Issues:</strong> <a href="https://github.com/aryan-0307/Searchify/issues" target="_blank" rel="noopener noreferrer">github.com/aryan-0307/Searchify/issues</a></p>
+                </div>
+            </section>
+        </article>
+
+        <!-- Footer -->
+        <footer class="home-footer" role="contentinfo">
+            <a href="index.html" class="footer-brand" aria-label="Searchify brand">Searchify<span>✳</span></a>
+            <div class="footer-links">
+                <a href="privacy.html" class="footer-link active" aria-current="page">Privacy Policy</a>
+                <span class="footer-sep" aria-hidden="true">•</span>
+                <a href="terms.html" class="footer-link">Terms of Service</a>
+            </div>
+            <p>Made to make algorithms click.</p>
+            <nav aria-label="Back to top">
+                <a href="#top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">Back to top ↑</a>
+            </nav>
+        </footer>
+    </main>
+
+    <script src="js/home-nav.js"></script>
+</body>
+
+</html>

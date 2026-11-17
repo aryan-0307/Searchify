@@ -370,3 +370,28 @@ Adopt Option 2:
 - Applied targeted proportional font-size reductions across `css/home.css` and `css/visualizer.css`.
 - Preserved brand logo minimum sizes (`>= 24px`) required by regression test suites.
 - Confirmed zero horizontal overflow, balanced typography, and 100% pass across all 32 test stages.
+
+## Decision 027
+Date: 2026-11-17
+Phase: Phase 49 — Production Enhancements: Security, Privacy, Terms, 404, SEO & PWA
+
+### Problem
+To prepare Searchify for production release at `https://searchify.aryandixit.space`, the application needed standard security disclosure metadata (RFC 9116), transparent Privacy and Terms documents, an engaging custom 404 experience, crawling and sitemap assets, PWA manifest, custom favicon assets, and verified routing configurations where clean URLs work and unknown paths return HTTP 404.
+
+### Options Considered
+1. **Generic boilerplates with external frameworks / libraries**: Rejected per project requirements to maintain pure client-side Vanilla HTML5/CSS/JS without unnecessary dependencies.
+2. **Dedicated, hand-crafted Searchify pages with authentic design system & live animations**:
+   - `/.well-known/security.txt`: Standard RFC 9116 disclosure specifying contacts, canonical URL, and expiration.
+   - `/privacy`: Honest, transparent disclosure reflecting Searchify's 100% client-side execution, zero tracking cookies, and zero personal data collection.
+   - `/terms`: Educational usage terms under the open-source MIT License.
+   - `/404`: An interactive Binary Search algorithm simulation demonstrating target route search failure (returned -1), complete with Web Audio API sound feedback and quick navigation CTAs.
+   - `/robots.txt` & `/sitemap.xml`: Clean crawler directives indexing all 6 public pages.
+   - `/llms.txt`: Structured AI-readable summary.
+   - `/site.webmanifest` & `favicon-512x512.png`: PWA manifest and high-resolution icons.
+   - Routing: `vercel.json` and `_redirects` mapping `/privacy` (200), `/terms` (200), `/404` (404), and `/*` (404), with production security headers.
+
+### Decision
+Adopt Option 2:
+- Built and verified all assets and pages.
+- Tested zero horizontal overflow across 4 viewports (Desktop 1280px, Tablet 768px, Galaxy S23 412px, iPhone SE 375px).
+- Integrated `tests/verify_production_enhancements.py` as Stage 33 into `tests/run_all_tests.py`, passing 100%.

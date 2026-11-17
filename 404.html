@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404: Element Not Found — Searchify</title>
+    <meta name="description"
+        content="404: Target route not found. Binary search returned -1. Return to Searchify to explore sorting, searching, and algorithm comparisons.">
+    <meta name="robots" content="noindex, follow">
+
+    <!-- Favicon & PWA Icons -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="manifest" href="site.webmanifest">
+    <meta name="theme-color" content="#224D95">
+
+    <!-- Anti-FOUT (Flash of Unstyled Text) Shield -->
+    <script>
+        (function () {
+            if (document.fonts && document.fonts.status !== 'loaded') {
+                document.documentElement.classList.add('wf-loading');
+                Promise.race([
+                    document.fonts.ready,
+                    new Promise(function (r) { setTimeout(r, 250); })
+                ]).then(function () {
+                    document.documentElement.classList.remove('wf-loading');
+                });
+            }
+        })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://db.onlinewebfonts.com" crossorigin>
+    <link rel="preload" href="fonts/NTBrickSans.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://db.onlinewebfonts.com/t/f6ec291f284d1c8ba5a1706ba94e4a9d.woff2" as="font"
+        type="font/woff2" crossorigin>
+    <link href="https://db.onlinewebfonts.com/c/f6ec291f284d1c8ba5a1706ba94e4a9d?family=Aalto+Display-Personal-use"
+        rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700;800&display=block"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/visualizer.css">
+</head>
+
+<body class="searchify-home error-page-body">
+    <!-- Sticky Searchify Navigation -->
+    <header class="home-nav no-transition" id="home-nav" role="banner">
+        <div class="home-nav-inner">
+            <a class="home-brand" id="home-brand" href="index.html" aria-label="Searchify home">
+                <span class="brand-mark" aria-hidden="true">S</span>
+                <span class="home-brand-text">
+                    <span class="home-brand-logo">Searchify</span>
+                    <span class="home-brand-tag">DSA playground</span>
+                </span>
+            </a>
+            <nav class="home-nav-links" aria-label="Main navigation">
+                <a href="searching.html" class="nav-link-item">Searching</a>
+                <a href="sorting.html" class="nav-link-item">Sorting</a>
+                <a href="compare.html" class="nav-link-item">Compare</a>
+                <a class="nav-cta" href="index.html">← Back to Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="home-container error-container" id="main-content" role="main">
+        <section class="error-card" aria-labelledby="error-heading">
+            <div class="error-badge-row">
+                <span class="section-kicker">✳ STATUS CODE 404</span>
+                <span class="error-pill-status" id="error-pill-status">RETURN -1 • NOT FOUND</span>
+            </div>
+
+            <h1 id="error-heading" class="error-title">404: ELEMENT NOT FOUND</h1>
+            <p class="error-subtitle">
+                Binary Search traversed the sorted route space, but target <code class="route-target" id="route-target-text">404</code> does not exist on this server.
+            </p>
+
+            <!-- Animated Binary Search Simulation -->
+            <div class="error-viz-box" aria-label="Interactive Binary Search simulation for error 404">
+                <div class="error-viz-top">
+                    <div class="error-target-indicator">
+                        <span class="target-label">LOOKING FOR TARGET:</span>
+                        <span class="target-val" id="search-target-pill">404</span>
+                    </div>
+                    <div class="error-trace-msg" id="error-trace-msg">Starting Binary Search over valid routes...</div>
+                </div>
+
+                <div class="error-route-cells" id="error-route-cells">
+                    <div class="error-cell" data-idx="0" data-val="100">
+                        <span class="cell-ptr ptr-none" id="ptr-0"></span>
+                        <span class="cell-path">/home</span>
+                        <span class="cell-num">100</span>
+                    </div>
+                    <div class="error-cell" data-idx="1" data-val="200">
+                        <span class="cell-ptr ptr-none" id="ptr-1"></span>
+                        <span class="cell-path">/sorting</span>
+                        <span class="cell-num">200</span>
+                    </div>
+                    <div class="error-cell" data-idx="2" data-val="300">
+                        <span class="cell-ptr ptr-none" id="ptr-2"></span>
+                        <span class="cell-path">/searching</span>
+                        <span class="cell-num">300</span>
+                    </div>
+                    <div class="error-cell" data-idx="3" data-val="400">
+                        <span class="cell-ptr ptr-none" id="ptr-3"></span>
+                        <span class="cell-path">/compare</span>
+                        <span class="cell-num">400</span>
+                    </div>
+                    <div class="error-cell" data-idx="4" data-val="500">
+                        <span class="cell-ptr ptr-none" id="ptr-4"></span>
+                        <span class="cell-path">/privacy</span>
+                        <span class="cell-num">500</span>
+                    </div>
+                    <div class="error-cell" data-idx="5" data-val="600">
+                        <span class="cell-ptr ptr-none" id="ptr-5"></span>
+                        <span class="cell-path">/terms</span>
+                        <span class="cell-num">600</span>
+                    </div>
+                </div>
+
+                <div class="error-viz-controls">
+                    <button type="button" class="error-action-btn error-btn-replay" id="btn-replay-search" aria-label="Replay animated search">
+                        <span aria-hidden="true">▶</span> Replay Binary Search
+                    </button>
+                    <span class="error-status-text" id="error-status-text">Low: 0 | Mid: 2 | High: 5</span>
+                </div>
+            </div>
+
+            <!-- Helpful Navigation Shortcuts -->
+            <div class="error-actions-group">
+                <a href="index.html" class="error-cta-primary">
+                    <span>← Return to Home</span>
+                </a>
+                <a href="sorting.html" class="error-cta-secondary">
+                    <span>⚡ Sorting Visualizer</span>
+                </a>
+                <a href="searching.html" class="error-cta-secondary">
+                    <span>🔍 Searching Visualizer</span>
+                </a>
+                <a href="compare.html" class="error-cta-secondary">
+                    <span>🏎 Compare Algorithms</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="home-footer" role="contentinfo">
+            <a href="index.html" class="footer-brand" aria-label="Searchify brand">Searchify<span>✳</span></a>
+            <div class="footer-links">
+                <a href="privacy.html" class="footer-link">Privacy Policy</a>
+                <span class="footer-sep" aria-hidden="true">•</span>
+                <a href="terms.html" class="footer-link">Terms of Service</a>
+            </div>
+            <p>Made to make algorithms click.</p>
+            <nav aria-label="Back to top">
+                <a href="#top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">Back to top ↑</a>
+            </nav>
+        </footer>
+    </main>
+
+    <script src="js/home-nav.js"></script>
+    <script>
+        // Custom Searchify 404 Binary Search Visualizer Animation
+        (function () {
+            'use strict';
+
+            var cells = document.querySelectorAll('.error-cell');
+            var ptrs = [
+                document.getElementById('ptr-0'),
+                document.getElementById('ptr-1'),
+                document.getElementById('ptr-2'),
+                document.getElementById('ptr-3'),
+                document.getElementById('ptr-4'),
+                document.getElementById('ptr-5')
+            ];
+            var traceMsg = document.getElementById('error-trace-msg');
+            var statusText = document.getElementById('error-status-text');
+            var replayBtn = document.getElementById('btn-replay-search');
+            var pillStatus = document.getElementById('error-pill-status');
+            var routeTargetText = document.getElementById('route-target-text');
+
+            // Detect current missing path
+            var path = window.location.pathname || '/404';
+            if (routeTargetText && path !== '/' && path !== '/404' && path !== '/404.html') {
+                routeTargetText.textContent = path;
+            }
+
+            var routes = [
+                { path: '/home', val: 100 },
+                { path: '/sorting', val: 200 },
+                { path: '/searching', val: 300 },
+                { path: '/compare', val: 400 },
+                { path: '/privacy', val: 500 },
+                { path: '/terms', val: 600 }
+            ];
+
+            var isRunning = false;
+
+            // Audio tone generator
+            var audioCtx = null;
+            function playTone(freq, duration) {
+                try {
+                    if (!audioCtx) {
+                        var AudioContext = window.AudioContext || window.webkitAudioContext;
+                        if (AudioContext) audioCtx = new AudioContext();
+                    }
+                    if (!audioCtx || audioCtx.state === 'suspended') return;
+                    var osc = audioCtx.createOscillator();
+                    var gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + duration);
+                } catch (e) { }
+            }
+
+            function clearVisuals() {
+                cells.forEach(function (c) {
+                    c.className = 'error-cell';
+                });
+                ptrs.forEach(function (p) {
+                    if (p) {
+                        p.textContent = '';
+                        p.className = 'cell-ptr ptr-none';
+                    }
+                });
+            }
+
+            function setPointers(low, mid, high) {
+                ptrs.forEach(function (p, idx) {
+                    if (!p) return;
+                    var tags = [];
+                    if (idx === low && idx === mid && idx === high) {
+                        tags.push('L,M,H');
+                    } else if (idx === low && idx === mid) {
+                        tags.push('L,M');
+                    } else if (idx === mid && idx === high) {
+                        tags.push('M,H');
+                    } else if (idx === low && idx === high) {
+                        tags.push('L,H');
+                    } else if (idx === low) {
+                        tags.push('LOW');
+                    } else if (idx === mid) {
+                        tags.push('MID');
+                    } else if (idx === high) {
+                        tags.push('HIGH');
+                    }
+
+                    if (tags.length > 0) {
+                        p.textContent = tags.join(' ');
+                        p.className = 'cell-ptr ptr-active' + (idx === mid ? ' ptr-mid' : '');
+                    } else {
+                        p.textContent = '';
+                        p.className = 'cell-ptr ptr-none';
+                    }
+                });
+            }
+
+            function runSimulation() {
+                if (isRunning) return;
+                isRunning = true;
+                if (replayBtn) replayBtn.disabled = true;
+
+                clearVisuals();
+                var target = 404;
+                var low = 0;
+                var high = routes.length - 1;
+
+                var steps = [
+                    // Step 1: Initial state
+                    function (next) {
+                        traceMsg.textContent = 'Step 1: Low = 0 (/home), High = 5 (/terms). Calculate Mid = 2 (/searching, val: 300).';
+                        statusText.textContent = 'Low: 0 | Mid: 2 | High: 5';
+                        setPointers(0, 2, 5);
+                        cells[2].classList.add('cell-mid-inspect');
+                        playTone(320, 0.15);
+                        setTimeout(next, 900);
+                    },
+                    // Step 2: Compare mid with 404
+                    function (next) {
+                        traceMsg.textContent = '300 < 404 → Target must be in right subarray! Discard left indices [0..2].';
+                        cells[0].classList.add('cell-discarded');
+                        cells[1].classList.add('cell-discarded');
+                        cells[2].classList.add('cell-discarded');
+                        playTone(280, 0.15);
+                        setTimeout(next, 900);
+                    },
+                    // Step 3: Low = 3, High = 5, Mid = 4
+                    function (next) {
+                        traceMsg.textContent = 'Step 2: Low = 3 (/compare), High = 5 (/terms). Calculate Mid = 4 (/privacy, val: 500).';
+                        statusText.textContent = 'Low: 3 | Mid: 4 | High: 5';
+                        setPointers(3, 4, 5);
+                        cells[4].classList.add('cell-mid-inspect');
+                        playTone(420, 0.15);
+                        setTimeout(next, 900);
+                    },
+                    // Step 4: Compare mid with 404
+                    function (next) {
+                        traceMsg.textContent = '500 > 404 → Target must be in left subarray! Discard right indices [4..5].';
+                        cells[4].classList.add('cell-discarded');
+                        cells[5].classList.add('cell-discarded');
+                        playTone(280, 0.15);
+                        setTimeout(next, 900);
+                    },
+                    // Step 5: Low = 3, High = 3, Mid = 3
+                    function (next) {
+                        traceMsg.textContent = 'Step 3: Low = 3, High = 3. Calculate Mid = 3 (/compare, val: 400).';
+                        statusText.textContent = 'Low: 3 | Mid: 3 | High: 3';
+                        setPointers(3, 3, 3);
+                        cells[3].classList.add('cell-mid-inspect');
+                        playTone(380, 0.15);
+                        setTimeout(next, 900);
+                    },
+                    // Step 6: 400 < 404 -> Low = 4 > High (3) -> Not Found!
+                    function (next) {
+                        traceMsg.textContent = '400 < 404 → Low becomes 4. Now Low > High (Search space exhausted!).';
+                        cells[3].classList.add('cell-discarded');
+                        playTone(240, 0.25);
+                        setTimeout(next, 800);
+                    },
+                    // Step 7: Final 404 not found state
+                    function (next) {
+                        traceMsg.textContent = 'Binary Search complete: Target 404 is NOT PRESENT in valid routes (returned -1).';
+                        statusText.textContent = 'Result: Index -1 (Route Not Found)';
+                        ptrs.forEach(function (p) { if (p) p.className = 'cell-ptr ptr-none'; });
+                        cells.forEach(function (c) {
+                            c.classList.add('cell-mismatch');
+                        });
+                        pillStatus.textContent = 'ERROR 404 • ROUTE NOT FOUND';
+                        pillStatus.style.background = '#FCE8E6';
+                        pillStatus.style.color = '#C5221F';
+                        playTone(180, 0.35);
+                        isRunning = false;
+                        if (replayBtn) replayBtn.disabled = false;
+                    }
+                ];
+
+                var currentStep = 0;
+                function executeNext() {
+                    if (currentStep < steps.length) {
+                        steps[currentStep](function () {
+                            currentStep++;
+                            executeNext();
+                        });
+                    }
+                }
+                executeNext();
+            }
+
+            if (replayBtn) {
+                replayBtn.addEventListener('click', function () {
+                    runSimulation();
+                });
+            }
+
+            // Run initial animation after a gentle pause
+            setTimeout(runSimulation, 600);
+        })();
+    </script>
+</body>
+
+</html>
